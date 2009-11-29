@@ -303,13 +303,15 @@ static VALUE rb_cm_connect(VALUE self) {
   connman *conn;
   Data_Get_Struct(self, connman, conn);
   VALUE max = rb_const_get(wii_mod, rb_intern("MAX_WIIMOTES"));
+  VALUE timeout = rb_const_get(wii_mod, rb_intern("TIMEOUT"));
+  int found = wiiuse_find(conn->wms, NUM2INT(max), NUM2INT(timeout));
   int connected = wiiuse_connect(conn->wms, NUM2INT(max));
   int i = 0;
   VALUE wm;
   for(; i < NUM2INT(max); i++) {
     if(wm_connected(conn->wms[i])) {
       wm = rb_wm_new(wii_class);
-      Data_Wrap_Struct(wm, NULL, free_wiimote, conn->wms[i]);
+      wm = Data_Wrap_Struct(wii_class, NULL, free_wiimote, conn->wms[i]);
       rb_ary_push(rb_iv_get(self, "@wiimotes"), wm);
     }
   }
