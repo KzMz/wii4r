@@ -33,7 +33,14 @@ static VALUE rb_wm_new(VALUE self) {
 
 static VALUE rb_wm_init(VALUE self) {
   rb_iv_set(self, "@rumble", Qfalse);
-  rb_iv_set(self, "@motion_sensing", Qfalse);
+  if(!WIIUSE_USING_ACC(wm))
+    rb_iv_set(self, "@motion_sensing", Qfalse);
+  else 
+    rb_iv_set(self, "@motion_sensing", Qtrue);
+  if(!WIIUSE_USING_IR(wm)) 
+    rb_iv_set(self, "@ir", Qfalse);
+  else
+    rb_iv_set(self, "@ir", Qtrue);
   return self;
 }
 
@@ -239,11 +246,18 @@ static VALUE rb_wm_aroll(VALUE self) {
 }
 
 static VALUE rb_wm_ir(VALUE self) {
+  return rb_iv_get(self, "@ir");
+}
+
+static VALUE rb_wm_set_ir(VALUE self, VALUE arg) {
+  rb_iv_set(self, "@ir", arg);
   wiimote *wm;
   Data_Get_Struct(self, wiimote, wm);
-  int ir = WIIUSE_USING_IR(wm);
-  if(ir == 0) return Qfalse;
-  else return Qtrue;
+  int ir;
+  if(arg == Qfalse) ir = 0;
+  else ir = 1;
+  wiiuse_set_ir(wm, ir);
+  return arg;
 }
 
 static VALUE rb_wm_ir_sources(VALUE self) {
@@ -279,13 +293,6 @@ static VALUE rb_wm_ir_z(VALUE self) {
   Data_Get_Struct(self, wiimote, wm);
   if(!WIIUSE_USING_IR(wm)) return Qnil;
   return rb_float_new(wm->ir.z);
-}
-
-static VALUE rb_wm_accelerometer(VALUE self) {
-  wiimote *wm;
-  Data_Get_Struct(self, wiimote, wm);
-  if(!WIIUSE_USING_ACC(wm)) return Qfalse;
-  else return Qtrue;
 }
 
 static VALUE rb_cm_connect(VALUE self) {
@@ -468,11 +475,6 @@ void Init_wii4r() {
   rb_define_const(wii_mod, "LED_2", INT2NUM(WIIMOTE_LED_2));
   rb_define_const(wii_mod, "LED_3", INT2NUM(WIIMOTE_LED_3));
   rb_define_const(wii_mod, "LED_4", INT2NUM(WIIMOTE_LED_4));
-  rb_define_const(wii_mod, "LED_ALL", INT2NUM(WIIMOTE_LED_1 | WIIMOTE_LED_2 | WIIMOTE_LED_3 | WIIMOTE_LED_4));
-  rb_define_const(wii_mod, "LED_1_AND_2", INT2NUM(WIIMOTE_LED_1 | WIIMOTE_LED_2));
-  rb_define_const(wii_mod, "LED_2_AND_3", INT2NUM(WIIMOTE_LED_2 | WIIMOTE_LED_3));
-  rb_define_const(wii_mod, "LED_3_AND_4", INT2NUM(WIIMOTE_LED_3 | WIIMOTE_LED_4));
-  
   
   //Wiimote button consts
   rb_define_const(wii_mod, "BUTTON_A", INT2NUM(WIIMOTE_BUTTON_A));
@@ -486,12 +488,6 @@ void Init_wii4r() {
   rb_define_const(wii_mod, "BUTTON_RIGHT", INT2NUM(WIIMOTE_BUTTON_RIGHT));
   rb_define_const(wii_mod, "BUTTON_DOWN", INT2NUM(WIIMOTE_BUTTON_DOWN));
   rb_define_const(wii_mod, "BUTTON_UP", INT2NUM(WIIMOTE_BUTTON_UP));
-  rb_define_const(wii_mod, "BUTTON_ZACCEL_BIT4", INT2NUM(WIIMOTE_BUTTON_ZACCEL_BIT4));
-  rb_define_const(wii_mod, "BUTTON_ZACCEL_BIT5", INT2NUM(WIIMOTE_BUTTON_ZACCEL_BIT5));
-  rb_define_const(wii_mod, "BUTTON_ZACCEL_BIT6", INT2NUM(WIIMOTE_BUTTON_ZACCEL_BIT6));
-  rb_define_const(wii_mod, "BUTTON_ZACCEL_BIT7", INT2NUM(WIIMOTE_BUTTON_ZACCEL_BIT7));
-  rb_define_const(wii_mod, "BUTTON_ZACCEL_BIT6", INT2NUM(WIIMOTE_BUTTON_ZACCEL_BIT6));
-  rb_define_const(wii_mod, "BUTTON_UNKNOWN", INT2NUM(WIIMOTE_BUTTON_UNKNOWN));
   rb_define_const(wii_mod, "BUTTON_ALL", INT2NUM(WIIMOTE_BUTTON_ALL));
   
   //Wiimote nunchul button consts
@@ -529,13 +525,6 @@ void Init_wii4r() {
   rb_define_const(wii_mod, "GUITAR_BUTTON_DOWN", INT2NUM(GUITAR_HERO_3_BUTTON_STRUM_DOWN));
   rb_define_const(wii_mod, "GUITAR_BUTTON_ALL", INT2NUM(GUITAR_HERO_3_BUTTON_ALL));
   
-  //Wiimote option  flags
-  rb_define_const(wii_mod, "WII_SMOOTING", INT2NUM(WIIUSE_SMOOTHING));
-  rb_define_const(wii_mod, "WII_CONTINUOUS", INT2NUM(WIIUSE_CONTINUOUS));
-  rb_define_const(wii_mod, "WII_ORIENT_THRESH", INT2NUM(WIIUSE_ORIENT_THRESH));
-  rb_define_const(wii_mod, "WII_INIT_FLAGS", INT2NUM(WIIUSE_INIT_FLAGS));
-  rb_define_const(wii_mod, "WII_O_PRECISION", INT2NUM(WIIUSE_ORIENT_PRECISION));
-  
   //Wiimote expansion codes 
   rb_define_const(wii_mod, "E_NONE", INT2NUM(EXP_NONE));
   rb_define_const(wii_mod, "E_NUNCHUK", INT2NUM(EXP_NUNCHUK));
@@ -552,14 +541,29 @@ void Init_wii4r() {
   rb_define_method(wii_class, "rumble!", rb_wm_rumble, 0);
   rb_define_method(wii_class, "stop!", rb_wm_stop, 0);
   rb_define_method(wii_class, "leds=", rb_wm_leds, 1);
+  //
+  rb_define_method(wii_class, "led", rb_wm_led, 0);
   rb_define_method(wii_class, "turn_off_leds!", rb_wm_turnoff, 0);
   rb_define_method(wii_class, "motion_sensing?", rb_wm_get_ms, 0);
   rb_define_method(wii_class, "motion_sensing=", rb_wm_set_ms, 1);
+  //REDO
   rb_define_method(wii_class, "status", rb_wm_status, 0);
   rb_define_method(wii_class, "connected?", rb_wm_connected, 0);
+  //
+  rb_define_method(wii_class, "expansion?", rb_wm_exp, -1);
+  //
+  rb_define_method(wii_class, "nunchuk?", rb_wm_nunchuk, 0);
+  //
+  rb_define_method(wii_class, "classic_controller?", rb_wm_cc, 0);
+  //
+  rb_define_method(wii_class, "guitar_hero_controller?", rb_wm_gh, 0);
   rb_define_method(wii_class, "pressed?", rb_wm_pressed, 1);
   rb_define_method(wii_class, "just_pressed?", rb_wm_just_pressed, 1);
-  rb_define_method(wii_class, "using_accelerometer?", rb_wm_accelerometer, 0);
+  //
+  rb_define_method(wii_class, "held?", rb_wm_held, 1);
+  //
+  rb_define_method(wii_class, "released?", rb_wm_released, 1);
+  rb_define_alias(wii_class, "using_accelerometer?", "motion_sensing?");
   rb_define_method(wii_class, "roll", rb_wm_roll, 0);
   rb_define_method(wii_class, "absolute_roll", rb_wm_aroll, 0);
   rb_define_method(wii_class, "pitch", rb_wm_pitch, 0);
@@ -569,6 +573,7 @@ void Init_wii4r() {
   rb_define_method(wii_class, "ir_sources", rb_wm_ir_sources, 0);
   rb_define_method(wii_class, "ir_cursor", rb_wm_ir_cursor, 0);
   rb_define_method(wii_class, "ir_z", rb_wm_ir_z, 0);
+  rb_define_method(wii_class, "ir=", rb_wm_set_ir, 1);
   
   rb_define_singleton_method(cm_class, "new", rb_cm_new, 0);
   rb_define_singleton_method(cm_class, "connect_and_poll", rb_cm_cp, 0);
