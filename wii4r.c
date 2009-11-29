@@ -310,8 +310,8 @@ static VALUE rb_cm_connect(VALUE self) {
   VALUE wm;
   for(; i < NUM2INT(max); i++) {
     if(wm_connected(conn->wms[i])) {
-      wm = rb_wm_new(wii_class);
-      wm = Data_Wrap_Struct(wii_class, NULL, free_wiimote, conn->wms[i]);
+      wm = Data_Make_Struct(wii_class, NULL, free_wiimote, conn->wms[i]);
+      rb_obj_call_init(wm, 0, 0);
       rb_ary_push(rb_iv_get(self, "@wiimotes"), wm);
     }
   }
