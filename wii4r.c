@@ -11,6 +11,8 @@
 #define WIIMOTE_IS_CONNECTED(wm)		(WIIMOTE_IS_SET(wm, 0x0008))
 
 VALUE wii_mod = Qnil;
+VALUE cm_class = Qnil;
+VALUE wii_class = Qnil;
 
 typedef struct _connman {
   wiimote **wms;
@@ -33,6 +35,8 @@ static VALUE rb_wm_new(VALUE self) {
 
 static VALUE rb_wm_init(VALUE self) {
   rb_iv_set(self, "@rumble", Qfalse);
+  wiimote *wm;
+  Data_Get_Struct(self, wiimote, wm);
   if(!WIIUSE_USING_ACC(wm))
     rb_iv_set(self, "@motion_sensing", Qfalse);
   else 
@@ -304,7 +308,7 @@ static VALUE rb_cm_connect(VALUE self) {
   VALUE wm;
   for(; i < NUM2INT(max); i++) {
     if(wm_connected(conn->wms[i])) {
-      wm = rb_wm_new(rb_const_get(wii_mod, rb_intern("Wiimote")));
+      wm = rb_wm_new(wii_class);
       Data_Wrap_Struct(wm, NULL, free_wiimote, conn->wms[i]);
       rb_ary_push(rb_iv_get(self, "@wiimotes"), wm);
     }
@@ -531,8 +535,8 @@ void Init_wii4r() {
   rb_define_const(wii_mod, "E_CLASSIC", INT2NUM(EXP_CLASSIC));
   rb_define_const(wii_mod, "E_GUITAR", INT2NUM(EXP_GUITAR_HERO_3));
   
-  VALUE cm_class = rb_define_class_under(wii_mod, "WiimoteManager", rb_cObject);
-  VALUE wii_class = rb_define_class_under(wii_mod, "Wiimote", rb_cObject);
+  cm_class = rb_define_class_under(wii_mod, "WiimoteManager", rb_cObject);
+  wii_class = rb_define_class_under(wii_mod, "Wiimote", rb_cObject);
 
   rb_define_singleton_method(wii_class, "new", rb_wm_new, 0);
   rb_define_method(wii_class, "initialize", rb_wm_init, 0);
