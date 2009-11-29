@@ -556,19 +556,19 @@ void Init_wii4r() {
   rb_define_method(wii_class, "status", rb_wm_status, 0);
   rb_define_method(wii_class, "connected?", rb_wm_connected, 0);
   //
-  rb_define_method(wii_class, "expansion?", rb_wm_exp, -1);
+  //rb_define_method(wii_class, "expansion?", rb_wm_exp, -1);
   //
-  rb_define_method(wii_class, "nunchuk?", rb_wm_nunchuk, 0);
+  //rb_define_method(wii_class, "nunchuk?", rb_wm_nunchuk, 0);
   //
-  rb_define_method(wii_class, "classic_controller?", rb_wm_cc, 0);
+  //rb_define_method(wii_class, "classic_controller?", rb_wm_cc, 0);
   //
-  rb_define_method(wii_class, "guitar_hero_controller?", rb_wm_gh, 0);
+  //rb_define_method(wii_class, "guitar_hero_controller?", rb_wm_gh, 0);
   rb_define_method(wii_class, "pressed?", rb_wm_pressed, 1);
   rb_define_method(wii_class, "just_pressed?", rb_wm_just_pressed, 1);
   //
-  rb_define_method(wii_class, "held?", rb_wm_held, 1);
+  //rb_define_method(wii_class, "held?", rb_wm_held, 1);
   //
-  rb_define_method(wii_class, "released?", rb_wm_released, 1);
+  //rb_define_method(wii_class, "released?", rb_wm_released, 1);
   rb_define_alias(wii_class, "using_accelerometer?", "motion_sensing?");
   rb_define_method(wii_class, "roll", rb_wm_roll, 0);
   rb_define_method(wii_class, "absolute_roll", rb_wm_aroll, 0);
