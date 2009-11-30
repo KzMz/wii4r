@@ -172,8 +172,61 @@ static VALUE rb_wm_set_ms(VALUE self, VALUE arg) {
 static VALUE rb_wm_status(VALUE self) {
   wiimote * wm;
   Data_Get_Struct(self, wiimote, wm);
-  wiiuse_status(wm);
-  return Qnil;
+  
+  VALUE status_hash = rb_hash_new();
+  
+  VALUE speaker,led,ir,expansion;
+  //int a_led[4];
+  //int leds[4] = { WIIMOTE_LED_1,WIIMOTE_LED_2,WIIMOTE_LED_3,WIIMOTE_LED_4 };
+  int u_speaker = WIIUSE_USING_SPEAKER(wm) ;	
+		
+		switch(u_speaker){
+			case 1:
+				speaker = Qtrue;
+			case 0:
+				speaker = Qfalse;
+		}
+  
+  int u_ir = WIIUSE_USING_IR(wm);
+  
+		switch(u_ir){
+			case 1:
+				ir = Qtrue;
+			case 0:
+				ir = Qfalse;
+		}
+  
+  int attach = wm->exp.type;
+		switch(attach){
+			
+			case EXP_NUNCHUK:
+				
+				expansion = rb_str_new2("Nunchuck");
+			case EXP_CLASSIC:
+				
+				expansion = rb_str_new2("Classic Controller"); 
+			case EXP_GUITAR_HERO_3:
+				
+				expansion = rb_str_new2("Guitar Hero Controller");
+			case EXP_NONE:
+				
+				expansion = rb_str_new2("Nothing Inserted");
+		}
+		
+  
+  //for(i = 0 ,i < 4; i++)a_led[i] = WIIUSE_IS_LED_SET(wm, leds[i]);
+  
+  //for(i = 0 ,i < 4; i++){
+	   //if(a_led[i] == 1)
+			
+  
+  rb_hash_aset(status_hash,ID2SYM(rb_intern("id")),INT2NUM(wm->unid));
+  rb_hash_aset(status_hash,ID2SYM(rb_intern("battery")),rb_float_new(wm->battery_level));
+  rb_hash_aset(status_hash,ID2SYM(rb_intern("speaker")),speaker);
+  rb_hash_aset(status_hash,ID2SYM(rb_intern("ir")),ir);
+  //rb_hash_aset(status_hash,ID2SYM(rb_intern("leds")),);
+  rb_hash_aset(status_hash,ID2SYM(rb_intern("attachment")),expansion);
+  return status_hash;
 }
 
 static VALUE rb_cm_found(VALUE self) {
@@ -304,13 +357,13 @@ static VALUE rb_cm_connect(VALUE self) {
   Data_Get_Struct(self, connman, conn);
   VALUE max = rb_const_get(wii_mod, rb_intern("MAX_WIIMOTES"));
   VALUE timeout = rb_const_get(wii_mod, rb_intern("TIMEOUT"));
-  int found = wiiuse_find(conn->wms, NUM2INT(max), NUM2INT(timeout));
+  //int found = wiiuse_find(conn->wms, NUM2INT(max), NUM2INT(timeout));
   int connected = wiiuse_connect(conn->wms, NUM2INT(max));
   int i = 0;
   VALUE wm;
   for(; i < NUM2INT(max); i++) {
     if(wm_connected(conn->wms[i])) {
-      wm = Data_Make_Struct(wii_class, NULL, free_wiimote, conn->wms[i]);
+      wm = Data_Wrap_Struct(wii_class, NULL, free_wiimote, conn->wms[i]);
       rb_obj_call_init(wm, 0, 0);
       rb_ary_push(rb_iv_get(self, "@wiimotes"), wm);
     }
@@ -548,7 +601,7 @@ void Init_wii4r() {
   rb_define_method(wii_class, "stop!", rb_wm_stop, 0);
   rb_define_method(wii_class, "leds=", rb_wm_leds, 1);
   //
-  rb_define_method(wii_class, "led", rb_wm_led, 0);
+  //rb_define_method(wii_class, "led", rb_wm_led, 0);
   rb_define_method(wii_class, "turn_off_leds!", rb_wm_turnoff, 0);
   rb_define_method(wii_class, "motion_sensing?", rb_wm_get_ms, 0);
   rb_define_method(wii_class, "motion_sensing=", rb_wm_set_ms, 1);
