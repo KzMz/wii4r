@@ -524,6 +524,44 @@ static VALUE rb_cm_cp(VALUE self) {
   return Qnil;
 }
 
+static VALUE rb_wm_led(VALUE self) {
+  wiimote *wm;
+  Data_Get_Struct(self, wiimote, wm);
+  if(WIIUSE_IS_LED_SET(wm, WIIMOTE_LED_1)) return rb_str_new2("LED_1");
+  if(WIIUSE_IS_LED_SET(wm, WIIMOTE_LED_2)) return rb_str_new2("LED_2");
+  if(WIIUSE_IS_LED_SET(wm, WIIMOTE_LED_3)) return rb_str_new2("LED_3");
+  if(WIIUSE_IS_LED_SET(wm, WIIMOTE_LED_4)) return rb_str_new2("LED_4");
+  return Qnil;
+}
+
+static VALUE rb_wm_exp(int argc, VALUE * argv, VALUE self) {
+  wiimote *wm;
+  Data_Get_Struct(self, wiimote, wm);
+  if(argc == 0) {
+    if(wm->exp.type != EXP_NONE) {
+      return Qtrue;
+    }
+    else {
+      return Qfalse;
+    }
+  }
+  else {
+    switch(wm->exp.type) {
+      case EXP_NONE:
+        return Qfalse;
+      case EXP_NUNCHUK:
+        if(NUM2INT(argv[0]) == EXP_NUNCHUK) return Qtrue;
+        else return Qfalse;
+      case EXP_CLASSIC:
+        if(NUM2INT(argv[0]) == EXP_CLASSIC) return Qtrue;
+        else return Qfalse;
+      case EXP_GUITAR_HERO_3:
+        if(NUM2INT(argv[0]) == EXP_GUITAR_HERO_3) return Qtrue;
+        else return Qfalse;
+    }
+  }
+}
+
 void Init_wii4r() {
   wii_mod = rb_define_module("Wii");
   rb_define_const(wii_mod, "MAX_WIIMOTES", INT2NUM(4));
@@ -600,16 +638,13 @@ void Init_wii4r() {
   rb_define_method(wii_class, "rumble!", rb_wm_rumble, 0);
   rb_define_method(wii_class, "stop!", rb_wm_stop, 0);
   rb_define_method(wii_class, "leds=", rb_wm_leds, 1);
-  //
-  //rb_define_method(wii_class, "led", rb_wm_led, 0);
+  rb_define_method(wii_class, "led", rb_wm_led, 0);
   rb_define_method(wii_class, "turn_off_leds!", rb_wm_turnoff, 0);
   rb_define_method(wii_class, "motion_sensing?", rb_wm_get_ms, 0);
   rb_define_method(wii_class, "motion_sensing=", rb_wm_set_ms, 1);
-  //REDO
   rb_define_method(wii_class, "status", rb_wm_status, 0);
   rb_define_method(wii_class, "connected?", rb_wm_connected, 0);
-  //
-  //rb_define_method(wii_class, "expansion?", rb_wm_exp, -1);
+  rb_define_method(wii_class, "expansion?", rb_wm_exp, -1);
   //
   //rb_define_method(wii_class, "nunchuk?", rb_wm_nunchuk, 0);
   //
