@@ -361,6 +361,28 @@ static VALUE rb_wm_ir_z(VALUE self) {
   return rb_float_new(wm->ir.z);
 }
 
+static VALUE rb_wm_sensitivity(VALUE self){
+  wiimote *wm;
+  int level;
+  Data_Get_Struct(self, wiimote, wm);	
+  if(!WIIUSE_USING_IR(wm)) return Qnil;
+  WIIUSE_GET_IR_SENSITIVITY(wm, &level);	
+  return INT2NUM(level);
+}
+
+/*
+static VALUE rb_wm_set_speaker(VALUE self){
+	WIIMOTE_ENABLE_STATEWIIMOTE_STATE_SPEAKER
+}
+*/
+
+static VALUE rb_wm_speaker(VALUE self){
+  wiimote *wm;
+  Data_Get_Struct(self, wiimote, wm);
+  if (WIIUSE_USING_SPEAKER(wm)) return Qtrue;
+  else return Qfalse;	
+}
+
 static VALUE rb_cm_connect(VALUE self) {
   connman *conn;
   Data_Get_Struct(self, connman, conn);
@@ -695,8 +717,8 @@ void Init_wii4r() {
   rb_define_method(wii_class, "distance", rb_wm_ir_z, 0);
   rb_define_method(wii_class, "ir=", rb_wm_set_ir, 1);
  // rb_define_method(wii_class, "speaker=", rb_wm_set_speaker, 1);
- // rb_define_method(wii_class, "speaker?" rb_wm_speaker, 0);
- // rb_define_method(wii_class, "sensitivity", rb_wm_sensitivity, 0);
+  rb_define_method(wii_class, "speaker?", rb_wm_speaker, 0);
+  rb_define_method(wii_class, "sensitivity", rb_wm_sensitivity, 0);
  // rb_define_method(wii_class, "sensitivity=", rb_wm_set_sens, 1);
  // rb_define_method(wii_class, "sensor_bar_position=", rb_wm_set_pos, 1);
  // rb_define_method(wii_class, "virtual_resolution=", rb_wm_set_vres, -1);
