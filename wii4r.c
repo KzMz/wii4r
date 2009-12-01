@@ -26,8 +26,8 @@ void free_wiimote(void * wm) {
 static VALUE rb_wm_new(VALUE self) {
 
   wiimote *wm;
-  VALUE obj = Data_Make_Struct(self, wiimote, NULL, free_wiimote, wm); 
-  wiiuse_rumble(wm, 0);
+  VALUE obj = Data_Make_Struct(self, wiimote, NULL, free_wiimote, wm);
+  
   rb_obj_call_init(obj, 0, 0);
   
   return obj;
@@ -45,6 +45,10 @@ static VALUE rb_wm_init(VALUE self) {
     rb_iv_set(self, "@ir", Qfalse);
   else
     rb_iv_set(self, "@ir", Qtrue);
+  if(!WIIUSE_USING_SPEAKER(wm))
+    rb_iv_set(self, "@speaker", Qfalse);
+  else
+    rb_iv_set(self, "@speaker", Qtrue);
   return self;
 }
 
@@ -173,58 +177,46 @@ static VALUE rb_wm_status(VALUE self) {
   wiimote * wm;
   Data_Get_Struct(self, wiimote, wm);
   
+  //wiiuse_status(wm);
+  
   VALUE status_hash = rb_hash_new();
   
   VALUE speaker,led,ir,expansion;
-  //int a_led[4];
-  //int leds[4] = { WIIMOTE_LED_1,WIIMOTE_LED_2,WIIMOTE_LED_3,WIIMOTE_LED_4 };
-  int u_speaker = WIIUSE_USING_SPEAKER(wm) ;	
-		
-		switch(u_speaker){
-			case 1:
-				speaker = Qtrue;
-			case 0:
-				speaker = Qfalse;
-		}
   
-  int u_ir = WIIUSE_USING_IR(wm);
+	if(WIIUSE_USING_SPEAKER(wm)) 
+		speaker = Qtrue;
+	else
+		speaker = Qfalse;
   
-		switch(u_ir){
-			case 1:
-				ir = Qtrue;
-			case 0:
-				ir = Qfalse;
-		}
-  
-  int attach = wm->exp.type;
-		switch(attach){
-			
-			case EXP_NUNCHUK:
-				
-				expansion = rb_str_new2("Nunchuck");
-			case EXP_CLASSIC:
-				
-				expansion = rb_str_new2("Classic Controller"); 
-			case EXP_GUITAR_HERO_3:
-				
-				expansion = rb_str_new2("Guitar Hero Controller");
-			case EXP_NONE:
-				
-				expansion = rb_str_new2("Nothing Inserted");
-		}
+        if(WIIUSE_USING_IR(wm))
+              	ir = Qtrue;
+        else
+               	ir = Qfalse;
+  	
+  	switch(wm->exp.type){
+		case EXP_NUNCHUK:		
+			expansion = rb_str_new2("Nunchuck");
+		case EXP_CLASSIC:	
+			expansion = rb_str_new2("Classic Controller"); 
+		case EXP_GUITAR_HERO_3:	
+			expansion = rb_str_new2("Guitar Hero Controller");
+		case EXP_NONE:	
+			expansion = rb_str_new2("Nothing Inserted");
+        }
 		
   
-  //for(i = 0 ,i < 4; i++)a_led[i] = WIIUSE_IS_LED_SET(wm, leds[i]);
-  
-  //for(i = 0 ,i < 4; i++){
-	   //if(a_led[i] == 1)
+  if(WIIUSE_IS_LED_SET(wm, 1)) led = rb_str_new2("LED_1");
+  else if(WIIUSE_IS_LED_SET(wm, 2)) led = rb_str_new2("LED_2");
+  else if(WIIUSE_IS_LED_SET(wm, 3)) led = rb_str_new2("LED_3");
+  else if(WIIUSE_IS_LED_SET(wm, 4)) led = rb_str_new2("LED_4");
+  else led = rb_str_new2("NONE");
 			
   
   rb_hash_aset(status_hash,ID2SYM(rb_intern("id")),INT2NUM(wm->unid));
   rb_hash_aset(status_hash,ID2SYM(rb_intern("battery")),rb_float_new(wm->battery_level));
   rb_hash_aset(status_hash,ID2SYM(rb_intern("speaker")),speaker);
   rb_hash_aset(status_hash,ID2SYM(rb_intern("ir")),ir);
-  //rb_hash_aset(status_hash,ID2SYM(rb_intern("leds")),);
+  rb_hash_aset(status_hash,ID2SYM(rb_intern("led")), led);
   rb_hash_aset(status_hash,ID2SYM(rb_intern("attachment")),expansion);
   return status_hash;
 }
@@ -323,13 +315,18 @@ static VALUE rb_wm_ir(VALUE self) {
 }
 
 static VALUE rb_wm_set_ir(VALUE self, VALUE arg) {
-  rb_iv_set(self, "@ir", arg);
   wiimote *wm;
   Data_Get_Struct(self, wiimote, wm);
   int ir;
-  if(arg == Qfalse) ir = 0;
-  else ir = 1;
-  wiiuse_set_ir(wm, ir);
+  if(arg == Qtrue) ir = 1;
+  else if(arg == Qfalse) ir = 0;
+  else return Qnil;
+
+  if(WIIUSE_USING_IR(wm) && ir == 0) wiiuse_set_ir(wm, ir);
+  else if(ir == 1) wiiuse_set_ir(wm, ir);
+  
+  if(WIIUSE_USING_IR(wm)) rb_iv_set(self, "@ir", Qtrue);
+  else rb_iv_set(self, "@ir", Qfalse);
   return arg;
 }
 
@@ -672,7 +669,7 @@ void Init_wii4r() {
   rb_define_method(wii_class, "initialize", rb_wm_init, 0);
   rb_define_method(wii_class, "rumble?", rb_wm_get_rumble, 0);
   rb_define_method(wii_class, "rumble=", rb_wm_set_rumble, 1);
-  rb_define_method(wii_class, "rumble!", rb_wm_rumble, 0);
+  //rb_define_method(wii_class, "rumble!", rb_wm_rumble, -1);
   rb_define_method(wii_class, "stop!", rb_wm_stop, 0);
   rb_define_method(wii_class, "leds=", rb_wm_leds, 1);
   rb_define_method(wii_class, "led", rb_wm_led, 0);
@@ -697,10 +694,21 @@ void Init_wii4r() {
   rb_define_method(wii_class, "yaw", rb_wm_yaw, 0);
   rb_define_method(wii_class, "using_ir?", rb_wm_ir, 0);
   rb_define_method(wii_class, "ir_sources", rb_wm_ir_sources, 0);
-  rb_define_method(wii_class, "ir_cursor", rb_wm_ir_cursor, 0);
-  rb_define_method(wii_class, "ir_z", rb_wm_ir_z, 0);
+  rb_define_method(wii_class, "position", rb_wm_ir_cursor, 0);
+  //rb_define_method(wii_class, "absolute_position", rb_wm_ir_acursor, 0);
+  rb_define_method(wii_class, "distance", rb_wm_ir_z, 0);
   rb_define_method(wii_class, "ir=", rb_wm_set_ir, 1);
-  
+ // rb_define_method(wii_class, "speaker=", rb_wm_set_speaker, 1);
+ // rb_define_method(wii_class, "speaker?" rb_wm_speaker, 0);
+ // rb_define_method(wii_class, "sensitivity", rb_wm_sensitivity, 0);
+ // rb_define_method(wii_class, "sensitivity=", rb_wm_set_sens, 1);
+ // rb_define_method(wii_class, "sensor_bar_position=", rb_wm_set_pos, 1);
+ // rb_define_method(wii_class, "virtual_resolution=", rb_wm_set_vres, -1);
+ // rb_define_method(wii_class, "virtual_resolution", rb_wm_vres, 0);
+ // rb_define_method(wii_class, "aspect_ratio=", rb_wm_set_aratio, 1);
+ // rb_define_method(wii_class, "aspect_ratio", rb_wm_aratio, 0);
+ // rb_define_method(wii_class, "battery_level", rb_wm_bl, 0);
+ 
   rb_define_singleton_method(cm_class, "new", rb_cm_new, 0);
   rb_define_singleton_method(cm_class, "connect_and_poll", rb_cm_cp, 0);
   rb_define_method(cm_class, "wiimotes", rb_cm_wiimotes, 0);
@@ -711,4 +719,5 @@ void Init_wii4r() {
   rb_define_method(cm_class, "connect", rb_cm_connect, 0);
   rb_define_method(cm_class, "poll", rb_cm_poll, 0);
   rb_define_method(cm_class, "each_wiimote", rb_cm_each, 0);
+  //rb_define_method(cm_class, "positions", rb_cm_pos, 0);
 }
