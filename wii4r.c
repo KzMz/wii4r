@@ -171,60 +171,47 @@ static VALUE rb_wm_set_ms(VALUE self, VALUE arg) {
 
 static VALUE rb_wm_status(VALUE self) {
   wiimote * wm;
+  VALUE speaker,ir,expansion;
   Data_Get_Struct(self, wiimote, wm);
-  
   VALUE status_hash = rb_hash_new();
+  VALUE led = rb_str_new2("Nessun_Led");
   
-  VALUE speaker,led,ir,expansion;
-  //int a_led[4];
-  //int leds[4] = { WIIMOTE_LED_1,WIIMOTE_LED_2,WIIMOTE_LED_3,WIIMOTE_LED_4 };
-  int u_speaker = WIIUSE_USING_SPEAKER(wm) ;	
-		
+  int u_speaker = WIIUSE_USING_SPEAKER(wm);	
 		switch(u_speaker){
 			case 1:
 				speaker = Qtrue;
 			case 0:
 				speaker = Qfalse;
 		}
-  
   int u_ir = WIIUSE_USING_IR(wm);
-  
 		switch(u_ir){
 			case 1:
 				ir = Qtrue;
 			case 0:
 				ir = Qfalse;
 		}
-  
   int attach = wm->exp.type;
 		switch(attach){
-			
 			case EXP_NUNCHUK:
-				
 				expansion = rb_str_new2("Nunchuck");
 			case EXP_CLASSIC:
-				
 				expansion = rb_str_new2("Classic Controller"); 
 			case EXP_GUITAR_HERO_3:
-				
 				expansion = rb_str_new2("Guitar Hero Controller");
 			case EXP_NONE:
-				
 				expansion = rb_str_new2("Nothing Inserted");
 		}
 		
-  
-  //for(i = 0 ,i < 4; i++)a_led[i] = WIIUSE_IS_LED_SET(wm, leds[i]);
-  
-  //for(i = 0 ,i < 4; i++){
-	   //if(a_led[i] == 1)
-			
+  if(WIIUSE_IS_LED_SET(wm, 1)) led = rb_str_new2("Led_1");
+  if(WIIUSE_IS_LED_SET(wm, 2)) led = rb_str_new2("Led_2");
+  if(WIIUSE_IS_LED_SET(wm, 3)) led = rb_str_new2("Led_3");
+  if(WIIUSE_IS_LED_SET(wm, 4)) led = rb_str_new2("Led_4"); 
   
   rb_hash_aset(status_hash,ID2SYM(rb_intern("id")),INT2NUM(wm->unid));
   rb_hash_aset(status_hash,ID2SYM(rb_intern("battery")),rb_float_new(wm->battery_level));
   rb_hash_aset(status_hash,ID2SYM(rb_intern("speaker")),speaker);
   rb_hash_aset(status_hash,ID2SYM(rb_intern("ir")),ir);
-  //rb_hash_aset(status_hash,ID2SYM(rb_intern("leds")),);
+  rb_hash_aset(status_hash,ID2SYM(rb_intern("led")),led);
   rb_hash_aset(status_hash,ID2SYM(rb_intern("attachment")),expansion);
   return status_hash;
 }
