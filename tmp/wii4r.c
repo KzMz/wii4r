@@ -176,8 +176,11 @@ static VALUE rb_wm_set_ms(VALUE self, VALUE arg) {
 static VALUE rb_wm_status(VALUE self) {
   wiimote * wm;
   Data_Get_Struct(self, wiimote, wm);
+  
   //wiiuse_status(wm);
+  
   VALUE status_hash = rb_hash_new();
+  
   VALUE speaker,led,ir,expansion;
   
 	if(WIIUSE_USING_SPEAKER(wm)) 
@@ -207,6 +210,7 @@ static VALUE rb_wm_status(VALUE self) {
   else if(WIIUSE_IS_LED_SET(wm, 3)) led = rb_str_new2("LED_3");
   else if(WIIUSE_IS_LED_SET(wm, 4)) led = rb_str_new2("LED_4");
   else led = rb_str_new2("NONE");
+			
   
   rb_hash_aset(status_hash,ID2SYM(rb_intern("id")),INT2NUM(wm->unid));
   rb_hash_aset(status_hash,ID2SYM(rb_intern("battery")),rb_float_new(wm->battery_level));
