@@ -176,7 +176,7 @@ static VALUE rb_wm_set_ms(VALUE self, VALUE arg) {
 static VALUE rb_wm_status(VALUE self) {
   wiimote * wm;
   Data_Get_Struct(self, wiimote, wm);
-  //wiiuse_status(wm);
+  wiiuse_status(wm);
   VALUE status_hash = rb_hash_new();
   VALUE speaker,led,ir,expansion;
   
@@ -383,12 +383,21 @@ static VALUE rb_wm_speaker(VALUE self){
   else return Qfalse;	
 }
 
+static VALUE rb_wm_bl(VALUE self){
+  wiimote *wm;	
+  Data_Get_Struct(self,wiimote,wm);
+  wiiuse_status(wm);
+  return rb_float_new(wm->battery_level); 
+}
+
 static VALUE rb_cm_connect(VALUE self) {
   connman *conn;
   Data_Get_Struct(self, connman, conn);
+  
   VALUE max = rb_const_get(wii_mod, rb_intern("MAX_WIIMOTES"));
   VALUE timeout = rb_const_get(wii_mod, rb_intern("TIMEOUT"));
-  //int found = wiiuse_find(conn->wms, NUM2INT(max), NUM2INT(timeout));
+  int found = wiiuse_find(conn->wms, NUM2INT(max), NUM2INT(timeout));
+  if(!found) return 0; 
   int connected = wiiuse_connect(conn->wms, NUM2INT(max));
   int i = 0;
   VALUE wm;
@@ -617,9 +626,10 @@ static VALUE rb_wm_gh(VALUE self) {
 void Init_wii4r() {
   wii_mod = rb_define_module("Wii");
   rb_define_const(wii_mod, "MAX_WIIMOTES", INT2NUM(4));
-  rb_define_const(wii_mod, "TIMEOUT", INT2NUM(10));
+  rb_define_const(wii_mod, "TIMEOUT", INT2NUM(5));
   
   //Wiimote led consts
+  rb_define_const(wii_mod, "LED_NONE", INT2NUM(WIIMOTE_LED_NONE));
   rb_define_const(wii_mod, "LED_1", INT2NUM(WIIMOTE_LED_1));
   rb_define_const(wii_mod, "LED_2", INT2NUM(WIIMOTE_LED_2));
   rb_define_const(wii_mod, "LED_3", INT2NUM(WIIMOTE_LED_3));
@@ -725,7 +735,7 @@ void Init_wii4r() {
  // rb_define_method(wii_class, "virtual_resolution", rb_wm_vres, 0);
  // rb_define_method(wii_class, "aspect_ratio=", rb_wm_set_aratio, 1);
  // rb_define_method(wii_class, "aspect_ratio", rb_wm_aratio, 0);
- // rb_define_method(wii_class, "battery_level", rb_wm_bl, 0);
+  rb_define_method(wii_class, "battery_level", rb_wm_bl, 0);
  
   rb_define_singleton_method(cm_class, "new", rb_cm_new, 0);
   rb_define_singleton_method(cm_class, "connect_and_poll", rb_cm_cp, 0);
