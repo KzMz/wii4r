@@ -5,10 +5,16 @@
 	#include<unistd.h>
 #endif
 
-#include<ruby.h>
 #include<wiiuse.h>
+#include<ruby.h>
+
+#ifndef WIIMOTE_IS_SET
 #define WIIMOTE_IS_SET(wm, s)			((wm->state & (s)) == (s))
+#endif
+
+#ifndef WIIMOTE_IS_CONNECTED
 #define WIIMOTE_IS_CONNECTED(wm)		(WIIMOTE_IS_SET(wm, 0x0008))
+#endif
 
 VALUE wii_mod = Qnil;
 VALUE cm_class = Qnil;
@@ -50,6 +56,30 @@ static VALUE rb_wm_init(VALUE self) {
   else
     rb_iv_set(self, "@speaker", Qtrue);
   return self;
+}
+
+static VALUE rb_wm_get_rumble(VALUE self) {
+  VALUE rumble = rb_iv_get(self, "@rumble");
+  return rumble;
+}
+
+static VALUE rb_wm_set_rumble(VALUE self, VALUE arg) {
+  wiimote * wm;
+  Data_Get_Struct(self, wiimote, wm);
+  int rumble;
+  switch(arg) {
+    case Qfalse:
+      rumble = 0;
+      break;
+    case Qtrue:
+      rumble = 1;
+      break;
+    default:
+      return Qnil;
+  }
+  wiiuse_rumble(wm, rumble);
+  rb_iv_set(self, "@rumble", arg);
+  return arg;
 }
 
 static VALUE rb_cm_new(VALUE self) {
@@ -95,35 +125,44 @@ static VALUE rb_cm_wiimotes(VALUE self) {
   return wii;
 }
 
-static VALUE rb_wm_get_rumble(VALUE self) {
-  VALUE rumble = rb_iv_get(self, "@rumble");
-  return rumble;
-}
-
-static VALUE rb_wm_set_rumble(VALUE self, VALUE arg) {
-  wiimote * wm;
-  Data_Get_Struct(self, wiimote, wm);
-  int rumble;
-  switch(arg) {
-    case Qfalse:
-      rumble = 0;
-      break;
-    case Qtrue:
-      rumble = 1;
-      break;
-    default:
-      return Qnil;
-  }
-  wiiuse_rumble(wm, rumble);
-  rb_iv_set(self, "@rumble", arg);
-  return arg;
-}
-
-static VALUE rb_wm_rumble(VALUE self) {
+static VALUE rb_wm_rumble(int argc, VALUE * argv, VALUE self) {
   wiimote * wm;
   Data_Get_Struct(self, wiimote, wm);
   wiiuse_rumble(wm, 1);
   rb_iv_set(self, "@rumble", Qtrue);
+  if(argc == 1) {
+    switch(TYPE(argv[0])) {
+      case T_FIXNUM:
+        //fork o thread?
+        sleep(NUM2INT(argv[0]));
+        wiiuse_rumble(wm, 0);
+        rb_iv_set(self, "@rumble", Qfalse);
+        break;
+      case T_ARRAY:
+        break;
+      default:
+        rb_raise(rb_eTypeError, "Invalid Argument");
+    }
+  }
+  else if(argc == 2) {
+    if(TYPE(argv[0]) == T_FIXNUM && TYPE(argv[1]) == T_FIXNUM) {
+      int i = NUM2INT(argv[1]);
+      int stime = NUM2INT(argv[0]);
+      while(i > 1) {
+        sleep(stime);
+        wiiuse_rumble(wm, 0);
+        sleep(1);
+        wiiuse_rumble(wm, 1);
+        i--;
+      }
+      sleep(stime);
+      wiiuse_rumble(wm, 0);
+      rb_iv_set(self, "@rumble", Qfalse);
+    }
+  }
+  else {
+    //raise
+  }
   return Qnil;
 }
 
@@ -397,12 +436,30 @@ static VALUE rb_cm_connect(VALUE self) {
   VALUE max = rb_const_get(wii_mod, rb_intern("MAX_WIIMOTES"));
   VALUE timeout = rb_const_get(wii_mod, rb_intern("TIMEOUT"));
   int found = wiiuse_find(conn->wms, NUM2INT(max), NUM2INT(timeout));
-  if(!found) return 0; 
+  if(!found) return INT2NUM(0); 
   int connected = wiiuse_connect(conn->wms, NUM2INT(max));
   int i = 0;
+  int led = 1;
   VALUE wm;
   for(; i < NUM2INT(max); i++) {
     if(wm_connected(conn->wms[i])) {
+      switch(led) {
+        case 1:
+          wiiuse_set_leds(conn->wms[i], WIIMOTE_LED_1);
+          led++;
+          break;
+        case 2:
+          wiiuse_set_leds(conn->wms[i], WIIMOTE_LED_2);
+          led++;
+          break;
+        case 3:
+          wiiuse_set_leds(conn->wms[i], WIIMOTE_LED_3);
+          led++;
+          break;
+        case 4:
+          wiiuse_set_leds(conn->wms[i], WIIMOTE_LED_4);
+          break;  
+      }
       wm = Data_Wrap_Struct(wii_class, NULL, free_wiimote, conn->wms[i]);
       rb_obj_call_init(wm, 0, 0);
       rb_ary_push(rb_iv_get(self, "@wiimotes"), wm);
@@ -623,6 +680,15 @@ static VALUE rb_wm_gh(VALUE self) {
   else return Qfalse;
 }
 
+static VALUE rb_wm_ir_acursor(VALUE self) {
+  wiimote *wm;
+  Data_Get_Struct(self, wiimote, wm);
+  VALUE ary = rb_ary_new();
+  rb_ary_push(ary, INT2NUM(wm->ir.ax));
+  rb_ary_push(ary, INT2NUM(wm->ir.ay));
+  return ary;
+}
+
 void Init_wii4r() {
   wii_mod = rb_define_module("Wii");
   rb_define_const(wii_mod, "MAX_WIIMOTES", INT2NUM(4));
@@ -697,7 +763,7 @@ void Init_wii4r() {
   rb_define_method(wii_class, "initialize", rb_wm_init, 0);
   rb_define_method(wii_class, "rumble?", rb_wm_get_rumble, 0);
   rb_define_method(wii_class, "rumble=", rb_wm_set_rumble, 1);
-  //rb_define_method(wii_class, "rumble!", rb_wm_rumble, -1);
+  rb_define_method(wii_class, "rumble!", rb_wm_rumble, -1);
   rb_define_method(wii_class, "stop!", rb_wm_stop, 0);
   rb_define_method(wii_class, "leds=", rb_wm_leds, 1);
   rb_define_method(wii_class, "led", rb_wm_led, 0);
@@ -723,7 +789,7 @@ void Init_wii4r() {
   rb_define_method(wii_class, "using_ir?", rb_wm_ir, 0);
   rb_define_method(wii_class, "ir_sources", rb_wm_ir_sources, 0);
   rb_define_method(wii_class, "position", rb_wm_ir_cursor, 0);
-  //rb_define_method(wii_class, "absolute_position", rb_wm_ir_acursor, 0);
+  rb_define_method(wii_class, "absolute_position", rb_wm_ir_acursor, 0);
   rb_define_method(wii_class, "distance", rb_wm_ir_z, 0);
   rb_define_method(wii_class, "ir=", rb_wm_set_ir, 1);
  // rb_define_method(wii_class, "speaker=", rb_wm_set_speaker, 1);
