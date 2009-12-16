@@ -1,0 +1,7 @@
+#ignore .so files
+*.so
+#example files
+ga.rb
+ir.rb
+
+
