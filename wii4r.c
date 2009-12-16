@@ -409,6 +409,14 @@ static VALUE rb_wm_sensitivity(VALUE self){
   return INT2NUM(level);
 }
 
+static VALUE rb_wm_set_sens(VALUE self, VALUE arg){
+  wiimote *wm;
+  Data_Get_Struct(self,wiimote,wm);
+  wiiuse_set_ir_sensitivity(wm,NUM2INT(arg));
+  return Qnil;
+}
+
+
 /*
 static VALUE rb_wm_set_speaker(VALUE self){
 	WIIMOTE_ENABLE_STATEWIIMOTE_STATE_SPEAKER
@@ -427,6 +435,64 @@ static VALUE rb_wm_bl(VALUE self){
   Data_Get_Struct(self,wiimote,wm);
   wiiuse_status(wm);
   return rb_float_new(wm->battery_level); 
+}
+
+static VALUE rb_wm_aratio(VALUE self){
+  wiimote *wm;
+  VALUE a_r;
+  Data_Get_Struct(self,wiimote,wm);
+  wiiuse_status(wm);
+  if (wm->ir.aspect == WIIUSE_ASPECT_4_3)
+  a_r = rb_str_new2("4:3"); 
+  else if (wm->ir.aspect == WIIUSE_ASPECT_16_9)
+  a_r = rb_str_new2("16:9");
+  return a_r;
+}
+
+static VALUE rb_wm_set_aratio(VALUE self, VALUE arg){
+  wiimote *wm;
+  Data_Get_Struct(self,wiimote,wm);
+  wiiuse_set_aspect_ratio(wm,NUM2INT(arg));
+  return Qnil;
+}
+
+static VALUE rb_wm_vres(VALUE self){
+  wiimote *wm;
+  Data_Get_Struct(self,wiimote,wm);	
+  VALUE v_res = rb_ary_new();
+  rb_ary_push(v_res, INT2NUM(wm->ir.vres[0]));
+  rb_ary_push(v_res, INT2NUM(wm->ir.vres[1]));
+  return v_res;
+}
+
+static VALUE rb_wm_set_vres(VALUE self, VALUE arg){
+  wiimote *wm;
+  Data_Get_Struct(self,wiimote,wm);
+  VALUE v_ary[2],argv[1];
+  int i = 0;
+  for(;i < 2;i++)
+  {
+	argv[0] = INT2NUM(i);
+	v_ary[i] = rb_ary_aref(1, argv, arg);
+  }
+  wiiuse_set_ir_vres(wm, NUM2INT(v_ary[0]), NUM2INT(v_ary[1]));
+  return Qnil;	
+}
+
+static VALUE rb_wm_pos(VALUE self){
+  wiimote *wm;
+  Data_Get_Struct(self,wiimote,wm);
+  VALUE s_pos;
+  if(wm->ir.pos == WIIUSE_IR_ABOVE) s_pos = rb_str_new2("ABOVE"); 		
+  else if (wm->ir.pos == WIIUSE_IR_BELOW) s_pos = rb_str_new2("BELOW");	
+  return s_pos;
+}
+
+static VALUE rb_wm_set_pos(VALUE self, VALUE arg){
+  wiimote *wm;
+  Data_Get_Struct(self,wiimote,wm);	
+  wiiuse_set_ir_position(wm,NUM2INT(arg));
+  return Qnil;
 }
 
 static VALUE rb_cm_connect(VALUE self) {
@@ -756,6 +822,12 @@ void Init_wii4r() {
   rb_define_const(wii_mod, "E_CLASSIC", INT2NUM(EXP_CLASSIC));
   rb_define_const(wii_mod, "E_GUITAR", INT2NUM(EXP_GUITAR_HERO_3));
   
+  //Aspect ratio and sensor bar position constants
+  rb_define_const(wii_mod, "AS_4_3", INT2NUM(WIIUSE_ASPECT_4_3));
+  rb_define_const(wii_mod, "AS_16_9", INT2NUM(WIIUSE_ASPECT_16_9));
+  rb_define_const(wii_mod, "SB_ABOVE", INT2NUM(WIIUSE_IR_ABOVE));
+  rb_define_const(wii_mod, "SB_BELOW", INT2NUM(WIIUSE_IR_BELOW));
+  
   cm_class = rb_define_class_under(wii_mod, "WiimoteManager", rb_cObject);
   wii_class = rb_define_class_under(wii_mod, "Wiimote", rb_cObject);
 
@@ -795,12 +867,13 @@ void Init_wii4r() {
  // rb_define_method(wii_class, "speaker=", rb_wm_set_speaker, 1);
   rb_define_method(wii_class, "speaker?", rb_wm_speaker, 0);
   rb_define_method(wii_class, "sensitivity", rb_wm_sensitivity, 0);
- // rb_define_method(wii_class, "sensitivity=", rb_wm_set_sens, 1);
- // rb_define_method(wii_class, "sensor_bar_position=", rb_wm_set_pos, 1);
- // rb_define_method(wii_class, "virtual_resolution=", rb_wm_set_vres, -1);
- // rb_define_method(wii_class, "virtual_resolution", rb_wm_vres, 0);
- // rb_define_method(wii_class, "aspect_ratio=", rb_wm_set_aratio, 1);
- // rb_define_method(wii_class, "aspect_ratio", rb_wm_aratio, 0);
+  rb_define_method(wii_class, "sensitivity=", rb_wm_set_sens, 1);
+  rb_define_method(wii_class, "sensor_bar_position", rb_wm_pos, 0);
+  rb_define_method(wii_class, "sensor_bar_position=", rb_wm_set_pos, 1);
+  rb_define_method(wii_class, "virtual_resolution=", rb_wm_set_vres, 1);
+  rb_define_method(wii_class, "virtual_resolution", rb_wm_vres, 0);
+  rb_define_method(wii_class, "aspect_ratio=", rb_wm_set_aratio, 1);
+  rb_define_method(wii_class, "aspect_ratio", rb_wm_aratio, 0);
   rb_define_method(wii_class, "battery_level", rb_wm_bl, 0);
  
   rb_define_singleton_method(cm_class, "new", rb_cm_new, 0);
