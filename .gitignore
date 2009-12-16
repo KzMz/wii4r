@@ -3,5 +3,9 @@
 #example files
 ga.rb
 ir.rb
+#Makefile
+Makefile
+#ignore .o files
+*.o
 
 
