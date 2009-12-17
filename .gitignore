@@ -7,5 +7,7 @@ ir.rb
 Makefile
 #ignore .o files
 *.o
+#ignore .log files
+*.log
 
 
