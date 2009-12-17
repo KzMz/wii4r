@@ -1,0 +1,14 @@
+- rb_accel
+- rb_gforce
+- read e get data
+- orient_threshold
+- accel_threshold
+- levare segfault dopo cleanup
+- (eventuale riinizializzazione)
+- finire funzioni commentate
+- supporto estensioni
+- controllare tipi
+- documentazione in place
+- documentazione rdoc
+- creare gem
+
