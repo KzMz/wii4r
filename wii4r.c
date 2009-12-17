@@ -630,8 +630,8 @@ static VALUE rb_cm_cp(VALUE self) {
         for(; i < max; i++) {
           if(wm_connected(wms[i])) {
             if(wms[i]->event != WIIUSE_NONE) {
-              VALUE wm = rb_wm_new(rb_const_get(wii_mod, rb_intern("Wiimote")));
-              Data_Wrap_Struct(wm, NULL, free_wiimote, wms[i]);
+              VALUE wm = Data_Wrap_Struct(wii_class, NULL, free_wiimote, wms[i]);
+              rb_obj_call_init(wm, 0, 0);
               VALUE ary = rb_ary_new();
               rb_ary_push(ary, wm);
               VALUE event_name;
@@ -755,6 +755,22 @@ static VALUE rb_wm_ir_acursor(VALUE self) {
   return ary;
 }
 
+static VALUE rb_cm_pos(VALUE self) {
+  VALUE wiimotes = rb_iv_get(self, "@wiimotes");
+  VALUE ary = rb_ary_new();
+  VALUE wsize = rb_funcall(wiimotes, rb_intern("size"), 0, NULL);
+  int size = NUM2INT(wsize);
+  short i;
+  VALUE argv[1], wm, pos;
+  for(i = 0; i < size; i++) {
+    argv[0] = INT2NUM(i);
+    wm = rb_ary_aref(1, argv, wiimotes);
+    pos = rb_funcall(wm, rb_intern("position"), 0, NULL);
+    rb_ary_push(ary, pos);
+  }
+  return ary;
+}
+
 void Init_wii4r() {
   wii_mod = rb_define_module("Wii");
   rb_define_const(wii_mod, "MAX_WIIMOTES", INT2NUM(4));
@@ -823,16 +839,16 @@ void Init_wii4r() {
   rb_define_const(wii_mod, "E_GUITAR", INT2NUM(EXP_GUITAR_HERO_3));
   
   //Aspect ratio and sensor bar position constants
-  rb_define_const(wii_mod, "AS_4_3", INT2NUM(WIIUSE_ASPECT_4_3));
-  rb_define_const(wii_mod, "AS_16_9", INT2NUM(WIIUSE_ASPECT_16_9));
-  rb_define_const(wii_mod, "SB_ABOVE", INT2NUM(WIIUSE_IR_ABOVE));
-  rb_define_const(wii_mod, "SB_BELOW", INT2NUM(WIIUSE_IR_BELOW));
+  rb_define_const(wii_mod, "ASPECT_4_3", INT2NUM(WIIUSE_ASPECT_4_3));
+  rb_define_const(wii_mod, "ASPECT_16_9", INT2NUM(WIIUSE_ASPECT_16_9));
+  rb_define_const(wii_mod, "ABOVE", INT2NUM(WIIUSE_IR_ABOVE));
+  rb_define_const(wii_mod, "BELOW", INT2NUM(WIIUSE_IR_BELOW));
   
   cm_class = rb_define_class_under(wii_mod, "WiimoteManager", rb_cObject);
   wii_class = rb_define_class_under(wii_mod, "Wiimote", rb_cObject);
 
   rb_define_singleton_method(wii_class, "new", rb_wm_new, 0);
-  rb_define_method(wii_class, "initialize", rb_wm_init, 0);
+  rb_define_method(wii_class, "initialize", rb_wm_init, 0);p
   rb_define_method(wii_class, "rumble?", rb_wm_get_rumble, 0);
   rb_define_method(wii_class, "rumble=", rb_wm_set_rumble, 1);
   rb_define_method(wii_class, "rumble!", rb_wm_rumble, -1);
@@ -886,5 +902,5 @@ void Init_wii4r() {
   rb_define_method(cm_class, "connect", rb_cm_connect, 0);
   rb_define_method(cm_class, "poll", rb_cm_poll, 0);
   rb_define_method(cm_class, "each_wiimote", rb_cm_each, 0);
-  //rb_define_method(cm_class, "positions", rb_cm_pos, 0);
+  rb_define_method(cm_class, "positions", rb_cm_pos, 0);
 }
