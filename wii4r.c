@@ -881,7 +881,7 @@ void Init_wii4r() {
   wii_class = rb_define_class_under(wii_mod, "Wiimote", rb_cObject);
 
   rb_define_singleton_method(wii_class, "new", rb_wm_new, 0);
-  rb_define_method(wii_class, "initialize", rb_wm_init, 0);p
+  rb_define_method(wii_class, "initialize", rb_wm_init, 0);
   rb_define_method(wii_class, "rumble?", rb_wm_get_rumble, 0);
   rb_define_method(wii_class, "rumble=", rb_wm_set_rumble, 1);
   rb_define_method(wii_class, "rumble!", rb_wm_rumble, -1);
