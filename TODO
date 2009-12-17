@@ -1,8 +1,4 @@
-- rb_accel
-- rb_gforce
 - read e get data
-- orient_threshold
-- accel_threshold
 - levare segfault dopo cleanup
 - (eventuale riinizializzazione)
 - finire funzioni commentate
