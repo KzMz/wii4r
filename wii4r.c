@@ -891,14 +891,12 @@ void Init_wii4r() {
   rb_define_method(wii_class, "aspect_ratio=", rb_wm_set_aratio, 1);
   rb_define_method(wii_class, "aspect_ratio", rb_wm_aratio, 0);
   rb_define_method(wii_class, "battery_level", rb_wm_bl, 0);
-  rb_define_method(wii_class, "acceleration", rb_accel, 0);
-  rb_define_method(wii_class, "gravity_force", rb_gforce, 0);
-  rb_define_method(wii_class, "orient_treshold", rb_orient_threshold, 0);
-  rb_define_method(wii_class, "orient_treshold=", rb_set_orient_threshold, 1);
-  rb_define_method(wii_class, "accel_treshold", rb_accel_threshold, 0);
-  rb_define_method(wii_class, "accel_treshold=", rb_set_accel_threshold, 1);
-  
-  
+  rb_define_method(wii_class, "acceleration", rb_wm_accel, 0);
+  rb_define_method(wii_class, "gravity_force", rb_wm_gforce, 0);
+  rb_define_method(wii_class, "orient_threshold", rb_orient_threshold, 0);
+  rb_define_method(wii_class, "orient_threshold=", rb_set_orient_threshold, 1);
+  rb_define_method(wii_class, "accel_threshold", rb_accel_threshold, 0);
+  rb_define_method(wii_class, "accel_threshold=", rb_set_accel_threshold, 1);
     
   rb_define_singleton_method(cm_class, "new", rb_cm_new, 0);
   rb_define_singleton_method(cm_class, "connect_and_poll", rb_cm_cp, 0);
