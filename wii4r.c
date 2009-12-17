@@ -217,7 +217,10 @@ static VALUE rb_wm_status(VALUE self) {
   Data_Get_Struct(self, wiimote, wm);
   wiiuse_status(wm);
   VALUE status_hash = rb_hash_new();
-  VALUE speaker,led,ir,expansion;
+  VALUE speaker = Qnil;
+  VALUE led = Qnil;
+  VALUE ir = Qnil;
+  VALUE expansion = Qnil;
   
 	if(WIIUSE_USING_SPEAKER(wm)) 
 		speaker = Qtrue;
@@ -439,14 +442,11 @@ static VALUE rb_wm_bl(VALUE self){
 
 static VALUE rb_wm_aratio(VALUE self){
   wiimote *wm;
-  VALUE a_r;
   Data_Get_Struct(self,wiimote,wm);
   wiiuse_status(wm);
-  if (wm->ir.aspect == WIIUSE_ASPECT_4_3)
-  a_r = rb_str_new2("4:3"); 
-  else if (wm->ir.aspect == WIIUSE_ASPECT_16_9)
-  a_r = rb_str_new2("16:9");
-  return a_r;
+  if (wm->ir.aspect == WIIUSE_ASPECT_4_3) return rb_str_new2("4:3"); 
+  else if (wm->ir.aspect == WIIUSE_ASPECT_16_9) return rb_str_new2("16:9");
+  return Qnil;
 }
 
 static VALUE rb_wm_set_aratio(VALUE self, VALUE arg){
@@ -482,10 +482,9 @@ static VALUE rb_wm_set_vres(VALUE self, VALUE arg){
 static VALUE rb_wm_pos(VALUE self){
   wiimote *wm;
   Data_Get_Struct(self,wiimote,wm);
-  VALUE s_pos;
-  if(wm->ir.pos == WIIUSE_IR_ABOVE) s_pos = rb_str_new2("ABOVE"); 		
-  else if (wm->ir.pos == WIIUSE_IR_BELOW) s_pos = rb_str_new2("BELOW");	
-  return s_pos;
+  if(wm->ir.pos == WIIUSE_IR_ABOVE) return rb_str_new2("ABOVE"); 		
+  else if (wm->ir.pos == WIIUSE_IR_BELOW) return rb_str_new2("BELOW");	
+  return Qnil;
 }
 
 static VALUE rb_wm_set_pos(VALUE self, VALUE arg){
@@ -554,7 +553,7 @@ static VALUE rb_cm_poll(VALUE self) {
           if(wmm->event != WIIUSE_NONE) {
             ary = rb_ary_new();
             rb_ary_push(ary, wm);
-            VALUE event_name;
+            VALUE event_name = Qnil;
             switch(wmm->event) {
               case WIIUSE_EVENT:
                 event_name = ID2SYM(rb_intern("generic"));
@@ -634,7 +633,7 @@ static VALUE rb_cm_cp(VALUE self) {
               rb_obj_call_init(wm, 0, 0);
               VALUE ary = rb_ary_new();
               rb_ary_push(ary, wm);
-              VALUE event_name;
+              VALUE event_name = Qnil;
               switch(wms[i]->event) {
                 case WIIUSE_EVENT:
                   event_name = ID2SYM(rb_intern("generic"));
@@ -723,6 +722,7 @@ static VALUE rb_wm_exp(int argc, VALUE * argv, VALUE self) {
         else return Qfalse;
     }
   }
+return Qfalse;
 }
 
 static VALUE rb_wm_nunchuk(VALUE self) {
@@ -801,6 +801,19 @@ static VALUE rb_wm_set_accel_threshold(VALUE self, VALUE arg) {
   wiimote *wm;
   Data_Get_Struct(self, wiimote, wm);
   wiiuse_set_accel_threshold(wm, NUM2INT(arg));
+  return Qnil;
+}
+
+static VALUE rb_wm_orient_threshold(VALUE self){
+  wiimote *wm;
+  Data_Get_Struct(self, wiimote, wm);	
+  return INT2NUM(wm->orient_threshold);	
+} 
+
+static VALUE rb_wm_set_orient_threshold(VALUE self, VALUE arg){
+  wiimote *wm;
+  Data_Get_Struct(self, wiimote, wm);
+  wiiuse_set_orient_threshold(wm,rb_float_new(arg));
   return Qnil;
 }
 
@@ -905,7 +918,7 @@ void Init_wii4r() {
   rb_define_method(wii_class, "roll", rb_wm_roll, 0);
   rb_define_method(wii_class, "absolute_roll", rb_wm_aroll, 0);
   rb_define_method(wii_class, "pitch", rb_wm_pitch, 0);
-  rb_define_method(wii_class, "absolute_pitch", rb_wm_pitch, 0);
+  rb_define_method(wii_class, "absolute_pitch", rb_wm_apitch, 0);
   rb_define_method(wii_class, "yaw", rb_wm_yaw, 0);
   rb_define_method(wii_class, "using_ir?", rb_wm_ir, 0);
   rb_define_method(wii_class, "ir_sources", rb_wm_ir_sources, 0);
@@ -926,10 +939,10 @@ void Init_wii4r() {
   rb_define_method(wii_class, "battery_level", rb_wm_bl, 0);
   rb_define_method(wii_class, "acceleration", rb_wm_accel, 0);
   rb_define_method(wii_class, "gravity_force", rb_wm_gforce, 0);
-  //rb_define_method(wii_class, "orient_threshold", rb_wm_orient_threshold, 0);
-  //rb_define_method(wii_class, "orient_threshold=", rb_wm_set_orient_threshold, 1);
-  //rb_define_method(wii_class, "accel_threshold", rb_wm_accel_threshold, 0);
-  //rb_define_method(wii_class, "accel_threshold=", rb_wm_set_accel_threshold, 1);
+  rb_define_method(wii_class, "orient_threshold", rb_wm_orient_threshold, 0);
+  rb_define_method(wii_class, "orient_threshold=", rb_wm_set_orient_threshold, 1);
+  rb_define_method(wii_class, "accel_threshold", rb_wm_accel_threshold, 0);
+  rb_define_method(wii_class, "accel_threshold=", rb_wm_set_accel_threshold, 1);
     
   rb_define_singleton_method(cm_class, "new", rb_cm_new, 0);
   rb_define_singleton_method(cm_class, "connect_and_poll", rb_cm_cp, 0);

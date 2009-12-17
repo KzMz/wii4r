@@ -8,7 +8,7 @@ begin
     w.poll do |(wm, event)|
       if event == :generic
         if wm.pressed? Wii::BUTTON_A
-          puts "A!"
+			puts "A!"
         else
           if wm.pressed? Wii::BUTTON_B
             puts "B!"
