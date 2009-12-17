@@ -771,6 +771,39 @@ static VALUE rb_cm_pos(VALUE self) {
   return ary;
 }
 
+static VALUE rb_wm_accel(VALUE self) {
+  wiimote *wm;
+  Data_Get_Struct(self, wiimote, wm);
+  VALUE ary = rb_ary_new();
+  rb_ary_push(ary, INT2NUM(wm->accel.x));
+  rb_ary_push(ary, INT2NUM(wm->accel.y));
+  rb_ary_push(ary, INT2NUM(wm->accel.z));
+  return ary;  
+}
+
+static VALUE rb_wm_gforce(VALUE self) {
+  wiimote *wm;
+  Data_Get_Struct(self, wiimote, wm);
+  VALUE ary = rb_ary_new();
+  rb_ary_push(ary, rb_float_new(wm->gforce.x));
+  rb_ary_push(ary, rb_float_new(wm->gforce.y));
+  rb_ary_push(ary, rb_float_new(wm->gforce.z));
+  return ary;
+}
+
+static VALUE rb_wm_accel_threshold(VALUE self) {
+  wiimote *wm;
+  Data_Get_Struct(self, wiimote, wm);
+  return INT2NUM(wm->accel_threshold);
+}
+
+static VALUE rb_wm_set_accel_threshold(VALUE self, VALUE arg) {
+  wiimote *wm;
+  Data_Get_Struct(self, wiimote, wm);
+  wiiuse_set_accel_threshold(wm, NUM2INT(arg));
+  return Qnil;
+}
+
 void Init_wii4r() {
   wii_mod = rb_define_module("Wii");
   rb_define_const(wii_mod, "MAX_WIIMOTES", INT2NUM(4));
@@ -893,10 +926,10 @@ void Init_wii4r() {
   rb_define_method(wii_class, "battery_level", rb_wm_bl, 0);
   rb_define_method(wii_class, "acceleration", rb_wm_accel, 0);
   rb_define_method(wii_class, "gravity_force", rb_wm_gforce, 0);
-  rb_define_method(wii_class, "orient_threshold", rb_orient_threshold, 0);
-  rb_define_method(wii_class, "orient_threshold=", rb_set_orient_threshold, 1);
-  rb_define_method(wii_class, "accel_threshold", rb_accel_threshold, 0);
-  rb_define_method(wii_class, "accel_threshold=", rb_set_accel_threshold, 1);
+  //rb_define_method(wii_class, "orient_threshold", rb_wm_orient_threshold, 0);
+  //rb_define_method(wii_class, "orient_threshold=", rb_wm_set_orient_threshold, 1);
+  //rb_define_method(wii_class, "accel_threshold", rb_wm_accel_threshold, 0);
+  //rb_define_method(wii_class, "accel_threshold=", rb_wm_set_accel_threshold, 1);
     
   rb_define_singleton_method(cm_class, "new", rb_cm_new, 0);
   rb_define_singleton_method(cm_class, "connect_and_poll", rb_cm_cp, 0);
