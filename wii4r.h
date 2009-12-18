@@ -6,7 +6,15 @@
 #include<wiiuse.h>
 #include<ruby.h>
 
-//Wii module
+#ifndef WIIMOTE_IS_CONNECTED
+  #define WIIMOTE_IS_CONNECTED(wm)		(WIIMOTE_IS_SET(wm, 0x0008))
+#endif
+
+#ifndef WIIMOTE_IS_SET
+  #define WIIMOTE_IS_SET(wm, s)			((wm->state & (s)) == (s))
+#endif
+
+//Wii module 
 extern VALUE wii_mod;
 
 //WiimoteManager class

@@ -1,11 +1,24 @@
 #include "wii4r.h"
 
+//Wii module
 VALUE wii_mod =   Qnil;
+
+//WiimoteManager class
 VALUE cm_class =  Qnil;
+
+//Wiimote class
 VALUE wii_class = Qnil;
 
+//define Wiimote class
 extern void init_wiimote(void);
+
+//define WiimoteManager class
 extern void init_wiimotemanager(void);
+/*
+ *  Document-class: Wii
+ *
+ *  Module that encapsulates Wiimote and WiimoteManager classes  
+ */
 
 void Init_wii4r() {
   wii_mod = rb_define_module("Wii");
@@ -33,7 +46,7 @@ void Init_wii4r() {
   rb_define_const(wii_mod, "BUTTON_UP", INT2NUM(WIIMOTE_BUTTON_UP));
   rb_define_const(wii_mod, "BUTTON_ALL", INT2NUM(WIIMOTE_BUTTON_ALL));
   
-  //Wiimote nunchul button consts
+  //Wiimote nunchuk button consts
   rb_define_const(wii_mod, "N_BUTTON_Z", INT2NUM(NUNCHUK_BUTTON_Z));
   rb_define_const(wii_mod, "N_BUTTON_C", INT2NUM(NUNCHUK_BUTTON_C));
   rb_define_const(wii_mod, "N_BUTTON_ALL", INT2NUM(NUNCHUK_BUTTON_ALL));

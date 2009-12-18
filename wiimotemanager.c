@@ -264,63 +264,68 @@ static VALUE rb_cm_each(VALUE self) {
 static VALUE rb_cm_cp(VALUE self) {
   if(rb_block_given_p()) {
     VALUE m = rb_const_get(wii_mod, rb_intern("MAX_WIIMOTES"));
+    VALUE t = rb_const_get(wii_mod, rb_intern("TIMEOUT"));
+    int timeout = NUM2INT(t);
     int max = NUM2INT(m);
     wiimote **wms = wiiuse_init(max);
-    int connected = wiiuse_connect(wms, max);
-    while(connected > 0) {
-      if(wiiuse_poll(wms, max)) {
-        int i = 0;
-        for(; i < max; i++) {
-          if(wm_connected(wms[i])) {
-            if(wms[i]->event != WIIUSE_NONE) {
-              VALUE wm = Data_Wrap_Struct(wii_class, NULL, free_wiimote, wms[i]);
-              rb_obj_call_init(wm, 0, 0);
-              VALUE ary = rb_ary_new();
-              rb_ary_push(ary, wm);
-              VALUE event_name = Qnil;
-              switch(wms[i]->event) {
-                case WIIUSE_EVENT:
-                  event_name = ID2SYM(rb_intern("generic"));
-                  break;
-                case WIIUSE_STATUS:
-                  event_name = ID2SYM(rb_intern("status"));
-                  break;
-                case WIIUSE_DISCONNECT:
-                  event_name = ID2SYM(rb_intern("disconnected"));
-                  connected--;
-                  break;
-                case WIIUSE_UNEXPECTED_DISCONNECT:
-                  event_name = ID2SYM(rb_intern("unexpected_disconnect"));
-                  connected--;
-                  break;
-                case WIIUSE_READ_DATA:
-                  event_name = ID2SYM(rb_intern("read"));
-                  break;
-                case WIIUSE_NUNCHUK_INSERTED:
-                  event_name = ID2SYM(rb_intern("nunchuk_inserted"));
-                  break;
-                case WIIUSE_NUNCHUK_REMOVED:
-                  event_name = ID2SYM(rb_intern("nunchuk_removed"));
-                  break;
-                case WIIUSE_CLASSIC_CTRL_INSERTED:
-                  event_name = ID2SYM(rb_intern("classic_inserted"));
-                  break;
-                case WIIUSE_CLASSIC_CTRL_REMOVED:
-                  event_name = ID2SYM(rb_intern("classic_removed"));
-                  break;
-                case WIIUSE_GUITAR_HERO_3_CTRL_INSERTED:
-                  event_name = ID2SYM(rb_intern("guitarhero3_inserted"));
-                  break;
-                case WIIUSE_GUITAR_HERO_3_CTRL_REMOVED:
-                  event_name = ID2SYM(rb_intern("guitarhero3_removed"));
-                  break;
-                case WIIUSE_CONNECT:
-                  event_name = ID2SYM(rb_intern("connected"));
-                  break;
-              }
-              rb_ary_push(ary, event_name);
-              rb_yield(ary);
-            } 
+    int found = wiiuse_find(wms, max, timeout);
+    if(found > 0) {
+      int connected = wiiuse_connect(wms, max);
+      while(connected > 0) {
+        if(wiiuse_poll(wms, max)) {
+          int i = 0;
+          for(; i < max; i++) {
+            if(wm_connected(wms[i])) {
+              if(wms[i]->event != WIIUSE_NONE) {
+                VALUE wm = Data_Wrap_Struct(wii_class, NULL, free_wiimote, wms[i]);
+                rb_obj_call_init(wm, 0, 0);
+                VALUE ary = rb_ary_new();
+                rb_ary_push(ary, wm);
+                VALUE event_name = Qnil;
+                switch(wms[i]->event) {
+                  case WIIUSE_EVENT:
+                    event_name = ID2SYM(rb_intern("generic"));
+                    break;
+                  case WIIUSE_STATUS:
+                    event_name = ID2SYM(rb_intern("status"));
+                    break;
+                  case WIIUSE_DISCONNECT:
+                    event_name = ID2SYM(rb_intern("disconnected"));
+                    connected--;
+                    break;
+                  case WIIUSE_UNEXPECTED_DISCONNECT:
+                    event_name = ID2SYM(rb_intern("unexpected_disconnect"));
+                    connected--;
+                    break;
+                  case WIIUSE_READ_DATA:
+                    event_name = ID2SYM(rb_intern("read"));
+                    break;
+                  case WIIUSE_NUNCHUK_INSERTED:
+                    event_name = ID2SYM(rb_intern("nunchuk_inserted"));
+                    break;
+                  case WIIUSE_NUNCHUK_REMOVED:
+                    event_name = ID2SYM(rb_intern("nunchuk_removed"));
+                    break;
+                  case WIIUSE_CLASSIC_CTRL_INSERTED:
+                    event_name = ID2SYM(rb_intern("classic_inserted"));
+                    break;
+                  case WIIUSE_CLASSIC_CTRL_REMOVED:
+                    event_name = ID2SYM(rb_intern("classic_removed"));
+                    break;
+                  case WIIUSE_GUITAR_HERO_3_CTRL_INSERTED:
+                    event_name = ID2SYM(rb_intern("guitarhero3_inserted"));
+                    break;
+                  case WIIUSE_GUITAR_HERO_3_CTRL_REMOVED:
+                    event_name = ID2SYM(rb_intern("guitarhero3_removed"));
+                    break;
+                  case WIIUSE_CONNECT:
+                    event_name = ID2SYM(rb_intern("connected"));
+                    break;
+                }
+                rb_ary_push(ary, event_name);
+                rb_yield(ary);
+              } 
+            }
           }
         }
       }
@@ -353,9 +358,8 @@ static VALUE rb_cm_pos(VALUE self) {
   }
   return ary;
 }
-
+    
 /*
- *  Document-class: WiimoteManager
  *
  *  Provides an interface for searching wiimotes and connecting to them via bluetooth.
  *  WiimoteManager also provides event management. 
@@ -373,8 +377,7 @@ static VALUE rb_cm_pos(VALUE self) {
  *	:guitarhero3_removed	->	fired when a Guitar Hero 3 Controller is removed from a Wiimote
  *
  */
- 
-//define class WiimoteManager 
+  
 void init_wiimotemanager(void) {
   
   cm_class = rb_define_class_under(wii_mod, "WiimoteManager", rb_cObject);

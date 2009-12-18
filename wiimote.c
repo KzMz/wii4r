@@ -1,5 +1,6 @@
 #include "wii4r.h"
 
+//handles the disconnection of wiimote
 void free_wiimote(void * wm) {
   wiiuse_disconnect((wiimote *) wm);
 }
@@ -30,10 +31,26 @@ static VALUE rb_wm_init(VALUE self) {
   return self;
 }
 
+/*
+ *  call-seq:
+ *	wiimote.rumble?		-> true or false
+ *
+ *  Returns true if the <i>self</i> is rumbling.
+ *
+ */
+
 static VALUE rb_wm_get_rumble(VALUE self) {
   VALUE rumble = rb_iv_get(self, "@rumble");
   return rumble;
 }
+
+/*
+ *  call-seq:
+ *	wiimote.rumble = true or false		-> nil
+ *
+ *  Set the rumble property of <i>self</i> to true or false and makes the device rumble or stop.
+ *
+ */
 
 static VALUE rb_wm_set_rumble(VALUE self, VALUE arg) {
   wiimote * wm;
@@ -53,6 +70,19 @@ static VALUE rb_wm_set_rumble(VALUE self, VALUE arg) {
   rb_iv_set(self, "@rumble", arg);
   return arg;
 }
+
+/*
+ *  call-seq:
+ *	wiimote.rumble!			 -> nil
+ *	wiimote.rumble!(duration)	 -> nil
+ *	wiimote.rumble!(duration, times) -> nil
+ *
+ *  The first form puts <i>self</i> in rumbling state.
+ *  The second one puts <i>self</i> in rumbling state for <i>duration</i> seconds.
+ *  The last one puts <i>self</i> in rumbling state for <i>duration</i> seconds for <i>times</i> times, separated by 1 sec of pause.
+ *
+ */
+
 
 static VALUE rb_wm_rumble(int argc, VALUE * argv, VALUE self) {
   wiimote * wm;
@@ -95,6 +125,14 @@ static VALUE rb_wm_rumble(int argc, VALUE * argv, VALUE self) {
   return Qnil;
 }
 
+/*
+ *  call-seq:
+ *	wiimote.stop!		-> nil
+ *
+ *  Turns the rumbling state of <i>self</i> to false.
+ *
+ */
+
 static VALUE rb_wm_stop(VALUE self) {
   wiimote * wm;
   Data_Get_Struct(self, wiimote, wm);
@@ -103,12 +141,33 @@ static VALUE rb_wm_stop(VALUE self) {
   return Qnil;
 }
 
+/*
+ *  call-seq:
+ *	wiimote.leds = led	-> led
+ *
+ *  Turns on the led or the leds contained in <i>led</i>.
+ *
+ *      #turns on led 1
+ *	wmote.leds = LED_1	   #=>(LED_1 value)
+ *
+ *	#turns on led 2 and 3
+ *	wmote.leds = LED_2 | LED_3 #=>(LED_2 | LED_3 value) 
+ */ 
+
 static VALUE rb_wm_leds(VALUE self, VALUE arg) {
   wiimote * wm;
   Data_Get_Struct(self, wiimote, wm);
   wiiuse_set_leds(wm, NUM2INT(arg));
   return Qnil;
 }
+
+/*
+ *  call-seq:
+ *	wiimote.turn_off_leds!		-> nil
+ *
+ *  Turns off all the leds of <i>self</i>.
+ *
+ */
 
 static VALUE rb_wm_turnoff(VALUE self) {
   wiimote * wm;
@@ -117,10 +176,26 @@ static VALUE rb_wm_turnoff(VALUE self) {
   return Qnil;
 }
 
+/*
+ *  call-seq:
+ *	wiimote.motion_sensing?		-> true or false
+ *
+ *  Returns true if motion sensing is activated in <i>self</i>, false otherwise.
+ *
+ */
+
 static VALUE rb_wm_get_ms(VALUE self) {
   VALUE ms = rb_iv_get(self, "@motion_sensing");
   return ms;
 }
+
+/*
+ *  call-seq:
+ *	wiimote.motion_sensing = true or false 		-> true or false
+ *
+ *  Sets the motion sensing of <i>self</i> to true or false.
+ *
+ */
 
 static VALUE rb_wm_set_ms(VALUE self, VALUE arg) {
   rb_iv_set(self, "@motion_sensing", arg);
@@ -140,6 +215,21 @@ static VALUE rb_wm_set_ms(VALUE self, VALUE arg) {
   wiiuse_motion_sensing(wm, motion_sensing);
   return arg;
 }
+
+/*
+ *  call-seq:
+ *	wiimote.status		-> hash
+ *
+ *  Returns a hash containing the status information of <i>self</i>.
+ *
+ *	h = wmote.status
+ *	h[:speaker]    #=> true or false
+ *	h[:ir]	       #=> true or false
+ *	h[:attachment] #=> string defining the expansion inserted
+ *	h[:id]	       #=> int defining the id of <i>self</i>
+ *	h[:battery]    #=> float (battery level)
+ *	h[:led]	       #=> string (the last led turned on)
+ */
 
 static VALUE rb_wm_status(VALUE self) {
   wiimote * wm;
@@ -163,7 +253,7 @@ static VALUE rb_wm_status(VALUE self) {
   	
   	switch(wm->exp.type){
 		case EXP_NUNCHUK:		
-			expansion = rb_str_new2("Nunchuck");
+			expansion = rb_str_new2("Nunchuk");
 		case EXP_CLASSIC:	
 			expansion = rb_str_new2("Classic Controller"); 
 		case EXP_GUITAR_HERO_3:	
@@ -530,7 +620,7 @@ static VALUE rb_wm_set_orient_threshold(VALUE self, VALUE arg) {
 
 void init_wiimote(void) {
 	
-  wii_class = rb_define_class_under(wii_mod, "Wiimote", rb_cObject);
+  wii_class = rb_define_class_under(cm_class, "Wiimote", rb_cObject);
   rb_define_singleton_method(wii_class, "new", rb_wm_new, 0);
   rb_define_method(wii_class, "initialize", rb_wm_init, 0);
   rb_define_method(wii_class, "rumble?", rb_wm_get_rumble, 0);
