@@ -11,17 +11,43 @@ static VALUE rb_cm_new(VALUE self) {
   return obj;
 }
 
+/* 
+ *  call-seq:
+ *	WiimoteManager.new
+ *
+ *  Returns a new empty WiimoteManager.
+ */
+ 
 static VALUE rb_cm_init(VALUE self) {
   VALUE ary = rb_ary_new();
   rb_iv_set(self, "@wiimotes", ary);
   return self;
 }
 
+/*
+ *  call-seq:
+ *	manager.connected	-> int
+ *
+ *  Returns the number of wiimotes (see <code>Wiimote</code>) connected and managed by <i>self</i>.
+ *  
+ * 	wm = WiimoteManager.new
+ * 	wm.connected	#=> 0
+ *
+ */
+
 static VALUE rb_cm_connected(VALUE self) {
   VALUE wm = rb_iv_get(self, "@wiimotes");
   VALUE size = rb_funcall(wm, rb_intern("size"), 0, NULL);
   return size;
 }
+
+/*
+ *  call-seq:
+ *	manager.cleanup!
+ *
+ *  Disconnect all the wiimotes (see <code>Wiimote</code>) managed by <i>self</i> and dealloc all structures.
+ *
+ */
 
 static VALUE rb_cm_cleanup(VALUE self) {
   connman * conn;
@@ -32,10 +58,29 @@ static VALUE rb_cm_cleanup(VALUE self) {
   return Qnil;
 }
 
+/*
+ *  call-seq:
+ *	manager.wiimotes	-> array
+ *
+ *  Returns an array containing the wiimotes (see <code>Wiimote</code>) connected to <i>self</i>.
+ *  May be an empty array.
+ *
+ *	wm = WiimoteManager.new
+ *	wm.wiimotes	#=> []
+ */
+
 static VALUE rb_cm_wiimotes(VALUE self) {
   VALUE wii = rb_iv_get(self, "@wiimotes");
   return wii;
 }
+
+/*
+ *  call-seq:
+ *	manager.found	-> int
+ *
+ *  Returns the number of wiimotes (see <code>Wiimote</code>) found in bluetooth range but not already connected.
+ *
+ */
 
 static VALUE rb_cm_found(VALUE self) {
   connman * conn;
@@ -45,6 +90,14 @@ static VALUE rb_cm_found(VALUE self) {
   int found = wiiuse_find(conn->wms, NUM2INT(max), NUM2INT(timeout));
   return INT2NUM(found);
 }
+
+/*
+ *  call-seq:
+ *	manager.connect		-> int
+ *
+ *  Tries to connect to all found wiimotes (see <code>Wiimote</code>) and returns the number of successfull connections.
+ *
+ */
 
 static VALUE rb_cm_connect(VALUE self) {
   connman *conn;
@@ -83,6 +136,20 @@ static VALUE rb_cm_connect(VALUE self) {
   }
   return INT2NUM(connected);
 }
+
+/*
+ *  call-seq:
+ *	manager.poll { |(wiimote, event)| block }	-> nil
+ *
+ *  Invokes <i>block</i> once per event captured by the WiimoteManager class. <code>wiimote</code> is the Wiimote which caused 
+ *  the event <code>event</code>, a Symbol who represents the type of the event caused.
+ *
+ *	wm.poll { |(wiimote, event)|
+ *		if event == :generic
+ *			puts "generic event occurred"
+ *		end
+ *	}
+ */ 
 
 static VALUE rb_cm_poll(VALUE self) {
   if(rb_block_given_p()) {
@@ -153,6 +220,17 @@ static VALUE rb_cm_poll(VALUE self) {
   return Qnil;
 }
 
+/*
+ *  call-seq:
+ *	manager.each_wiimote { |wiimote| block }	-> nil
+ *
+ *  Calls <i>block</i> once for each Wiimote connected to <i>self</i>, passing a Wiimote object as a parameter.
+ *	wm.each_wiimote { |wiimote|
+ *		puts wiimote
+ *	}
+ *
+ */
+
 static VALUE rb_cm_each(VALUE self) {
   if(rb_block_given_p()) {
     VALUE connected = rb_funcall(self, rb_intern("connected"), 0, NULL);
@@ -168,6 +246,21 @@ static VALUE rb_cm_each(VALUE self) {
   return Qnil;
 }
 
+/*
+ *  call-seq:
+ *	WiimoteManager.connect_and_poll { |(wiimote, event)| block }
+ *
+ *  Connects to all wiimotes (see <code>Wiimote</code>) found in bluetooth range and invokes <i>block</i> once per event occurred, passing a pair
+ *  (<code>Wiimote</code> who caused the event, <code>event</code> caused) as parameter.
+ *
+ *	WiimoteManager.connect_and_poll { |(wiimote, event)| 
+ *		if event == :generic
+ *			puts wiimote
+ *		end
+ *	}
+ *
+ */
+ 
 static VALUE rb_cm_cp(VALUE self) {
   if(rb_block_given_p()) {
     VALUE m = rb_const_get(wii_mod, rb_intern("MAX_WIIMOTES"));
@@ -237,6 +330,14 @@ static VALUE rb_cm_cp(VALUE self) {
   return Qnil;
 }
 
+/*
+ *  call-seq:
+ *	manager.positions	-> array
+ *
+ *  Returns an array containing the actual position (x, y) of all wiimotes (see <code>Wiimote</code>) connected with <i>self</i>
+ *
+ */
+
 static VALUE rb_cm_pos(VALUE self) {
   VALUE wiimotes = rb_iv_get(self, "@wiimotes");
   VALUE ary = rb_ary_new();
@@ -253,7 +354,27 @@ static VALUE rb_cm_pos(VALUE self) {
   return ary;
 }
 
-
+/*
+ *  Document-class: WiimoteManager
+ *
+ *  Provides an interface for searching wiimotes and connecting to them via bluetooth.
+ *  WiimoteManager also provides event management. 
+ *  The events that can be caused by a Wiimote device are:
+ *	:generic		->	pression of a button, accelerometer or ir event
+ *	:status			->	status response received from wiimote
+ *	:connect		->	fired when a Wiimote connects
+ *	:disconnect		->	fired when a Wiimote disconnects
+ *	:enexpected_disconnect	->	fired when a Wiimote disconnects enexpectedly
+ *	:nunchuk_inserted	->	fired when a Nunchuk is inserted in a Wiimote
+ *	:nunchuk_removed	->	fired when a Nunchuk is removed from a Wiimote
+ *	:classic_inserted	->	fired when a Classic Controller is inserted in a Wiimote
+ *	:classic_removed	->	fired when a Classic Controller is removed from a Wiimote
+ *	:guitarhero3_inserted	->	fired when a Guitar Hero 3 Controller is inserted in a Wiimote
+ *	:guitarhero3_removed	->	fired when a Guitar Hero 3 Controller is removed from a Wiimote
+ *
+ */
+ 
+//define class WiimoteManager 
 void init_wiimotemanager(void) {
   
   cm_class = rb_define_class_under(wii_mod, "WiimoteManager", rb_cObject);
