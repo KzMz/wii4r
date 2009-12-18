@@ -273,22 +273,22 @@ static VALUE rb_cm_cp(VALUE self) {
       int connected = wiiuse_connect(wms, max);
       int j = 0, led = 1;
       for(; j < max; j++) {
-        if(wm_connected(conn->wms[j])) {
+        if(wm_connected(wms[j])) {
           switch(led) {
             case 1:
-              wiiuse_set_leds(conn->wms[j], WIIMOTE_LED_1);
+              wiiuse_set_leds(wms[j], WIIMOTE_LED_1);
               led++;
               break;
             case 2:
-              wiiuse_set_leds(conn->wms[j], WIIMOTE_LED_2);
+              wiiuse_set_leds(wms[j], WIIMOTE_LED_2);
               led++;
               break;
             case 3:
-               wiiuse_set_leds(conn->wms[j], WIIMOTE_LED_3);
+               wiiuse_set_leds(wms[j], WIIMOTE_LED_3);
                led++;
                break;
             case 4:
-               wiiuse_set_leds(conn->wms[j], WIIMOTE_LED_4);
+               wiiuse_set_leds(wms[j], WIIMOTE_LED_4);
                break;  
           }
         }
