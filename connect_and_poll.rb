@@ -1,15 +1,7 @@
 require 'wii4r'
 
-w = Wii::WiimoteManager.new
 
-begin
-
-  puts "Connecting.... Press 1 and 2 BUTTONS"
-  
-  w.connect
-
-  while(!w.wiimotes[0].pressed? Wii::BUTTON_UP)
-    w.poll do |(wm, event)|
+Wii::WiimoteManager.connect_and_poll do |(wm, event)|
       if event == :generic
         if wm.pressed? Wii::BUTTON_A
 			puts "A!"
@@ -33,9 +25,6 @@ begin
             puts "2!"
         end
       end
-    end
 end
 
-ensure
-    w.cleanup!
-end
+
