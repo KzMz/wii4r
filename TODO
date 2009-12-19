@@ -1,7 +1,7 @@
 - read e get data
 - levare segfault dopo cleanup
 - (eventuale riinizializzazione)
+- rb_wm_disconnect rb_to_s
 - supporto estensioni
 - controllare tipi
-- documentazione rdoc && in place 
 - creare gem
