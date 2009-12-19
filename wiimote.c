@@ -278,10 +278,19 @@ static VALUE rb_wm_status(VALUE self) {
   return status_hash;
 }
 
+//checks if "wm" is connected or not
 int wm_connected(wiimote *wm) {
   if(!wm) return 0;
   else return WIIMOTE_IS_CONNECTED(wm);
 }
+
+/*
+ *  call-seq:
+ *	wiimote.connected?	-> true or false
+ *
+ *  Returns true if <i>self</i> is connected via bluetooth, false otherwise.
+ *
+ */ 
 
 static VALUE rb_wm_connected(VALUE self) {
   wiimote * wm;
@@ -291,6 +300,14 @@ static VALUE rb_wm_connected(VALUE self) {
   else return Qtrue;
 }
 
+/*
+ *  call-seq:
+ *	wiimote.pressed?(button)	-> true or false
+ *
+ *  Returns true if <i>button</i> is pressed on <i>self</i>.
+ *
+ */
+
 static VALUE rb_wm_pressed(VALUE self, VALUE arg) {
   wiimote *wm;
   Data_Get_Struct(self, wiimote, wm);
@@ -298,6 +315,14 @@ static VALUE rb_wm_pressed(VALUE self, VALUE arg) {
   if(pressed == 0) return Qfalse;
   else return Qtrue;
 }
+
+/*
+ * call-seq:
+ *	wiimote.just_pressed?(button)		-> true of false
+ *
+ * Returns true if <i>button</i> is just pressed on <i>self</i>.
+ *
+ */
 
 static VALUE rb_wm_just_pressed(VALUE self, VALUE arg) {
   wiimote *wm;
@@ -307,6 +332,14 @@ static VALUE rb_wm_just_pressed(VALUE self, VALUE arg) {
   else return Qtrue;
 }
 
+/*
+ * call-seq:
+ *	wiimote.held?(button)	-> true of false
+ *
+ * Returns true if <i>button</i> is held on <i>self</i>.
+ *
+ */
+ 
 static VALUE rb_wm_held(VALUE self, VALUE arg) {
   wiimote *wm;
   Data_Get_Struct(self, wiimote, wm);
@@ -314,6 +347,14 @@ static VALUE rb_wm_held(VALUE self, VALUE arg) {
   if(held == 0) return Qfalse;
   else return Qtrue;
 }
+
+/*
+ * call-seq:
+ *	wiimote.released?(button)	-> true or false
+ *
+ * Returns true if <i>button</i> is just released on <i>self</i>.
+ *
+ */	
 
 static VALUE rb_wm_released(VALUE self, VALUE arg) {
   wiimote *wm;
@@ -323,12 +364,29 @@ static VALUE rb_wm_released(VALUE self, VALUE arg) {
   else return Qtrue;
 }
 
+/*
+ * call-seq:
+ *	wiimote.yaw	-> float
+ *
+ * Returns the rotation around Z axis (works only with ir tracking and at least two ir sources visible).
+ *
+ */
+
 static VALUE rb_wm_yaw(VALUE self) {
   wiimote *wm;
   Data_Get_Struct(self, wiimote, wm);
   if(!WIIUSE_USING_ACC(wm)) return Qnil;
   return rb_float_new(wm->orient.yaw);
 }
+
+/*
+ * call-seq:
+ *	wiimote.pitch	-> float
+ *
+ * Returns the rotation around X axis (works with motion sensing activated).
+ * Range: [-179.9, -0.1] [0.1, 179.9] 
+ *
+ */
 
 static VALUE rb_wm_pitch(VALUE self) {
   wiimote *wm;
@@ -337,12 +395,30 @@ static VALUE rb_wm_pitch(VALUE self) {
   return rb_float_new(wm->orient.pitch);
 }
 
+/*
+ * call-seq:
+ *	wiimote.absolute_pitch	-> float
+ *
+ * Returns the absolute rotation around X axis (works with motion sensing activated).
+ * Range: [-179.9, -0.1] [0.1, 179.9] 
+ *
+ */
+
 static VALUE rb_wm_apitch(VALUE self) {
   wiimote *wm;
   Data_Get_Struct(self, wiimote, wm);
   if(!WIIUSE_USING_ACC(wm)) return Qnil;
   return rb_float_new(wm->orient.a_pitch);
 }
+
+/*
+ * call-seq:
+ *	wiimote.roll	-> float
+ *
+ * Returns the rotation around Y axis (works with motion sensing activated).
+ * Range: [-179.9, -0.1] [0.1, 179.9] 
+ *
+ */
 
 static VALUE rb_wm_roll(VALUE self) {
   wiimote *wm;
@@ -351,6 +427,15 @@ static VALUE rb_wm_roll(VALUE self) {
   return rb_float_new(wm->orient.roll);
 }
 
+/*
+ * call-seq:
+ *	wiimote.absolute_roll	-> float
+ *
+ * Returns the absolute rotation around Y axis (works with motion sensing activated).
+ * Range: [-179.9, -0.1] [0.1, 179.9] 
+ *
+ */
+
 static VALUE rb_wm_aroll(VALUE self) {
   wiimote *wm;
   Data_Get_Struct(self, wiimote, wm);
@@ -358,9 +443,26 @@ static VALUE rb_wm_aroll(VALUE self) {
   return rb_float_new(wm->orient.a_roll);
 }
 
+/*
+ * call-seq:
+ *	wiimote.ir?	-> true or false
+ *
+ * Returns true if ir tracking is enabled, false otherwise.
+ *
+ */
+
 static VALUE rb_wm_ir(VALUE self) {
   return rb_iv_get(self, "@ir");
 }
+
+/*
+ * call-seq:
+ *	wiimote.ir = true or false 	-> true or false
+ *
+ * Sets ir tracking to enabled/disabled.
+ * [BUG in wiiuse] when activated, ir tracking cannot be disabled.
+ *
+ */
 
 static VALUE rb_wm_set_ir(VALUE self, VALUE arg) {
   wiimote *wm;
@@ -377,6 +479,14 @@ static VALUE rb_wm_set_ir(VALUE self, VALUE arg) {
   else rb_iv_set(self, "@ir", Qfalse);
   return arg;
 }
+
+/*
+ * call-seq:
+ *	wiimote.ir_sources	-> array
+ *
+ * Returns an array containing the position [x, y] of all the ir sources seen by <i>self</i>.
+ *
+ */
 
 static VALUE rb_wm_ir_sources(VALUE self) {
   wiimote *wm;
@@ -396,6 +506,14 @@ static VALUE rb_wm_ir_sources(VALUE self) {
   return ary;
 }
 
+/*
+ * call-seq:
+ *	wiimote.position 	-> array
+ *
+ * Returns an array containing the position [x, y] of <i>self</i> (works only with ir tracking enabled and at least one ir source visible).
+ *
+ */
+
 static VALUE rb_wm_ir_cursor(VALUE self) {
   wiimote *wm;
   Data_Get_Struct(self, wiimote, wm);
@@ -406,12 +524,29 @@ static VALUE rb_wm_ir_cursor(VALUE self) {
   return ary;
 }
 
+/*
+ * call-seq:
+ *	wiimote.distance	-> float
+ *
+ * Returns the distance of <i>self</i> from the ir sources (works only with ir tracking enabled and at least two ir source visible).
+ *
+ */
+
 static VALUE rb_wm_ir_z(VALUE self) {
   wiimote *wm;
   Data_Get_Struct(self, wiimote, wm);
   if(!WIIUSE_USING_IR(wm)) return Qnil;
   return rb_float_new(wm->ir.z);
 }
+
+/*
+ * call-seq:
+ *	wiimote.sensitivity	-> int
+ *
+ * Returns the sensitivity level of ir camera.
+ * Range: [1, 5]
+ *
+ */
 
 static VALUE rb_wm_sensitivity(VALUE self) {
   wiimote *wm;
@@ -420,7 +555,16 @@ static VALUE rb_wm_sensitivity(VALUE self) {
   if(!WIIUSE_USING_IR(wm)) return Qnil;
   WIIUSE_GET_IR_SENSITIVITY(wm, &level);	
   return INT2NUM(level);
-}
+} 
+
+/*
+ * call-seq:
+ *	wiimote.sensitivity = level	-> int
+ *
+ * Sets the sensitivity level of ir camera to <i>level</i>.
+ * The value will be truncated to 5 or 1.
+ *
+ */
 
 static VALUE rb_wm_set_sens(VALUE self, VALUE arg) {
   wiimote *wm;
@@ -435,6 +579,14 @@ static VALUE rb_wm_set_speaker(VALUE self) {
 }
 */
 
+/*
+ * call-seq:
+ *	wiimote.speaker?	-> true or false
+ *
+ * Returns true if speaker is enabled, false otherwise.
+ *
+ */
+ 
 static VALUE rb_wm_speaker(VALUE self) {
   wiimote *wm;
   Data_Get_Struct(self, wiimote, wm);
@@ -442,12 +594,28 @@ static VALUE rb_wm_speaker(VALUE self) {
   else return Qfalse;	
 }
 
+/*
+ * call-seq:
+ *	wiimote.battery_level	-> float
+ *
+ * Returns the battery level of <i>self</i>.
+ *
+ */
+
 static VALUE rb_wm_bl(VALUE self) {
   wiimote *wm;	
   Data_Get_Struct(self,wiimote,wm);
   wiiuse_status(wm);
   return rb_float_new(wm->battery_level); 
 }
+
+/*
+ * call-seq:
+ *	wiimote.aspect_ratio	-> string
+ *
+ * Returns a string identificating the aspect ratio of the TV/monitor.
+ *
+ */
 
 static VALUE rb_wm_aratio(VALUE self) {
   wiimote *wm;
@@ -458,12 +626,28 @@ static VALUE rb_wm_aratio(VALUE self) {
   return Qnil;
 }
 
+/*
+ * call-seq:
+ *	wiimote.aspect_ratio = ratio	-> (value of aspect ratio constant)
+ *
+ * Sets the aspect ratio of the TV/monitor of <i>self</i> to <i>ratio</i>.
+ *
+ */
+
 static VALUE rb_wm_set_aratio(VALUE self, VALUE arg) {
   wiimote *wm;
   Data_Get_Struct(self,wiimote,wm);
   wiiuse_set_aspect_ratio(wm,NUM2INT(arg));
   return Qnil;
 }
+
+/*
+ * call-seq:
+ *	wiimote.virtual_resolution	-> array
+ *
+ * Returns an array containing the virtual resolution [n. pixel x, n. pixel y].
+ *
+ */
 
 static VALUE rb_wm_vres(VALUE self) {
   wiimote *wm;
@@ -473,6 +657,14 @@ static VALUE rb_wm_vres(VALUE self) {
   rb_ary_push(v_res, INT2NUM(wm->ir.vres[1]));
   return v_res;
 }
+
+/*
+ * call-seq:
+ *	wiimote.virtual_resolution = resolution_array	->	array
+ *
+ * Sets the virtual resolution of the screen to the values in the <i>resolution_array</i>.
+ *
+ */
 
 static VALUE rb_wm_set_vres(VALUE self, VALUE arg) {
   wiimote *wm;
@@ -488,6 +680,14 @@ static VALUE rb_wm_set_vres(VALUE self, VALUE arg) {
   return Qnil;	
 }
 
+/*
+ * call-seq:
+ *	wiimote.sensor_bar_position	-> string
+ *
+ * Returns a string which represents the position of the sensor bar relative to <i>self</i>.
+ *
+ */
+
 static VALUE rb_wm_pos(VALUE self) {
   wiimote *wm;
   Data_Get_Struct(self,wiimote,wm);
@@ -496,12 +696,28 @@ static VALUE rb_wm_pos(VALUE self) {
   return Qnil;
 }
 
+/*
+ * call-seq:
+ *	wiimote.sensor_bar_position = pos	-> int
+ *
+ * Sets the sensor bar position relative to <i>self</i> to <i>pos</i>.
+ *
+ */
+ 
 static VALUE rb_wm_set_pos(VALUE self, VALUE arg) {
   wiimote *wm;
   Data_Get_Struct(self,wiimote,wm);	
   wiiuse_set_ir_position(wm,NUM2INT(arg));
   return Qnil;
 }
+
+/*
+ * call-seq:
+ *	wiimote.led	-> string
+ *
+ * Returns a string which represents the led actually on.
+ *
+ */
 
 static VALUE rb_wm_led(VALUE self) {
   wiimote *wm;
@@ -512,6 +728,16 @@ static VALUE rb_wm_led(VALUE self) {
   if(WIIUSE_IS_LED_SET(wm, 4)) return rb_str_new2("LED_4");
   return Qnil;
 }
+
+/*
+ * call-seq:
+ *	wiimote.expansion?	-> true or false
+ *	wiimote.expansion?(exp) -> true or false
+ *
+ * The first form returns true if a expansion is inserted into <i>self</i>.
+ * The second one return true if the expansion <i>exp</i> is inserted into <i>self</i>.
+ *
+ */
 
 static VALUE rb_wm_exp(int argc, VALUE * argv, VALUE self) {
   wiimote *wm;
@@ -542,12 +768,28 @@ static VALUE rb_wm_exp(int argc, VALUE * argv, VALUE self) {
 return Qfalse;
 }
 
+/*
+ * call-seq:
+ *	wiimote.has_nunchuk?	-> true or false
+ *
+ * Returns true if a nunchuk is attached to <i>self</i>.
+ *
+ */
+
 static VALUE rb_wm_nunchuk(VALUE self) {
   wiimote *wm;
   Data_Get_Struct(self, wiimote, wm);
   if(wm->exp.type == EXP_NUNCHUK) return Qtrue;
   else return Qfalse;
 }
+
+/*
+ * call-seq:
+ *	wiimote.has_classic_controller?	->true or false
+ *
+ * Returns true if a classic controller is attached to <i>self</i>.
+ *
+ */
 
 static VALUE rb_wm_cc(VALUE self) {
   wiimote *wm;
@@ -556,6 +798,14 @@ static VALUE rb_wm_cc(VALUE self) {
   else return Qfalse;
 }
 
+/*
+ * call-seq:
+ *	wiimote.has_guitar_hero_controller?	-> true or false
+ *
+ * Returns true if a guitar hero 3 controller is attached to <i>self</i>.
+ *
+ */
+
 static VALUE rb_wm_gh(VALUE self) {
   wiimote *wm;
   Data_Get_Struct(self, wiimote, wm);
@@ -563,6 +813,14 @@ static VALUE rb_wm_gh(VALUE self) {
   else return Qfalse;
 }
 
+/*
+ * call-seq:
+ *	wiimote.absolute_position	-> array
+ *
+ * Returns an array containing the absolute position [x, y] of <i>self</i>.
+ *
+ */
+ 
 static VALUE rb_wm_ir_acursor(VALUE self) {
   wiimote *wm;
   Data_Get_Struct(self, wiimote, wm);
@@ -571,6 +829,14 @@ static VALUE rb_wm_ir_acursor(VALUE self) {
   rb_ary_push(ary, INT2NUM(wm->ir.ay));
   return ary;
 }
+
+/*
+ * call-seq:
+ *	wiimote.acceleration	-> array
+ *
+ * Returns an array containing the three components of acceleration [x, y, z] of <i>self</i>.
+ *
+ */
 
 static VALUE rb_wm_accel(VALUE self) {
   wiimote *wm;
@@ -582,6 +848,14 @@ static VALUE rb_wm_accel(VALUE self) {
   return ary;  
 }
 
+/*
+ * call-seq:
+ *	wiimote.gravity_force	-> array
+ *
+ * Returns an array containing the three components of gravity force [x, y, z] of <i>self</i>.
+ *
+ */
+ 
 static VALUE rb_wm_gforce(VALUE self) {
   wiimote *wm;
   Data_Get_Struct(self, wiimote, wm);
@@ -592,11 +866,27 @@ static VALUE rb_wm_gforce(VALUE self) {
   return ary;
 }
 
+/*
+ * call-seq:
+ *	wiimote.accel_threshold	-> int
+ *
+ * Returns the accelerometer event threshold for <i>self</i>.
+ *
+ */
+
 static VALUE rb_wm_accel_threshold(VALUE self) {
   wiimote *wm;
   Data_Get_Struct(self, wiimote, wm);
   return INT2NUM(wm->accel_threshold);
 }
+
+/*
+ * call-seq:
+ *	wiimote.accel_threshold = t	-> int
+ *
+ * Sets the accelerometer event threshold for <i>self</i>.
+ *
+ */
 
 static VALUE rb_wm_set_accel_threshold(VALUE self, VALUE arg) {
   wiimote *wm;
@@ -605,11 +895,27 @@ static VALUE rb_wm_set_accel_threshold(VALUE self, VALUE arg) {
   return Qnil;
 }
 
+/*
+ * call-seq:
+ *	wiimote.orient_threshold	-> int
+ *
+ * Returns the orientation event threshold for <i>self</i>.
+ *
+ */
+
 static VALUE rb_wm_orient_threshold(VALUE self) {
   wiimote *wm;
   Data_Get_Struct(self, wiimote, wm);	
   return INT2NUM(wm->orient_threshold);	
 } 
+
+/*
+ * call-seq:
+ *	wiimote.orient_threshold = t	-> int
+ *
+ * Sets the orientation event threshold for <i>self</i>.
+ *
+ */
 
 static VALUE rb_wm_set_orient_threshold(VALUE self, VALUE arg) {
   wiimote *wm;
@@ -617,6 +923,20 @@ static VALUE rb_wm_set_orient_threshold(VALUE self, VALUE arg) {
   wiiuse_set_orient_threshold(wm,rb_float_new(arg));
   return Qnil;
 }
+
+/*
+ * 
+ * Provides a set of methods to access Wiimote functionalities.
+ * A Wiimote object can:
+ * - put the wiimote in rumble state
+ * - control the leds
+ * - control and access accelerometer measurement
+ * - control and access ir camera measurement
+ * - manage expansions
+ * - manage pressed, held, released buttons
+ * - access battery level, acceleration vector and gravity vector
+ *
+ */
 
 void init_wiimote(void) {
 	

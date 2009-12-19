@@ -17,7 +17,41 @@ extern void init_wiimotemanager(void);
 /*
  *  Document-class: Wii
  *
- *  Module that encapsulates Wiimote and WiimoteManager classes  
+ *  Module that encapsulates Wiimote and WiimoteManager classes and defines some constants
+ *
+ *  Led Constants:
+ *  	- LED_1
+ *  	- LED_2
+ *  	- LED_3
+ *  	- LED_4
+ *	- LED_NONE   
+ *
+ *  Wiimote Button Constants:
+ *	- BUTTON_A
+ *	- BUTTON_B
+ *	- BUTTON_ONE
+ *	- BUTTON_TWO
+ *	- BUTTON_PLUS
+ *	- BUTTON_MINUS
+ *	- BUTTON_HOME
+ *      - BUTTON_LEFT
+ *	- BUTTON_RIGHT
+ *	- BUTTON_UP
+ *	- BUTTON_DOWN
+ *
+ *  Expansion Constants:
+ *	- EXP_NONE
+ *	- EXP_NUNCHUK
+ *	- EXP_CLASSIC
+ *	- EXP_GUITAR
+ *
+ *  Aspect Ratio Constants:
+ *	- ASPECT_4_3
+ *	- ASPECT_16_9
+ *
+ *  Sensor Bar Position Constants:
+ *	- ABOVE
+ *	- BELOW
  */
 
 void Init_wii4r() {
@@ -82,10 +116,10 @@ void Init_wii4r() {
   rb_define_const(wii_mod, "GUITAR_BUTTON_ALL", INT2NUM(GUITAR_HERO_3_BUTTON_ALL));
   
   //Wiimote expansion codes 
-  rb_define_const(wii_mod, "E_NONE", INT2NUM(EXP_NONE));
-  rb_define_const(wii_mod, "E_NUNCHUK", INT2NUM(EXP_NUNCHUK));
-  rb_define_const(wii_mod, "E_CLASSIC", INT2NUM(EXP_CLASSIC));
-  rb_define_const(wii_mod, "E_GUITAR", INT2NUM(EXP_GUITAR_HERO_3));
+  rb_define_const(wii_mod, "EXP_NONE", INT2NUM(EXP_NONE));
+  rb_define_const(wii_mod, "EXP_NUNCHUK", INT2NUM(EXP_NUNCHUK));
+  rb_define_const(wii_mod, "EXP_CLASSIC", INT2NUM(EXP_CLASSIC));
+  rb_define_const(wii_mod, "EXP_GUITAR", INT2NUM(EXP_GUITAR_HERO_3));
   
   //Aspect ratio and sensor bar position constants
   rb_define_const(wii_mod, "ASPECT_4_3", INT2NUM(WIIUSE_ASPECT_4_3));

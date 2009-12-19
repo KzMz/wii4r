@@ -1,0 +1,456 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Module: Wii</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <link rel="stylesheet" href=".././rdoc-style.css" type="text/css" media="screen" />
+  <script type="text/javascript">
+  // <![CDATA[
+
+  function popupCode( url ) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+
+  function toggleCode( id ) {
+    if ( document.getElementById )
+      elem = document.getElementById( id );
+    else if ( document.all )
+      elem = eval( "document.all." + id );
+    else
+      return false;
+
+    elemStyle = elem.style;
+    
+    if ( elemStyle.display != "block" ) {
+      elemStyle.display = "block"
+    } else {
+      elemStyle.display = "none"
+    }
+
+    return true;
+  }
+  
+  // Make codeblocks hidden by default
+  document.writeln( "<style type=\"text/css\">div.method-source-code { display: none }</style>" )
+  
+  // ]]>
+  </script>
+
+</head>
+<body>
+
+
+
+    <div id="classHeader">
+        <table class="header-table">
+        <tr class="top-aligned-row">
+          <td><strong>Module</strong></td>
+          <td class="class-name-in-header">Wii</td>
+        </tr>
+        <tr class="top-aligned-row">
+            <td><strong>In:</strong></td>
+            <td>
+                <a href="../files/wii4r_c.html">
+                wii4r.c
+                </a>
+        <br />
+            </td>
+        </tr>
+
+        </table>
+    </div>
+  <!-- banner header -->
+
+  <div id="bodyContent">
+
+
+
+  <div id="contextContent">
+
+    <div id="description">
+      <p>
+Module that encapsulates Wiimote and <a
+href="Wii/WiimoteManager.html">WiimoteManager</a> classes and defines some
+constants
+</p>
+<p>
+Led Constants:
+</p>
+<pre>
+    - LED_1
+    - LED_2
+    - LED_3
+    - LED_4
+    - LED_NONE
+</pre>
+<p>
+Wiimote Button Constants:
+</p>
+<pre>
+    - BUTTON_A
+    - BUTTON_B
+    - BUTTON_ONE
+    - BUTTON_TWO
+    - BUTTON_PLUS
+    - BUTTON_MINUS
+    - BUTTON_HOME
+    - BUTTON_LEFT
+    - BUTTON_RIGHT
+    - BUTTON_UP
+    - BUTTON_DOWN
+</pre>
+<p>
+Expansion Constants:
+</p>
+<pre>
+    - EXP_NONE
+    - EXP_NUNCHUK
+    - EXP_CLASSIC
+    - EXP_GUITAR
+</pre>
+<p>
+Aspect Ratio Constants:
+</p>
+<pre>
+    - ASPECT_4_3
+    - ASPECT_16_9
+</pre>
+<p>
+Sensor Bar Position Constants:
+</p>
+<pre>
+    - ABOVE
+    - BELOW
+</pre>
+
+    </div>
+
+
+   </div>
+
+
+  </div>
+
+
+    <!-- if includes -->
+
+    <div id="section">
+
+    <div id="class-list">
+      <h3 class="section-bar">Classes and Modules</h3>
+
+      Class <a href="Wii/WiimoteManager.html" class="link">Wii::WiimoteManager</a><br />
+
+    </div>
+
+    <div id="constants-list">
+      <h3 class="section-bar">Constants</h3>
+
+      <div class="name-list">
+        <table summary="Constants">
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">MAX_WIIMOTES</td>
+          <td>=</td>
+          <td class="context-item-value">INT2NUM(4)</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">TIMEOUT</td>
+          <td>=</td>
+          <td class="context-item-value">INT2NUM(5)</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">LED_NONE</td>
+          <td>=</td>
+          <td class="context-item-value">INT2NUM(WIIMOTE_LED_NONE)</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">LED_1</td>
+          <td>=</td>
+          <td class="context-item-value">INT2NUM(WIIMOTE_LED_1)</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">LED_2</td>
+          <td>=</td>
+          <td class="context-item-value">INT2NUM(WIIMOTE_LED_2)</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">LED_3</td>
+          <td>=</td>
+          <td class="context-item-value">INT2NUM(WIIMOTE_LED_3)</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">LED_4</td>
+          <td>=</td>
+          <td class="context-item-value">INT2NUM(WIIMOTE_LED_4)</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">BUTTON_A</td>
+          <td>=</td>
+          <td class="context-item-value">INT2NUM(WIIMOTE_BUTTON_A)</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">BUTTON_B</td>
+          <td>=</td>
+          <td class="context-item-value">INT2NUM(WIIMOTE_BUTTON_B)</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">BUTTON_ONE</td>
+          <td>=</td>
+          <td class="context-item-value">INT2NUM(WIIMOTE_BUTTON_ONE)</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">BUTTON_TWO</td>
+          <td>=</td>
+          <td class="context-item-value">INT2NUM(WIIMOTE_BUTTON_TWO)</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">BUTTON_PLUS</td>
+          <td>=</td>
+          <td class="context-item-value">INT2NUM(WIIMOTE_BUTTON_PLUS)</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">BUTTON_MINUS</td>
+          <td>=</td>
+          <td class="context-item-value">INT2NUM(WIIMOTE_BUTTON_MINUS)</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">BUTTON_HOME</td>
+          <td>=</td>
+          <td class="context-item-value">INT2NUM(WIIMOTE_BUTTON_HOME)</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">BUTTON_LEFT</td>
+          <td>=</td>
+          <td class="context-item-value">INT2NUM(WIIMOTE_BUTTON_LEFT)</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">BUTTON_RIGHT</td>
+          <td>=</td>
+          <td class="context-item-value">INT2NUM(WIIMOTE_BUTTON_RIGHT)</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">BUTTON_DOWN</td>
+          <td>=</td>
+          <td class="context-item-value">INT2NUM(WIIMOTE_BUTTON_DOWN)</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">BUTTON_UP</td>
+          <td>=</td>
+          <td class="context-item-value">INT2NUM(WIIMOTE_BUTTON_UP)</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">BUTTON_ALL</td>
+          <td>=</td>
+          <td class="context-item-value">INT2NUM(WIIMOTE_BUTTON_ALL)</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">N_BUTTON_Z</td>
+          <td>=</td>
+          <td class="context-item-value">INT2NUM(NUNCHUK_BUTTON_Z)</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">N_BUTTON_C</td>
+          <td>=</td>
+          <td class="context-item-value">INT2NUM(NUNCHUK_BUTTON_C)</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">N_BUTTON_ALL</td>
+          <td>=</td>
+          <td class="context-item-value">INT2NUM(NUNCHUK_BUTTON_ALL)</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">C_BUTTON_UP</td>
+          <td>=</td>
+          <td class="context-item-value">INT2NUM(CLASSIC_CTRL_BUTTON_UP)</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">C_BUTTON_LEFT</td>
+          <td>=</td>
+          <td class="context-item-value">INT2NUM(CLASSIC_CTRL_BUTTON_LEFT)</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">C_BUTTON_ZR</td>
+          <td>=</td>
+          <td class="context-item-value">INT2NUM(CLASSIC_CTRL_BUTTON_ZR)</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">C_BUTTON_X</td>
+          <td>=</td>
+          <td class="context-item-value">INT2NUM(CLASSIC_CTRL_BUTTON_X)</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">C_BUTTON_A</td>
+          <td>=</td>
+          <td class="context-item-value">INT2NUM(CLASSIC_CTRL_BUTTON_A)</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">C_BUTTON_Y</td>
+          <td>=</td>
+          <td class="context-item-value">INT2NUM(CLASSIC_CTRL_BUTTON_Y)</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">C_BUTTON_B</td>
+          <td>=</td>
+          <td class="context-item-value">INT2NUM(CLASSIC_CTRL_BUTTON_B)</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">C_BUTTON_ZL</td>
+          <td>=</td>
+          <td class="context-item-value">INT2NUM(CLASSIC_CTRL_BUTTON_ZL)</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">C_BUTTON_FULL_R</td>
+          <td>=</td>
+          <td class="context-item-value">INT2NUM(CLASSIC_CTRL_BUTTON_FULL_R)</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">C_BUTTON_PLUS</td>
+          <td>=</td>
+          <td class="context-item-value">INT2NUM(CLASSIC_CTRL_BUTTON_PLUS)</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">C_BUTTON_HOME</td>
+          <td>=</td>
+          <td class="context-item-value">INT2NUM(CLASSIC_CTRL_BUTTON_HOME)</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">C_BUTTON_MINUS</td>
+          <td>=</td>
+          <td class="context-item-value">INT2NUM(CLASSIC_CTRL_BUTTON_MINUS)</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">C_BUTTON_FULL_L</td>
+          <td>=</td>
+          <td class="context-item-value">INT2NUM(CLASSIC_CTRL_BUTTON_FULL_L)</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">C_BUTTON_DOWN</td>
+          <td>=</td>
+          <td class="context-item-value">INT2NUM(CLASSIC_CTRL_BUTTON_DOWN)</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">C_BUTTON_RIGHT</td>
+          <td>=</td>
+          <td class="context-item-value">INT2NUM(CLASSIC_CTRL_BUTTON_RIGHT)</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">C_BUTTON_ALL</td>
+          <td>=</td>
+          <td class="context-item-value">INT2NUM(CLASSIC_CTRL_BUTTON_ALL)</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">GUITAR_BUTTON_UP</td>
+          <td>=</td>
+          <td class="context-item-value">INT2NUM(GUITAR_HERO_3_BUTTON_STRUM_UP)</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">GUITAR_BUTTON_YELLOW</td>
+          <td>=</td>
+          <td class="context-item-value">INT2NUM(GUITAR_HERO_3_BUTTON_YELLOW)</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">GUITAR_BUTTON_GREEN</td>
+          <td>=</td>
+          <td class="context-item-value">INT2NUM(GUITAR_HERO_3_BUTTON_GREEN)</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">GUITAR_BUTTON_BLUE</td>
+          <td>=</td>
+          <td class="context-item-value">INT2NUM(GUITAR_HERO_3_BUTTON_BLUE)</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">GUITAR_BUTTON_RED</td>
+          <td>=</td>
+          <td class="context-item-value">INT2NUM(GUITAR_HERO_3_BUTTON_RED)</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">GUITAR_BUTTON_ORANGE</td>
+          <td>=</td>
+          <td class="context-item-value">INT2NUM(GUITAR_HERO_3_BUTTON_ORANGE)</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">GUITAR_BUTTON_PLUS</td>
+          <td>=</td>
+          <td class="context-item-value">INT2NUM(GUITAR_HERO_3_BUTTON_PLUS)</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">GUITAR_BUTTON_MINUS</td>
+          <td>=</td>
+          <td class="context-item-value">INT2NUM(GUITAR_HERO_3_BUTTON_MINUS)</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">GUITAR_BUTTON_DOWN</td>
+          <td>=</td>
+          <td class="context-item-value">INT2NUM(GUITAR_HERO_3_BUTTON_STRUM_DOWN)</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">GUITAR_BUTTON_ALL</td>
+          <td>=</td>
+          <td class="context-item-value">INT2NUM(GUITAR_HERO_3_BUTTON_ALL)</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">EXP_NONE</td>
+          <td>=</td>
+          <td class="context-item-value">INT2NUM(EXP_NONE)</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">EXP_NUNCHUK</td>
+          <td>=</td>
+          <td class="context-item-value">INT2NUM(EXP_NUNCHUK)</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">EXP_CLASSIC</td>
+          <td>=</td>
+          <td class="context-item-value">INT2NUM(EXP_CLASSIC)</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">EXP_GUITAR</td>
+          <td>=</td>
+          <td class="context-item-value">INT2NUM(EXP_GUITAR_HERO_3)</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">ASPECT_4_3</td>
+          <td>=</td>
+          <td class="context-item-value">INT2NUM(WIIUSE_ASPECT_4_3)</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">ASPECT_16_9</td>
+          <td>=</td>
+          <td class="context-item-value">INT2NUM(WIIUSE_ASPECT_16_9)</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">ABOVE</td>
+          <td>=</td>
+          <td class="context-item-value">INT2NUM(WIIUSE_IR_ABOVE)</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">BELOW</td>
+          <td>=</td>
+          <td class="context-item-value">INT2NUM(WIIUSE_IR_BELOW)</td>
+        </tr>
+        </table>
+      </div>
+    </div>
+
+
+
+      
+
+
+    <!-- if method_list -->
+
+
+  </div>
+
+
+<div id="validator-badges">
+  <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+</div>
+
+</body>
+</html>

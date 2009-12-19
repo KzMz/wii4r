@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>connect_and_poll (Wii::WiimoteManager)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre>/*
+ *  call-seq:
+ *      WiimoteManager.connect_and_poll { |(wiimote, event)| block }
+ *
+ *  Connects to all wiimotes (see &lt;code&gt;Wiimote&lt;/code&gt;) found in bluetooth range and invokes &lt;i&gt;block&lt;/i&gt; once per event occurred, passing a pair
+ *  (&lt;code&gt;Wiimote&lt;/code&gt; who caused the event, &lt;code&gt;event&lt;/code&gt; caused) as parameter.
+ *
+ *      WiimoteManager.connect_and_poll { |(wiimote, event)| 
+ *              if event == :generic
+ *                      puts wiimote
+ *              end
+ *      }
+ *
+ */
+ 
+static VALUE rb_cm_cp(VALUE self) {
+</pre>
+</body>
+</html>
