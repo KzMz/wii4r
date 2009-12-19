@@ -30,7 +30,7 @@ This should be all.
  	end
   end
 
-See rdoc documentation ad doc/ for more details
+See rdoc documentation at doc/ for more details
 
 == Copyright
 Copyright (c) 2009 KzMz & BuZz.
