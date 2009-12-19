@@ -1,7 +1,5 @@
 #ignore .so files
 *.so
-#.rb files
-*.rb
 #ext/Makefile
 ext/Makefile
 #ignore ext/.o files
