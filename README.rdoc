@@ -17,18 +17,18 @@ This should be all.
 
 == Usage
 
- $ require 'wii4r'
- $ include Wii
+  require 'wii4r'
+  include Wii
 
- $ w = WiimoteManager.new
- $ w.connect
- $ w.poll do |(wiimote, event)|
- $ 	if event == :generic
- $		if wiimote.pressed? BUTTON_A
- $			puts "button a pressed!"
- $		end
- $	end
- $ end
+  w = WiimoteManager.new
+  w.connect
+  w.poll do |(wiimote, event)|
+  	if event == :generic
+ 		if wiimote.pressed? BUTTON_A
+ 			puts "button a pressed!"
+ 		end
+ 	end
+  end
 
 See rdoc documentation ad doc/ for more details
 
