@@ -5,9 +5,9 @@ Binding of C wiiuse library (http://www.wiiuse.net)
 
 == Install
 
-$ make
-$ make install
-$ make clean
+ $ make
+ $ make install
+ $ make clean
 
 == Dependencies
 
@@ -15,21 +15,22 @@ $ make clean
 
 == Usage
 
-$ require 'wii4r'
-$ include Wii
+ $ require 'wii4r'
+ $ include Wii
 
-$ w = WiimoteManager.new
-$ w.connect
-$ w.poll do |(wiimote, event)|
-$ 	if event == :generic
-$		if wiimote.pressed? BUTTON_A
-$			puts "button a pressed!"
-$		end
-$	end
-$ end
+ $ w = WiimoteManager.new
+ $ w.connect
+ $ w.poll do |(wiimote, event)|
+ $ 	if event == :generic
+ $		if wiimote.pressed? BUTTON_A
+ $			puts "button a pressed!"
+ $		end
+ $	end
+ $ end
 
 See rdoc documentation ad doc/ for more details
 
 == Copyright
-Copyright (c) 2009 KzMz & Buzz. 
+Copyright (c) 2009 KzMz & BuZz.
+ 
 LICENSE for details
