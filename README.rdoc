@@ -9,6 +9,8 @@ Binding of C wiiuse library (http://www.wiiuse.net)
  $ make install
  $ make clean
 
+This should be all.
+
 == Dependencies
 
 * wiiuse lib
