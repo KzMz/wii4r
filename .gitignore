@@ -1,8 +1,7 @@
 #ignore .so files
 *.so
-#example files
-ga.rb
-ir.rb
+#.rb files
+*.rb
 #ext/Makefile
 ext/Makefile
 #ignore ext/.o files
