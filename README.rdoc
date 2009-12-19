@@ -1,0 +1,38 @@
+= Wii4R
+
+Ruby C Extension for controlling Wii Remote devices via bluetooth connection.
+Binding of C wiiuse library (http://www.wiiuse.net)
+
+== Install
+
+ $ make
+ $ make install
+ $ make clean
+
+This should be all.
+
+== Dependencies
+
+* wiiuse lib
+
+== Usage
+
+  require 'wii4r'
+  include Wii
+
+  w = WiimoteManager.new
+  w.connect
+  w.poll do |(wiimote, event)|
+  	if event == :generic
+ 		if wiimote.pressed? BUTTON_A
+ 			puts "button a pressed!"
+ 		end
+ 	end
+  end
+
+See rdoc documentation at doc/ for more details
+
+== Copyright
+Copyright (c) 2009 KzMz & BuZz.
+ 
+LICENSE for details
