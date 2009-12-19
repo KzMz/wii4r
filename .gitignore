@@ -3,11 +3,11 @@
 #example files
 ga.rb
 ir.rb
-#Makefile
-Makefile
-#ignore .o files
-*.o
-#ignore .log files
-*.log
+#ext/Makefile
+ext/Makefile
+#ignore ext/.o files
+ext/*.o
+#ignore ext/.log files
+ext/*.log
 
 
