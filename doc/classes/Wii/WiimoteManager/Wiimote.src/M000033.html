@@ -1,25 +1,20 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
-<!DOCTYPE html 
-     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-  <title>absolute_pitch (Wii::WiimoteManager::Wiimote)</title>
-  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <title>yaw (Wii::WiimoteManager::Wiimote)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <link rel="stylesheet" href="../../../.././rdoc-style.css" type="text/css" media="screen" />
 </head>
 <body class="standalone-code">
   <pre>/*
  * call-seq:
- *      wiimote.absolute_pitch       -&gt; float
+ *      wiimote.yaw  -&gt; float
  *
- * Returns the absolute rotation around X axis (works with motion sensing activated).
- * Range: [-179.9, -0.1] [0.1, 179.9] 
+ * Returns the rotation around Z axis (works only with ir tracking and at least two ir sources visible).
  *
  */
 
-static VALUE rb_wm_apitch(VALUE self) {
-</pre>
+static VALUE rb_wm_yaw(VALUE self) </pre>
 </body>
 </html>

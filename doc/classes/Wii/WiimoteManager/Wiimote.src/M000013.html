@@ -1,29 +1,20 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
-<!DOCTYPE html 
-     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-  <title>rumble! (Wii::WiimoteManager::Wiimote)</title>
-  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <title>stop! (Wii::WiimoteManager::Wiimote)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <link rel="stylesheet" href="../../../.././rdoc-style.css" type="text/css" media="screen" />
 </head>
 <body class="standalone-code">
   <pre>/*
  *  call-seq:
- *      wiimote.rumble!                       -&gt; nil
- *      wiimote.rumble!(duration)     -&gt; nil
- *      wiimote.rumble!(duration, times) -&gt; nil
+ *      wiimote.stop!                -&gt; nil
  *
- *  The first form puts &lt;i&gt;self&lt;/i&gt; in rumbling state.
- *  The second one puts &lt;i&gt;self&lt;/i&gt; in rumbling state for &lt;i&gt;duration&lt;/i&gt; seconds.
- *  The last one puts &lt;i&gt;self&lt;/i&gt; in rumbling state for &lt;i&gt;duration&lt;/i&gt; seconds for &lt;i&gt;times&lt;/i&gt; times, separated by 1 sec of pause.
+ *  Turns the rumbling state of &lt;i&gt;self&lt;/i&gt; to false.
  *
  */
 
-
-static VALUE rb_wm_rumble(int argc, VALUE * argv, VALUE self) {
-</pre>
+static VALUE rb_wm_stop(VALUE self) </pre>
 </body>
 </html>

@@ -246,116 +246,6 @@ static VALUE rb_cm_each(VALUE self) {
   return Qnil;
 }
 
-/*
- *  call-seq:
- *	WiimoteManager.connect_and_poll { |(wiimote, event)| block }
- *
- *  Connects to all wiimotes (see <code>Wiimote</code>) found in bluetooth range and invokes <i>block</i> once per event occurred, passing a pair
- *  (<code>Wiimote</code> who caused the event, <code>event</code> caused) as parameter.
- *
- *	WiimoteManager.connect_and_poll { |(wiimote, event)| 
- *		if event == :generic
- *			puts wiimote
- *		end
- *	}
- *
- */
- 
-static VALUE rb_cm_cp(VALUE self) {
-  if(rb_block_given_p()) {
-    VALUE m = rb_const_get(wii_mod, rb_intern("MAX_WIIMOTES"));
-    VALUE t = rb_const_get(wii_mod, rb_intern("TIMEOUT"));
-    int timeout = NUM2INT(t);
-    int max = NUM2INT(m);
-    wiimote **wms = wiiuse_init(max);
-    int found = wiiuse_find(wms, max, timeout);
-    if(found > 0) {
-      int connected = wiiuse_connect(wms, max);
-      int j = 0, led = 1;
-      for(; j < max; j++) {
-        if(wm_connected(wms[j])) {
-          switch(led) {
-            case 1:
-              wiiuse_set_leds(wms[j], WIIMOTE_LED_1);
-              led++;
-              break;
-            case 2:
-              wiiuse_set_leds(wms[j], WIIMOTE_LED_2);
-              led++;
-              break;
-            case 3:
-               wiiuse_set_leds(wms[j], WIIMOTE_LED_3);
-               led++;
-               break;
-            case 4:
-               wiiuse_set_leds(wms[j], WIIMOTE_LED_4);
-               break;  
-          }
-        }
-      }
-      while(connected > 0) {
-        if(wiiuse_poll(wms, max)) {
-          int i = 0;
-          for(; i < max; i++) {
-            if(wm_connected(wms[i])) {
-              if(wms[i]->event != WIIUSE_NONE) {
-                VALUE wm = Data_Wrap_Struct(wii_class, NULL, free_wiimote, wms[i]);
-                rb_obj_call_init(wm, 0, 0);
-                VALUE ary = rb_ary_new();
-                rb_ary_push(ary, wm);
-                VALUE event_name = Qnil;
-                switch(wms[i]->event) {
-                  case WIIUSE_EVENT:
-                    event_name = ID2SYM(rb_intern("generic"));
-                    break;
-                  case WIIUSE_STATUS:
-                    event_name = ID2SYM(rb_intern("status"));
-                    break;
-                  case WIIUSE_DISCONNECT:
-                    event_name = ID2SYM(rb_intern("disconnected"));
-                    connected--;
-                    break;
-                  case WIIUSE_UNEXPECTED_DISCONNECT:
-                    event_name = ID2SYM(rb_intern("unexpected_disconnect"));
-                    connected--;
-                    break;
-                  case WIIUSE_READ_DATA:
-                    event_name = ID2SYM(rb_intern("read"));
-                    break;
-                  case WIIUSE_NUNCHUK_INSERTED:
-                    event_name = ID2SYM(rb_intern("nunchuk_inserted"));
-                    break;
-                  case WIIUSE_NUNCHUK_REMOVED:
-                    event_name = ID2SYM(rb_intern("nunchuk_removed"));
-                    break;
-                  case WIIUSE_CLASSIC_CTRL_INSERTED:
-                    event_name = ID2SYM(rb_intern("classic_inserted"));
-                    break;
-                  case WIIUSE_CLASSIC_CTRL_REMOVED:
-                    event_name = ID2SYM(rb_intern("classic_removed"));
-                    break;
-                  case WIIUSE_GUITAR_HERO_3_CTRL_INSERTED:
-                    event_name = ID2SYM(rb_intern("guitarhero3_inserted"));
-                    break;
-                  case WIIUSE_GUITAR_HERO_3_CTRL_REMOVED:
-                    event_name = ID2SYM(rb_intern("guitarhero3_removed"));
-                    break;
-                  case WIIUSE_CONNECT:
-                    event_name = ID2SYM(rb_intern("connected"));
-                    break;
-                }
-                rb_ary_push(ary, event_name);
-                rb_yield(ary);
-              } 
-            }
-          }
-        }
-      }
-    }
-    wiiuse_cleanup(wms, max);
-  }
-  return Qnil;
-}
 
 /*
  *  call-seq:
@@ -404,7 +294,6 @@ void init_wiimotemanager(void) {
   
   cm_class = rb_define_class_under(wii_mod, "WiimoteManager", rb_cObject);
   rb_define_singleton_method(cm_class, "new", rb_cm_new, 0);
-  rb_define_singleton_method(cm_class, "connect_and_poll", rb_cm_cp, 0);
   rb_define_method(cm_class, "wiimotes", rb_cm_wiimotes, 0);
   rb_define_method(cm_class, "initialize", rb_cm_init, 0);
   rb_define_method(cm_class, "connected", rb_cm_connected, 0);
