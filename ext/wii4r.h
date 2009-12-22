@@ -46,6 +46,15 @@ extern VALUE cm_class;
 //Wiimote class
 extern VALUE wii_class;
 
+//Nunchuk class
+extern VALUE nun_class;
+
+//ClassicController class
+extern VALUE cc_class;
+
+//GH3Controller class
+extern VALUE gh3_class;
+
 //disconnect a wiimote when a Wiimote object is marked by the GC and must be deleted
 extern void free_wiimote(void * wm);
 

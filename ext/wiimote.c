@@ -327,7 +327,7 @@ static VALUE rb_wm_connected(VALUE self) {
  *  call-seq:
  *	wiimote.pressed?(button)	-> true or false
  *
- *  Returns true if <i>button</i> is pressed on <i>self</i>.
+ *  Returns true if <i>button</i> is being pressed on <i>self</i>.
  *
  */
 
@@ -964,7 +964,7 @@ static VALUE rb_wm_set_orient_threshold(VALUE self, VALUE arg) {
 void init_wiimote(void) {
 	
   wii_class = rb_define_class_under(cm_class, "Wiimote", rb_cObject);
-  rb_define_singleton_method(wii_class, "new", rb_wm_new, 0);
+  //rb_define_singleton_method(wii_class, "new", rb_wm_new, 0);
   rb_define_method(wii_class, "initialize", rb_wm_init, 0);
   rb_define_method(wii_class, "rumble?", rb_wm_get_rumble, 0);
   rb_define_method(wii_class, "rumble=", rb_wm_set_rumble, 1);
@@ -1012,6 +1012,8 @@ void init_wiimote(void) {
   rb_define_method(wii_class, "gravity_force", rb_wm_gforce, 0);
   rb_define_method(wii_class, "orient_threshold", rb_wm_orient_threshold, 0);
   rb_define_method(wii_class, "orient_threshold=", rb_wm_set_orient_threshold, 1);
+  //rb_define_method(wii_class, "nunchuk_orient_threshold=", rb_wm_set_nun_othreshold, 1);
+  //rb_define_method(wii_class, "nunchuk_accel_threshold=", rb_wm_set_nun_athreshold, 1);
   rb_define_method(wii_class, "accel_threshold", rb_wm_accel_threshold, 0);
   rb_define_method(wii_class, "accel_threshold=", rb_wm_set_accel_threshold, 1);
 	
