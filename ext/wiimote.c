@@ -28,6 +28,10 @@ void free_wiimote(void * wm) {
   wiiuse_disconnect((wiimote *) wm);
 }
 
+void set_expansion(VALUE self, VALUE exp_obj) {
+  rb_iv_set(self, "@exp", exp_obj);
+}
+
 static VALUE rb_wm_new(VALUE self) {
   wiimote *wm;
   VALUE obj = Data_Make_Struct(self, wiimote, NULL, free_wiimote, wm);

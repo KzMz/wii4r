@@ -23,6 +23,8 @@
 
 #include "wii4r.h"
 
+extern void set_expansion(VALUE self, VALUE exp_obj);
+
 static VALUE rb_cm_new(VALUE self) {
   connman * conn;
   VALUE m = rb_const_get(wii_mod, rb_intern("MAX_WIIMOTES"));
@@ -132,7 +134,7 @@ static VALUE rb_cm_connect(VALUE self) {
   int connected = wiiuse_connect(conn->wms, NUM2INT(max));
   int i = 0;
   int led = 1;
-  VALUE wm;
+  VALUE wm, exp = Qnil;
   for(; i < NUM2INT(max); i++) {
     if(wm_connected(conn->wms[i])) {
       switch(led) {
@@ -154,6 +156,18 @@ static VALUE rb_cm_connect(VALUE self) {
       }
       wm = Data_Wrap_Struct(wii_class, NULL, free_wiimote, conn->wms[i]);
       rb_obj_call_init(wm, 0, 0);
+      switch(conn->wms[i]->exp.type) {
+        case EXP_NUNCHUK:
+          exp = Data_Wrap_Struct(nun_class, NULL, NULL, &(conn->wms[i]->exp.nunchuk));
+          break;
+        case EXP_CLASSIC:
+          exp = Data_Wrap_Struct(cc_class, NULL, NULL, &(conn->wms[i]->exp.classic));
+          break;
+        case EXP_GUITAR_HERO_3:
+          exp = Data_Wrap_Struct(gh3_class, NULL, NULL, &(conn->wms[i]->exp.gh3));
+          break;
+      }
+      set_expansion(wm, exp);
       rb_ary_push(rb_iv_get(self, "@wiimotes"), wm);
     }
   }
@@ -213,21 +227,30 @@ static VALUE rb_cm_poll(VALUE self) {
                 break;
               case WIIUSE_NUNCHUK_INSERTED:
                 event_name = ID2SYM(rb_intern("nunchuk_inserted"));
+                VALUE nun = Data_Wrap_Struct(nun_class, NULL, NULL, &(wmm->exp.nunchuk));
+                set_expansion(wm, nun);
                 break;
               case WIIUSE_NUNCHUK_REMOVED:
                 event_name = ID2SYM(rb_intern("nunchuk_removed"));
+                set_expansion(wm, Qnil);
                 break;
               case WIIUSE_CLASSIC_CTRL_INSERTED:
                 event_name = ID2SYM(rb_intern("classic_inserted"));
+                VALUE cc = Data_Wrap_Struct(cc_class, NULL, NULL, &(wmm->exp.classic));
+                set_expansion(wm, cc);
                 break;
               case WIIUSE_CLASSIC_CTRL_REMOVED:
                 event_name = ID2SYM(rb_intern("classic_removed"));
+                set_expansion(wm, Qnil);
                 break;
               case WIIUSE_GUITAR_HERO_3_CTRL_INSERTED:
                 event_name = ID2SYM(rb_intern("guitarhero3_inserted"));
+                VALUE gh3 = Data_Wrap_Struct(gh3_class, NULL, NULL, &(wmm->exp.gh3));
+                set_expansion(wm, gh3);
                 break;
               case WIIUSE_GUITAR_HERO_3_CTRL_REMOVED:
                 event_name = ID2SYM(rb_intern("guitarhero3_removed"));
+                set_expansion(wm, Qnil);
                 break;
               case WIIUSE_CONNECT:
                 event_name = ID2SYM(rb_intern("connected"));
