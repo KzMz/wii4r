@@ -5,23 +5,20 @@
 
 <html>
 <head>
-  <title>left_joystick_magnitude (Wii::WiimoteManager::Wiimote::ClassicController)</title>
+  <title>released? (Wii::WiimoteManager::Wiimote::ClassicController)</title>
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
   <link rel="stylesheet" href="../../../../.././rdoc-style.css" type="text/css" media="screen" />
 </head>
 <body class="standalone-code">
   <pre>/*
  * call-seq:
- *      classicctrl.left_joystick_magnitude  -&gt; float
+ *      classicctrl.released?(button)        -&gt; true or false
  *
- * Returns the magnitude at which the left joystick is being held.
- * Range: [0, 1]
- * 0 =&gt; center
- * 1 =&gt; edges
+ * Returns true if &lt;i&gt;button&lt;/i&gt; is just released on &lt;i&gt;self&lt;/i&gt;.
  *
- */
- 
-static VALUE rb_cc_ljmag(VALUE self) {
+ */     
+
+static VALUE rb_cc_rel(VALUE self, VALUE arg) {
 </pre>
 </body>
 </html>

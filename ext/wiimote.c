@@ -891,7 +891,7 @@ static VALUE rb_wm_gforce(VALUE self) {
 
 /*
  * call-seq:
- *	wiimote.accel_threshold	-> int
+ *	wiimote.accel_threshold	-> float
  *
  * Returns the accelerometer event threshold for <i>self</i>.
  *
@@ -905,7 +905,7 @@ static VALUE rb_wm_accel_threshold(VALUE self) {
 
 /*
  * call-seq:
- *	wiimote.accel_threshold = t	-> int
+ *	wiimote.accel_threshold = t	-> float
  *
  * Sets the accelerometer event threshold for <i>self</i>.
  *
@@ -914,13 +914,13 @@ static VALUE rb_wm_accel_threshold(VALUE self) {
 static VALUE rb_wm_set_accel_threshold(VALUE self, VALUE arg) {
   wiimote *wm;
   Data_Get_Struct(self, wiimote, wm);
-  wiiuse_set_accel_threshold(wm, NUM2INT(arg));
+  wiiuse_set_accel_threshold(wm, (float)NUM2DBL(arg));
   return Qnil;
 }
 
 /*
  * call-seq:
- *	wiimote.orient_threshold	-> int
+ *	wiimote.orient_threshold	-> float
  *
  * Returns the orientation event threshold for <i>self</i>.
  *
@@ -934,7 +934,7 @@ static VALUE rb_wm_orient_threshold(VALUE self) {
 
 /*
  * call-seq:
- *	wiimote.orient_threshold = t	-> int
+ *	wiimote.orient_threshold = t	-> float
  *
  * Sets the orientation event threshold for <i>self</i>.
  *
@@ -943,7 +943,43 @@ static VALUE rb_wm_orient_threshold(VALUE self) {
 static VALUE rb_wm_set_orient_threshold(VALUE self, VALUE arg) {
   wiimote *wm;
   Data_Get_Struct(self, wiimote, wm);
-  wiiuse_set_orient_threshold(wm,rb_float_new(arg));
+  wiiuse_set_orient_threshold(wm,(float)NUM2DBL(arg));
+  return Qnil;
+}
+
+/*
+ * call-seq:
+ *	wiimote.nunchuk_accel_threshold = t	-> float
+ *
+ * Sets the accelerometer event threshold for the nunchuk attached to <i>self</i>.
+ *
+ */
+
+static VALUE rb_wm_set_nun_athreshold(VALUE self, VALUE arg) {
+  wiimote *wm;
+  VALUE nun = rb_funcall(self, rb_intern("has_nunchuk?"), 0, NULL);
+  if(nun == Qtrue) {
+    Data_Get_Struct(self, wiimote, wm);
+    wiiuse_set_nunchuk_accel_threshold(wm, (float)NUM2DBL(arg));
+  }
+  return Qnil;
+}
+
+/*
+ * call-seq:
+ *	wiimote.nunchuk_orient_threshold = t	-> float
+ *
+ * Sets the orientation event threshold for the nunchuk attached to <i>self</i>.
+ *
+ */
+
+static VALUE rb_wm_set_nun_othreshold(VALUE self, VALUE arg) {
+  wiimote *wm;
+  VALUE nun = rb_funcall(self, rb_intern("has_nunchuk?"), 0, NULL);
+  if(nun == Qtrue) {
+    Data_Get_Struct(self, wiimote, wm);
+    wiiuse_set_nunchuk_orient_threshold(wm, (float)NUM2DBL(arg));
+  }
   return Qnil;
 }
 
@@ -1012,8 +1048,8 @@ void init_wiimote(void) {
   rb_define_method(wii_class, "gravity_force", rb_wm_gforce, 0);
   rb_define_method(wii_class, "orient_threshold", rb_wm_orient_threshold, 0);
   rb_define_method(wii_class, "orient_threshold=", rb_wm_set_orient_threshold, 1);
-  //rb_define_method(wii_class, "nunchuk_orient_threshold=", rb_wm_set_nun_othreshold, 1);
-  //rb_define_method(wii_class, "nunchuk_accel_threshold=", rb_wm_set_nun_athreshold, 1);
+  rb_define_method(wii_class, "nunchuk_orient_threshold=", rb_wm_set_nun_othreshold, 1);
+  rb_define_method(wii_class, "nunchuk_accel_threshold=", rb_wm_set_nun_athreshold, 1);
   rb_define_method(wii_class, "accel_threshold", rb_wm_accel_threshold, 0);
   rb_define_method(wii_class, "accel_threshold=", rb_wm_set_accel_threshold, 1);
 	

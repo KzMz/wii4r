@@ -5,23 +5,20 @@
 
 <html>
 <head>
-  <title>whammy_bar (Wii::WiimoteManager::Wiimote::GH3Controller)</title>
+  <title>held? (Wii::WiimoteManager::Wiimote::GH3Controller)</title>
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
   <link rel="stylesheet" href="../../../../.././rdoc-style.css" type="text/css" media="screen" />
 </head>
 <body class="standalone-code">
   <pre>/*
  * call-seq:
- *      gh3ctrl.whammy_bar   -&gt; float
+ *      gh3ctrl.held?(button)        -&gt; true of false
  *
- * Returns the magnitude at which the whammy bar is being held.
- * Range: [0, 1]
- * 0 =&gt; not pressed
- * 1 =&gt; fully pressed
+ * Returns true if &lt;i&gt;button&lt;/i&gt; is being held on &lt;i&gt;self&lt;/i&gt;.
  *
  */
-
-static VALUE rb_gh3_wbar(VALUE self) {
+ 
+static VALUE rb_gh3_held(VALUE self, VALUE arg) {
 </pre>
 </body>
 </html>

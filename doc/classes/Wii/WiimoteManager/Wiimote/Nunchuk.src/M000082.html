@@ -5,20 +5,22 @@
 
 <html>
 <head>
-  <title>acceleration (Wii::WiimoteManager::Wiimote::Nunchuk)</title>
+  <title>pitch (Wii::WiimoteManager::Wiimote::Nunchuk)</title>
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
   <link rel="stylesheet" href="../../../../.././rdoc-style.css" type="text/css" media="screen" />
 </head>
 <body class="standalone-code">
   <pre>/*
  * call-seq:
- *      nunchuk.acceleration -&gt; array
+ *      nunchuk.pitch        -&gt; float
  *
- * Returns an array containing the three components of acceleration [x, y, z] of &lt;i&gt;self&lt;/i&gt;.
+ * Returns the rotation around X axis (works with motion sensing activated).
+ *
+ * Range: [-179.9, -0.1] [0.1, 179.9] 
  *
  */
 
-static VALUE rb_nun_accel(VALUE self) {
+static VALUE rb_nun_pitch(VALUE self) {
 </pre>
 </body>
 </html>

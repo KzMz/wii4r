@@ -5,24 +5,20 @@
 
 <html>
 <head>
-  <title>joystick_angle (Wii::WiimoteManager::Wiimote::GH3Controller)</title>
+  <title>released? (Wii::WiimoteManager::Wiimote::GH3Controller)</title>
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
   <link rel="stylesheet" href="../../../../.././rdoc-style.css" type="text/css" media="screen" />
 </head>
 <body class="standalone-code">
   <pre>/*
  * call-seq:
- *      gh3ctrl.joystick_angle       -&gt; int
+ *      gh3ctrl.released?(button)    -&gt; true or false
  *
- * Returns the angle at which the joystick is being held.
- * 0   =&gt; Straight up
- * 90  =&gt; right
- * 180 =&gt; down
- * 270 =&gt; left
+ * Returns true if &lt;i&gt;button&lt;/i&gt; is just released on &lt;i&gt;self&lt;/i&gt;.
  *
- */
+ */     
 
-static VALUE rb_gh3_jangle(VALUE self) {
+static VALUE rb_gh3_rel(VALUE self, VALUE arg) {
 </pre>
 </body>
 </html>

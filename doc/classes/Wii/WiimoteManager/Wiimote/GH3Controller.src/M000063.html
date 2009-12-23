@@ -5,23 +5,23 @@
 
 <html>
 <head>
-  <title>joystick_magnitude (Wii::WiimoteManager::Wiimote::GH3Controller)</title>
+  <title>whammy_bar (Wii::WiimoteManager::Wiimote::GH3Controller)</title>
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
   <link rel="stylesheet" href="../../../../.././rdoc-style.css" type="text/css" media="screen" />
 </head>
 <body class="standalone-code">
   <pre>/*
  * call-seq:
- *      gh3ctrl.joystick_magnitude   -&gt; float
+ *      gh3ctrl.whammy_bar   -&gt; float
  *
- * Returns the magnitude at which the joystick is being held.
+ * Returns the magnitude at which the whammy bar is being held.
  * Range: [0, 1]
- * 0 =&gt; center
- * 1 =&gt; edges
+ * 0 =&gt; not pressed
+ * 1 =&gt; fully pressed
  *
  */
 
-static VALUE rb_gh3_jmag(VALUE self) {
+static VALUE rb_gh3_wbar(VALUE self) {
 </pre>
 </body>
 </html>

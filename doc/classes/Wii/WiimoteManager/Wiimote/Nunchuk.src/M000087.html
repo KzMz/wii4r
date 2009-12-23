@@ -5,26 +5,20 @@
 
 <html>
 <head>
-  <title>joystick_magnitude (Wii::WiimoteManager::Wiimote::Nunchuk)</title>
+  <title>accel_thresold (Wii::WiimoteManager::Wiimote::Nunchuk)</title>
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
   <link rel="stylesheet" href="../../../../.././rdoc-style.css" type="text/css" media="screen" />
 </head>
 <body class="standalone-code">
   <pre>/*
  * call-seq:
- *      nunchuk.joystick_magnitude   -&gt; float
+ *      wiimote.accel_threshold      -&gt; int
  *
- * Returns the magnitude at which the joystick is being held.
- *
- * Range: [0, 1]
- *
- * 0 =&gt; center
- *
- * 1 =&gt; edges
+ * Returns the accelerometer event threshold for &lt;i&gt;self&lt;/i&gt;.
  *
  */
 
-static VALUE rb_nun_jmag(VALUE self) {
+static VALUE rb_nun_athreshold(VALUE self) {
 </pre>
 </body>
 </html>

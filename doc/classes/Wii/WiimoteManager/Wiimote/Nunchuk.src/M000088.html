@@ -5,20 +5,28 @@
 
 <html>
 <head>
-  <title>acceleration (Wii::WiimoteManager::Wiimote::Nunchuk)</title>
+  <title>joystick_angle (Wii::WiimoteManager::Wiimote::Nunchuk)</title>
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
   <link rel="stylesheet" href="../../../../.././rdoc-style.css" type="text/css" media="screen" />
 </head>
 <body class="standalone-code">
   <pre>/*
  * call-seq:
- *      nunchuk.acceleration -&gt; array
+ *      nunchuk.joystick_angle       -&gt; int
  *
- * Returns an array containing the three components of acceleration [x, y, z] of &lt;i&gt;self&lt;/i&gt;.
+ * Returns the angle at which the joystick is being held.
+ *
+ * 0   =&gt; Straight up
+ *
+ * 90  =&gt; right
+ *
+ * 180 =&gt; down
+ *
+ * 270 =&gt; left
  *
  */
 
-static VALUE rb_nun_accel(VALUE self) {
+static VALUE rb_nun_jangle(VALUE self) {
 </pre>
 </body>
 </html>
