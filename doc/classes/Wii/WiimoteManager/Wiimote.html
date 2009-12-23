@@ -102,7 +102,7 @@ functionalities. A <a href="Wiimote.html">Wiimote</a> object can:
 <li>manage pressed, held, released buttons
 
 </li>
-<li>access battery level, <a href="Wiimote.html#M000050">acceleration</a>
+<li>access battery level, <a href="Wiimote.html#M000051">acceleration</a>
 vector and gravity vector
 
 </li>
@@ -120,16 +120,17 @@ vector and gravity vector
       <a href="#M000032">absolute_pitch</a>&nbsp;&nbsp;
       <a href="#M000037">absolute_position</a>&nbsp;&nbsp;
       <a href="#M000030">absolute_roll</a>&nbsp;&nbsp;
-      <a href="#M000056">accel_threshold</a>&nbsp;&nbsp;
-      <a href="#M000057">accel_threshold=</a>&nbsp;&nbsp;
-      <a href="#M000050">acceleration</a>&nbsp;&nbsp;
-      <a href="#M000048">aspect_ratio</a>&nbsp;&nbsp;
-      <a href="#M000047">aspect_ratio=</a>&nbsp;&nbsp;
-      <a href="#M000049">battery_level</a>&nbsp;&nbsp;
+      <a href="#M000057">accel_threshold</a>&nbsp;&nbsp;
+      <a href="#M000058">accel_threshold=</a>&nbsp;&nbsp;
+      <a href="#M000051">acceleration</a>&nbsp;&nbsp;
+      <a href="#M000049">aspect_ratio</a>&nbsp;&nbsp;
+      <a href="#M000048">aspect_ratio=</a>&nbsp;&nbsp;
+      <a href="#M000050">battery_level</a>&nbsp;&nbsp;
       <a href="#M000020">connected?</a>&nbsp;&nbsp;
       <a href="#M000038">distance</a>&nbsp;&nbsp;
+      <a href="#M000041">exp</a>&nbsp;&nbsp;
       <a href="#M000021">expansion?</a>&nbsp;&nbsp;
-      <a href="#M000051">gravity_force</a>&nbsp;&nbsp;
+      <a href="#M000052">gravity_force</a>&nbsp;&nbsp;
       <a href="#M000023">has_classic_controller?</a>&nbsp;&nbsp;
       <a href="#M000024">has_guitar_hero_controller?</a>&nbsp;&nbsp;
       <a href="#M000022">has_nunchuk?</a>&nbsp;&nbsp;
@@ -141,10 +142,10 @@ vector and gravity vector
       <a href="#M000014">leds=</a>&nbsp;&nbsp;
       <a href="#M000018">motion_sensing=</a>&nbsp;&nbsp;
       <a href="#M000017">motion_sensing?</a>&nbsp;&nbsp;
-      <a href="#M000055">nunchuk_accel_threshold=</a>&nbsp;&nbsp;
-      <a href="#M000054">nunchuk_orient_threshold=</a>&nbsp;&nbsp;
-      <a href="#M000052">orient_threshold</a>&nbsp;&nbsp;
-      <a href="#M000053">orient_threshold=</a>&nbsp;&nbsp;
+      <a href="#M000056">nunchuk_accel_threshold=</a>&nbsp;&nbsp;
+      <a href="#M000055">nunchuk_orient_threshold=</a>&nbsp;&nbsp;
+      <a href="#M000053">orient_threshold</a>&nbsp;&nbsp;
+      <a href="#M000054">orient_threshold=</a>&nbsp;&nbsp;
       <a href="#M000031">pitch</a>&nbsp;&nbsp;
       <a href="#M000036">position</a>&nbsp;&nbsp;
       <a href="#M000025">pressed?</a>&nbsp;&nbsp;
@@ -153,18 +154,18 @@ vector and gravity vector
       <a href="#M000012">rumble!</a>&nbsp;&nbsp;
       <a href="#M000011">rumble=</a>&nbsp;&nbsp;
       <a href="#M000010">rumble?</a>&nbsp;&nbsp;
-      <a href="#M000041">sensitivity</a>&nbsp;&nbsp;
-      <a href="#M000042">sensitivity=</a>&nbsp;&nbsp;
-      <a href="#M000043">sensor_bar_position</a>&nbsp;&nbsp;
-      <a href="#M000044">sensor_bar_position=</a>&nbsp;&nbsp;
+      <a href="#M000042">sensitivity</a>&nbsp;&nbsp;
+      <a href="#M000043">sensitivity=</a>&nbsp;&nbsp;
+      <a href="#M000044">sensor_bar_position</a>&nbsp;&nbsp;
+      <a href="#M000045">sensor_bar_position=</a>&nbsp;&nbsp;
       <a href="#M000040">speaker?</a>&nbsp;&nbsp;
       <a href="#M000019">status</a>&nbsp;&nbsp;
       <a href="#M000013">stop!</a>&nbsp;&nbsp;
       <a href="#M000016">turn_off_leds!</a>&nbsp;&nbsp;
-      <a href="#M000058">using_accelerometer?</a>&nbsp;&nbsp;
+      <a href="#M000059">using_accelerometer?</a>&nbsp;&nbsp;
       <a href="#M000034">using_ir?</a>&nbsp;&nbsp;
-      <a href="#M000046">virtual_resolution</a>&nbsp;&nbsp;
-      <a href="#M000045">virtual_resolution=</a>&nbsp;&nbsp;
+      <a href="#M000047">virtual_resolution</a>&nbsp;&nbsp;
+      <a href="#M000046">virtual_resolution=</a>&nbsp;&nbsp;
       <a href="#M000033">yaw</a>&nbsp;&nbsp;
       </div>
     </div>
@@ -252,12 +253,12 @@ activated). Range: [-179.9, -0.1] [0.1, 179.9]
         </div>
       </div>
 
-      <div id="method-M000056" class="method-detail">
-        <a name="M000056"></a>
+      <div id="method-M000057" class="method-detail">
+        <a name="M000057"></a>
 
         <div class="method-heading">
-          <a href="Wiimote.src/M000056.html" target="Code" class="method-signature"
-            onclick="popupCode('Wiimote.src/M000056.html');return false;">
+          <a href="Wiimote.src/M000057.html" target="Code" class="method-signature"
+            onclick="popupCode('Wiimote.src/M000057.html');return false;">
           <span class="method-name">wiimote.accel_threshold      &rarr; float<br />
 </span>
           </a>
@@ -270,12 +271,12 @@ Returns the accelerometer event threshold for <em>self</em>.
         </div>
       </div>
 
-      <div id="method-M000057" class="method-detail">
-        <a name="M000057"></a>
+      <div id="method-M000058" class="method-detail">
+        <a name="M000058"></a>
 
         <div class="method-heading">
-          <a href="Wiimote.src/M000057.html" target="Code" class="method-signature"
-            onclick="popupCode('Wiimote.src/M000057.html');return false;">
+          <a href="Wiimote.src/M000058.html" target="Code" class="method-signature"
+            onclick="popupCode('Wiimote.src/M000058.html');return false;">
           <span class="method-name">wiimote.accel_threshold = t  &rarr; int<br />
 </span>
           </a>
@@ -288,12 +289,12 @@ Sets the accelerometer event threshold for <em>self</em>.
         </div>
       </div>
 
-      <div id="method-M000050" class="method-detail">
-        <a name="M000050"></a>
+      <div id="method-M000051" class="method-detail">
+        <a name="M000051"></a>
 
         <div class="method-heading">
-          <a href="Wiimote.src/M000050.html" target="Code" class="method-signature"
-            onclick="popupCode('Wiimote.src/M000050.html');return false;">
+          <a href="Wiimote.src/M000051.html" target="Code" class="method-signature"
+            onclick="popupCode('Wiimote.src/M000051.html');return false;">
           <span class="method-name">wiimote.acceleration &rarr; array<br />
 </span>
           </a>
@@ -302,17 +303,17 @@ Sets the accelerometer event threshold for <em>self</em>.
         <div class="method-description">
           <p>
 Returns an array containing the three components of <a
-href="Wiimote.html#M000050">acceleration</a> [x, y, z] of <em>self</em>.
+href="Wiimote.html#M000051">acceleration</a> [x, y, z] of <em>self</em>.
 </p>
         </div>
       </div>
 
-      <div id="method-M000048" class="method-detail">
-        <a name="M000048"></a>
+      <div id="method-M000049" class="method-detail">
+        <a name="M000049"></a>
 
         <div class="method-heading">
-          <a href="Wiimote.src/M000048.html" target="Code" class="method-signature"
-            onclick="popupCode('Wiimote.src/M000048.html');return false;">
+          <a href="Wiimote.src/M000049.html" target="Code" class="method-signature"
+            onclick="popupCode('Wiimote.src/M000049.html');return false;">
           <span class="method-name">wiimote.aspect_ratio &rarr; string<br />
 </span>
           </a>
@@ -325,12 +326,12 @@ Returns a string identificating the aspect ratio of the TV/monitor.
         </div>
       </div>
 
-      <div id="method-M000047" class="method-detail">
-        <a name="M000047"></a>
+      <div id="method-M000048" class="method-detail">
+        <a name="M000048"></a>
 
         <div class="method-heading">
-          <a href="Wiimote.src/M000047.html" target="Code" class="method-signature"
-            onclick="popupCode('Wiimote.src/M000047.html');return false;">
+          <a href="Wiimote.src/M000048.html" target="Code" class="method-signature"
+            onclick="popupCode('Wiimote.src/M000048.html');return false;">
           <span class="method-name">wiimote.aspect_ratio = ratio &rarr; (value of aspect ratio constant)<br />
 </span>
           </a>
@@ -343,12 +344,12 @@ Sets the aspect ratio of the TV/monitor of <em>self</em> to <em>ratio</em>.
         </div>
       </div>
 
-      <div id="method-M000049" class="method-detail">
-        <a name="M000049"></a>
+      <div id="method-M000050" class="method-detail">
+        <a name="M000050"></a>
 
         <div class="method-heading">
-          <a href="Wiimote.src/M000049.html" target="Code" class="method-signature"
-            onclick="popupCode('Wiimote.src/M000049.html');return false;">
+          <a href="Wiimote.src/M000050.html" target="Code" class="method-signature"
+            onclick="popupCode('Wiimote.src/M000050.html');return false;">
           <span class="method-name">wiimote.battery_level        &rarr; float<br />
 </span>
           </a>
@@ -399,6 +400,24 @@ ir source visible).
         </div>
       </div>
 
+      <div id="method-M000041" class="method-detail">
+        <a name="M000041"></a>
+
+        <div class="method-heading">
+          <a href="Wiimote.src/M000041.html" target="Code" class="method-signature"
+            onclick="popupCode('Wiimote.src/M000041.html');return false;">
+          <span class="method-name">wiimote.exp  &rarr; Nunchuk or ClassicController or GH3Controller<br />
+</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Returns an object representating the expansion attached to <em>self</em>.
+</p>
+        </div>
+      </div>
+
       <div id="method-M000021" class="method-detail">
         <a name="M000021"></a>
 
@@ -414,18 +433,18 @@ wiimote.expansion?(exp) &rarr; true or false<br />
         <div class="method-description">
           <p>
 The first form returns true if a expansion is inserted into <em>self</em>.
-The second one return true if the expansion <em>exp</em> is inserted into
-<em>self</em>.
+The second one return true if the expansion <em><a
+href="Wiimote.html#M000041">exp</a></em> is inserted into <em>self</em>.
 </p>
         </div>
       </div>
 
-      <div id="method-M000051" class="method-detail">
-        <a name="M000051"></a>
+      <div id="method-M000052" class="method-detail">
+        <a name="M000052"></a>
 
         <div class="method-heading">
-          <a href="Wiimote.src/M000051.html" target="Code" class="method-signature"
-            onclick="popupCode('Wiimote.src/M000051.html');return false;">
+          <a href="Wiimote.src/M000052.html" target="Code" class="method-signature"
+            onclick="popupCode('Wiimote.src/M000052.html');return false;">
           <span class="method-name">wiimote.gravity_force        &rarr; array<br />
 </span>
           </a>
@@ -653,12 +672,12 @@ otherwise.
         </div>
       </div>
 
-      <div id="method-M000055" class="method-detail">
-        <a name="M000055"></a>
+      <div id="method-M000056" class="method-detail">
+        <a name="M000056"></a>
 
         <div class="method-heading">
-          <a href="Wiimote.src/M000055.html" target="Code" class="method-signature"
-            onclick="popupCode('Wiimote.src/M000055.html');return false;">
+          <a href="Wiimote.src/M000056.html" target="Code" class="method-signature"
+            onclick="popupCode('Wiimote.src/M000056.html');return false;">
           <span class="method-name">wiimote.nunchuk_accel_threshold = t  &rarr; int<br />
 </span>
           </a>
@@ -672,12 +691,12 @@ Sets the accelerometer event threshold for the nunchuk attached to
         </div>
       </div>
 
-      <div id="method-M000054" class="method-detail">
-        <a name="M000054"></a>
+      <div id="method-M000055" class="method-detail">
+        <a name="M000055"></a>
 
         <div class="method-heading">
-          <a href="Wiimote.src/M000054.html" target="Code" class="method-signature"
-            onclick="popupCode('Wiimote.src/M000054.html');return false;">
+          <a href="Wiimote.src/M000055.html" target="Code" class="method-signature"
+            onclick="popupCode('Wiimote.src/M000055.html');return false;">
           <span class="method-name">wiimote.nunchuk_orient_threshold = t &rarr; float<br />
 </span>
           </a>
@@ -691,12 +710,12 @@ Sets the orientation event threshold for the nunchuk attached to
         </div>
       </div>
 
-      <div id="method-M000052" class="method-detail">
-        <a name="M000052"></a>
+      <div id="method-M000053" class="method-detail">
+        <a name="M000053"></a>
 
         <div class="method-heading">
-          <a href="Wiimote.src/M000052.html" target="Code" class="method-signature"
-            onclick="popupCode('Wiimote.src/M000052.html');return false;">
+          <a href="Wiimote.src/M000053.html" target="Code" class="method-signature"
+            onclick="popupCode('Wiimote.src/M000053.html');return false;">
           <span class="method-name">wiimote.orient_threshold     &rarr; float<br />
 </span>
           </a>
@@ -709,12 +728,12 @@ Returns the orientation event threshold for <em>self</em>.
         </div>
       </div>
 
-      <div id="method-M000053" class="method-detail">
-        <a name="M000053"></a>
+      <div id="method-M000054" class="method-detail">
+        <a name="M000054"></a>
 
         <div class="method-heading">
-          <a href="Wiimote.src/M000053.html" target="Code" class="method-signature"
-            onclick="popupCode('Wiimote.src/M000053.html');return false;">
+          <a href="Wiimote.src/M000054.html" target="Code" class="method-signature"
+            onclick="popupCode('Wiimote.src/M000054.html');return false;">
           <span class="method-name">wiimote.orient_threshold = t &rarr; float<br />
 </span>
           </a>
@@ -881,12 +900,12 @@ Returns true if the <em>self</em> is rumbling.
         </div>
       </div>
 
-      <div id="method-M000041" class="method-detail">
-        <a name="M000041"></a>
+      <div id="method-M000042" class="method-detail">
+        <a name="M000042"></a>
 
         <div class="method-heading">
-          <a href="Wiimote.src/M000041.html" target="Code" class="method-signature"
-            onclick="popupCode('Wiimote.src/M000041.html');return false;">
+          <a href="Wiimote.src/M000042.html" target="Code" class="method-signature"
+            onclick="popupCode('Wiimote.src/M000042.html');return false;">
           <span class="method-name">wiimote.sensitivity  &rarr; int<br />
 </span>
           </a>
@@ -894,27 +913,8 @@ Returns true if the <em>self</em> is rumbling.
       
         <div class="method-description">
           <p>
-Returns the <a href="Wiimote.html#M000041">sensitivity</a> level of ir
+Returns the <a href="Wiimote.html#M000042">sensitivity</a> level of ir
 camera. Range: [1, 5]
-</p>
-        </div>
-      </div>
-
-      <div id="method-M000042" class="method-detail">
-        <a name="M000042"></a>
-
-        <div class="method-heading">
-          <a href="Wiimote.src/M000042.html" target="Code" class="method-signature"
-            onclick="popupCode('Wiimote.src/M000042.html');return false;">
-          <span class="method-name">wiimote.sensitivity = level  &rarr; int<br />
-</span>
-          </a>
-        </div>
-      
-        <div class="method-description">
-          <p>
-Sets the <a href="Wiimote.html#M000041">sensitivity</a> level of ir camera
-to <em>level</em>. The value will be truncated to 5 or 1.
 </p>
         </div>
       </div>
@@ -925,6 +925,25 @@ to <em>level</em>. The value will be truncated to 5 or 1.
         <div class="method-heading">
           <a href="Wiimote.src/M000043.html" target="Code" class="method-signature"
             onclick="popupCode('Wiimote.src/M000043.html');return false;">
+          <span class="method-name">wiimote.sensitivity = level  &rarr; int<br />
+</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Sets the <a href="Wiimote.html#M000042">sensitivity</a> level of ir camera
+to <em>level</em>. The value will be truncated to 5 or 1.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000044" class="method-detail">
+        <a name="M000044"></a>
+
+        <div class="method-heading">
+          <a href="Wiimote.src/M000044.html" target="Code" class="method-signature"
+            onclick="popupCode('Wiimote.src/M000044.html');return false;">
           <span class="method-name">wiimote.sensor_bar_position  &rarr; string<br />
 </span>
           </a>
@@ -939,12 +958,12 @@ href="Wiimote.html#M000036">position</a> of the sensor bar relative to
         </div>
       </div>
 
-      <div id="method-M000044" class="method-detail">
-        <a name="M000044"></a>
+      <div id="method-M000045" class="method-detail">
+        <a name="M000045"></a>
 
         <div class="method-heading">
-          <a href="Wiimote.src/M000044.html" target="Code" class="method-signature"
-            onclick="popupCode('Wiimote.src/M000044.html');return false;">
+          <a href="Wiimote.src/M000045.html" target="Code" class="method-signature"
+            onclick="popupCode('Wiimote.src/M000045.html');return false;">
           <span class="method-name">wiimote.sensor_bar_position = pos    &rarr; int<br />
 </span>
           </a>
@@ -1040,8 +1059,8 @@ Turns off all the leds of <em>self</em>.
         </div>
       </div>
 
-      <div id="method-M000058" class="method-detail">
-        <a name="M000058"></a>
+      <div id="method-M000059" class="method-detail">
+        <a name="M000059"></a>
 
         <div class="method-heading">
           <span class="method-name">using_accelerometer?</span><span class="method-args">()</span>
@@ -1072,12 +1091,12 @@ Returns true if ir tracking is enabled, false otherwise.
         </div>
       </div>
 
-      <div id="method-M000046" class="method-detail">
-        <a name="M000046"></a>
+      <div id="method-M000047" class="method-detail">
+        <a name="M000047"></a>
 
         <div class="method-heading">
-          <a href="Wiimote.src/M000046.html" target="Code" class="method-signature"
-            onclick="popupCode('Wiimote.src/M000046.html');return false;">
+          <a href="Wiimote.src/M000047.html" target="Code" class="method-signature"
+            onclick="popupCode('Wiimote.src/M000047.html');return false;">
           <span class="method-name">wiimote.virtual_resolution   &rarr; array<br />
 </span>
           </a>
@@ -1091,12 +1110,12 @@ y].
         </div>
       </div>
 
-      <div id="method-M000045" class="method-detail">
-        <a name="M000045"></a>
+      <div id="method-M000046" class="method-detail">
+        <a name="M000046"></a>
 
         <div class="method-heading">
-          <a href="Wiimote.src/M000045.html" target="Code" class="method-signature"
-            onclick="popupCode('Wiimote.src/M000045.html');return false;">
+          <a href="Wiimote.src/M000046.html" target="Code" class="method-signature"
+            onclick="popupCode('Wiimote.src/M000046.html');return false;">
           <span class="method-name">wiimote.virtual_resolution = resolution_array        &rarr;     array<br />
 </span>
           </a>

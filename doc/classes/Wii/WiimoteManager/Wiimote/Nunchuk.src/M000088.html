@@ -5,28 +5,20 @@
 
 <html>
 <head>
-  <title>joystick_angle (Wii::WiimoteManager::Wiimote::Nunchuk)</title>
+  <title>accel_thresold (Wii::WiimoteManager::Wiimote::Nunchuk)</title>
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
   <link rel="stylesheet" href="../../../../.././rdoc-style.css" type="text/css" media="screen" />
 </head>
 <body class="standalone-code">
   <pre>/*
  * call-seq:
- *      nunchuk.joystick_angle       -&gt; float
+ *      wiimote.accel_threshold      -&gt; int
  *
- * Returns the angle at which the joystick is being held.
- *
- * 0   =&gt; Straight up
- *
- * 90  =&gt; right
- *
- * 180 =&gt; down
- *
- * 270 =&gt; left
+ * Returns the accelerometer event threshold for &lt;i&gt;self&lt;/i&gt;.
  *
  */
 
-static VALUE rb_nun_jangle(VALUE self) {
+static VALUE rb_nun_athreshold(VALUE self) {
 </pre>
 </body>
 </html>

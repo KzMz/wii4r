@@ -5,20 +5,20 @@
 
 <html>
 <head>
-  <title>acceleration (Wii::WiimoteManager::Wiimote::Nunchuk)</title>
+  <title>accel_threshold= (Wii::WiimoteManager::Wiimote)</title>
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-  <link rel="stylesheet" href="../../../../.././rdoc-style.css" type="text/css" media="screen" />
+  <link rel="stylesheet" href="../../../.././rdoc-style.css" type="text/css" media="screen" />
 </head>
 <body class="standalone-code">
   <pre>/*
  * call-seq:
- *      nunchuk.acceleration -&gt; array
+ *      wiimote.accel_threshold = t  -&gt; int
  *
- * Returns an array containing the three components of acceleration [x, y, z] of &lt;i&gt;self&lt;/i&gt;.
+ * Sets the accelerometer event threshold for &lt;i&gt;self&lt;/i&gt;.
  *
  */
 
-static VALUE rb_nun_accel(VALUE self) {
+static VALUE rb_wm_set_accel_threshold(VALUE self, VALUE arg) {
 </pre>
 </body>
 </html>

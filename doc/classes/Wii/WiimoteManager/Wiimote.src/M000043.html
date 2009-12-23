@@ -5,20 +5,21 @@
 
 <html>
 <head>
-  <title>sensor_bar_position (Wii::WiimoteManager::Wiimote)</title>
+  <title>sensitivity= (Wii::WiimoteManager::Wiimote)</title>
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
   <link rel="stylesheet" href="../../../.././rdoc-style.css" type="text/css" media="screen" />
 </head>
 <body class="standalone-code">
   <pre>/*
  * call-seq:
- *      wiimote.sensor_bar_position  -&gt; string
+ *      wiimote.sensitivity = level  -&gt; int
  *
- * Returns a string which represents the position of the sensor bar relative to &lt;i&gt;self&lt;/i&gt;.
+ * Sets the sensitivity level of ir camera to &lt;i&gt;level&lt;/i&gt;.
+ * The value will be truncated to 5 or 1.
  *
  */
 
-static VALUE rb_wm_pos(VALUE self) {
+static VALUE rb_wm_set_sens(VALUE self, VALUE arg) {
 </pre>
 </body>
 </html>

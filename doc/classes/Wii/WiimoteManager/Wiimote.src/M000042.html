@@ -5,21 +5,21 @@
 
 <html>
 <head>
-  <title>sensitivity= (Wii::WiimoteManager::Wiimote)</title>
+  <title>sensitivity (Wii::WiimoteManager::Wiimote)</title>
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
   <link rel="stylesheet" href="../../../.././rdoc-style.css" type="text/css" media="screen" />
 </head>
 <body class="standalone-code">
   <pre>/*
  * call-seq:
- *      wiimote.sensitivity = level  -&gt; int
+ *      wiimote.sensitivity  -&gt; int
  *
- * Sets the sensitivity level of ir camera to &lt;i&gt;level&lt;/i&gt;.
- * The value will be truncated to 5 or 1.
+ * Returns the sensitivity level of ir camera.
+ * Range: [1, 5]
  *
  */
 
-static VALUE rb_wm_set_sens(VALUE self, VALUE arg) {
+static VALUE rb_wm_sensitivity(VALUE self) {
 </pre>
 </body>
 </html>

@@ -5,20 +5,20 @@
 
 <html>
 <head>
-  <title>aspect_ratio= (Wii::WiimoteManager::Wiimote)</title>
+  <title>virtual_resolution (Wii::WiimoteManager::Wiimote)</title>
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
   <link rel="stylesheet" href="../../../.././rdoc-style.css" type="text/css" media="screen" />
 </head>
 <body class="standalone-code">
   <pre>/*
  * call-seq:
- *      wiimote.aspect_ratio = ratio -&gt; (value of aspect ratio constant)
+ *      wiimote.virtual_resolution   -&gt; array
  *
- * Sets the aspect ratio of the TV/monitor of &lt;i&gt;self&lt;/i&gt; to &lt;i&gt;ratio&lt;/i&gt;.
+ * Returns an array containing the virtual resolution [n. pixel x, n. pixel y].
  *
  */
 
-static VALUE rb_wm_set_aratio(VALUE self, VALUE arg) {
+static VALUE rb_wm_vres(VALUE self) {
 </pre>
 </body>
 </html>

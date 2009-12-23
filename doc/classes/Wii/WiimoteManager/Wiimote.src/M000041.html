@@ -5,21 +5,20 @@
 
 <html>
 <head>
-  <title>sensitivity (Wii::WiimoteManager::Wiimote)</title>
+  <title>exp (Wii::WiimoteManager::Wiimote)</title>
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
   <link rel="stylesheet" href="../../../.././rdoc-style.css" type="text/css" media="screen" />
 </head>
 <body class="standalone-code">
   <pre>/*
  * call-seq:
- *      wiimote.sensitivity  -&gt; int
+ *      wiimote.exp  -&gt; Nunchuk or ClassicController or GH3Controller
  *
- * Returns the sensitivity level of ir camera.
- * Range: [1, 5]
+ * Returns an object representating the expansion attached to &lt;i&gt;self&lt;/i&gt;.
  *
  */
 
-static VALUE rb_wm_sensitivity(VALUE self) {
+static VALUE rb_wm_get_exp(VALUE self) {
 </pre>
 </body>
 </html>

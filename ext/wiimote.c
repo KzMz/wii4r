@@ -988,6 +988,18 @@ static VALUE rb_wm_set_nun_othreshold(VALUE self, VALUE arg) {
 }
 
 /*
+ * call-seq:
+ *	wiimote.exp	-> Nunchuk or ClassicController or GH3Controller
+ *
+ * Returns an object representating the expansion attached to <i>self</i>.
+ *
+ */
+
+static VALUE rb_wm_get_exp(VALUE self) {
+  return rb_iv_get(self, "@exp");
+}
+
+/*
  * 
  * Provides a set of methods to access Wiimote functionalities.
  * A Wiimote object can:
@@ -1039,6 +1051,7 @@ void init_wiimote(void) {
   rb_define_method(wii_class, "ir=", rb_wm_set_ir, 1);
  // rb_define_method(wii_class, "speaker=", rb_wm_set_speaker, 1);
   rb_define_method(wii_class, "speaker?", rb_wm_speaker, 0);
+  rb_define_method(wii_class, "exp", rb_wm_get_exp, 0);
   rb_define_method(wii_class, "sensitivity", rb_wm_sensitivity, 0);
   rb_define_method(wii_class, "sensitivity=", rb_wm_set_sens, 1);
   rb_define_method(wii_class, "sensor_bar_position", rb_wm_pos, 0);

@@ -32,6 +32,15 @@ VALUE cm_class =  Qnil;
 //Wiimote class
 VALUE wii_class = Qnil;
 
+//ClassicController class
+VALUE cc_class = Qnil;
+
+//GH3Controller class
+VALUE gh3_class = Qnil;
+
+//Nunchuk class
+VALUE nun_class = Qnil;
+
 //define Wiimote class
 extern void init_wiimote(void);
 
@@ -166,3 +175,4 @@ void Init_wii4r() {
   init_gh3();
   init_cc();
 }
+
