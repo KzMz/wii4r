@@ -905,7 +905,7 @@ static VALUE rb_wm_accel_threshold(VALUE self) {
 
 /*
  * call-seq:
- *	wiimote.accel_threshold = t	-> float
+ *	wiimote.accel_threshold = t	-> int
  *
  * Sets the accelerometer event threshold for <i>self</i>.
  *
@@ -914,7 +914,7 @@ static VALUE rb_wm_accel_threshold(VALUE self) {
 static VALUE rb_wm_set_accel_threshold(VALUE self, VALUE arg) {
   wiimote *wm;
   Data_Get_Struct(self, wiimote, wm);
-  wiiuse_set_accel_threshold(wm, (float)NUM2DBL(arg));
+  wiiuse_set_accel_threshold(wm, NUM2INT(arg));
   return Qnil;
 }
 
@@ -949,7 +949,7 @@ static VALUE rb_wm_set_orient_threshold(VALUE self, VALUE arg) {
 
 /*
  * call-seq:
- *	wiimote.nunchuk_accel_threshold = t	-> float
+ *	wiimote.nunchuk_accel_threshold = t	-> int
  *
  * Sets the accelerometer event threshold for the nunchuk attached to <i>self</i>.
  *
@@ -960,7 +960,7 @@ static VALUE rb_wm_set_nun_athreshold(VALUE self, VALUE arg) {
   VALUE nun = rb_funcall(self, rb_intern("has_nunchuk?"), 0, NULL);
   if(nun == Qtrue) {
     Data_Get_Struct(self, wiimote, wm);
-    wiiuse_set_nunchuk_accel_threshold(wm, (float)NUM2DBL(arg));
+    wiiuse_set_nunchuk_accel_threshold(wm, NUM2INT(arg));
   }
   return Qnil;
 }

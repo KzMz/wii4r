@@ -37,6 +37,16 @@ extern void init_wiimote(void);
 
 //define WiimoteManager class
 extern void init_wiimotemanager(void);
+
+//define ClassicController class
+extern void init_cc(void);
+
+//define GH3Controller class
+extern void init_gh3(void);
+
+//define Nunchuk class
+extern void init_nunchuk(void);
+
 /*
  *  Document-class: Wii
  *
@@ -152,4 +162,7 @@ void Init_wii4r() {
 
   init_wiimotemanager();
   init_wiimote();
+  init_nunchuk();
+  init_gh3();
+  init_cc();
 }
