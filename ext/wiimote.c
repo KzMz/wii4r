@@ -987,6 +987,25 @@ static VALUE rb_wm_set_nun_othreshold(VALUE self, VALUE arg) {
   return Qnil;
 }
 
+static VALUE rb_wm_set_speaker(VALUE self, VALUE arg) {
+  wiimote *wm;
+  Data_Get_Struct(self, wiimote, wm);
+  if(!wm) return Qnil;
+  int speaker = 0;
+  if(arg == Qtrue) speaker = 1;
+  wiiuse_set_speaker(wm, speaker);
+  return Qnil;
+}
+
+static VALUE rb_wm_play_sound(VALUE self) {
+  wiimote *wm;
+  Data_Get_Struct(self, wiimote, wm);
+  if(!wm) return Qnil;
+  byte song[20] = {0xC3,0xC3,0xC3,0xC3,0xC3,0xC3,0xC3,0xC3,0xC3,0xC3, 0xC3,0xC3,0xC3,0xC3,0xC3,0xC3,0xC3,0xC3,0xC3,0xC3};
+  wiiuse_play_sound(wm, song, 20);
+  return Qnil;
+}
+
 /*
  * call-seq:
  *	wiimote.exp	-> Nunchuk or ClassicController or GH3Controller
@@ -1049,8 +1068,9 @@ void init_wiimote(void) {
   rb_define_method(wii_class, "absolute_position", rb_wm_ir_acursor, 0);
   rb_define_method(wii_class, "distance", rb_wm_ir_z, 0);
   rb_define_method(wii_class, "ir=", rb_wm_set_ir, 1);
- // rb_define_method(wii_class, "speaker=", rb_wm_set_speaker, 1);
+  rb_define_method(wii_class, "speaker=", rb_wm_set_speaker, 1);
   rb_define_method(wii_class, "speaker?", rb_wm_speaker, 0);
+  rb_define_method(wii_class, "play_sound", rb_wm_play_sound, 0);
   rb_define_method(wii_class, "exp", rb_wm_get_exp, 0);
   rb_define_method(wii_class, "sensitivity", rb_wm_sensitivity, 0);
   rb_define_method(wii_class, "sensitivity=", rb_wm_set_sens, 1);

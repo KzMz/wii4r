@@ -77,7 +77,10 @@ static VALUE rb_cm_connected(VALUE self) {
 static VALUE rb_cm_cleanup(VALUE self) {
   connman * conn;
   Data_Get_Struct(self, connman, conn);
+  if(!conn) return Qnil;
+  if(!(conn->wms)) return Qnil;
   wiiuse_cleanup(conn->wms, conn->n);
+  conn->wms = NULL;
   VALUE ary = rb_iv_get(self, "@wiimotes");
   rb_funcall(ary, rb_intern("clear"), 0, NULL);
   return Qnil;
@@ -110,6 +113,7 @@ static VALUE rb_cm_wiimotes(VALUE self) {
 static VALUE rb_cm_found(VALUE self) {
   connman * conn;
   Data_Get_Struct(self, connman, conn);
+  if(!conn) return Qnil;
   VALUE timeout = rb_const_get(wii_mod, rb_intern("TIMEOUT"));
   VALUE max = rb_const_get(wii_mod, rb_intern("MAX_WIIMOTES"));
   int found = wiiuse_find(conn->wms, NUM2INT(max), NUM2INT(timeout));
@@ -127,14 +131,20 @@ static VALUE rb_cm_found(VALUE self) {
 static VALUE rb_cm_connect(VALUE self) {
   connman *conn;
   Data_Get_Struct(self, connman, conn);
-  VALUE max = rb_const_get(wii_mod, rb_intern("MAX_WIIMOTES"));
-  VALUE timeout = rb_const_get(wii_mod, rb_intern("TIMEOUT"));
-  int found = wiiuse_find(conn->wms, NUM2INT(max), NUM2INT(timeout));
-  if(!found) return INT2NUM(0); 
-  int connected = wiiuse_connect(conn->wms, NUM2INT(max));
+  if(!conn) return Qnil;
+  
   int i = 0;
   int led = 1;
+  int connected;
+  int found;
+  
   VALUE wm, exp = Qnil;
+  VALUE max = rb_const_get(wii_mod, rb_intern("MAX_WIIMOTES"));
+  VALUE timeout = rb_const_get(wii_mod, rb_intern("TIMEOUT"));
+  found = wiiuse_find(conn->wms, NUM2INT(max), NUM2INT(timeout));
+  if(!found) return INT2NUM(0); 
+  connected = wiiuse_connect(conn->wms, NUM2INT(max));
+
   for(; i < NUM2INT(max); i++) {
     if(wm_connected(conn->wms[i])) {
       switch(led) {
@@ -195,20 +205,22 @@ static VALUE rb_cm_poll(VALUE self) {
       VALUE wiimotes = rb_iv_get(self, "@wiimotes");
       connman *conn;
       Data_Get_Struct(self, connman, conn);
+      if(!conn) return Qnil;
+      
+      int i = 0;
+      VALUE ary, argv[1], wm, event_name = Qnil, exp = Qnil;
+      wiimote * wmm;
+      
       VALUE max = rb_const_get(wii_mod, rb_intern("MAX_WIIMOTES"));
       if(wiiuse_poll(conn->wms, NUM2INT(max))) {
-        int i = 0;
-        VALUE ary;
         for(; i < NUM2INT(connected); i++) {
-          VALUE argv[1];
           argv[0] = INT2NUM(i);
-          VALUE wm = rb_ary_aref(1, argv, wiimotes);
-          wiimote * wmm;
+          wm = rb_ary_aref(1, argv, wiimotes);
           Data_Get_Struct(wm, wiimote, wmm);
+          if(!wmm) return Qnil;
           if(wmm->event != WIIUSE_NONE) {
             ary = rb_ary_new();
             rb_ary_push(ary, wm);
-            VALUE event_name = Qnil;
             switch(wmm->event) {
               case WIIUSE_EVENT:
                 event_name = ID2SYM(rb_intern("generic"));
@@ -227,8 +239,8 @@ static VALUE rb_cm_poll(VALUE self) {
                 break;
               case WIIUSE_NUNCHUK_INSERTED:
                 event_name = ID2SYM(rb_intern("nunchuk_inserted"));
-                VALUE nun = Data_Wrap_Struct(nun_class, NULL, NULL, &(wmm->exp.nunchuk));
-                set_expansion(wm, nun);
+                exp = Data_Wrap_Struct(nun_class, NULL, NULL, &(wmm->exp.nunchuk));
+                set_expansion(wm, exp);
                 break;
               case WIIUSE_NUNCHUK_REMOVED:
                 event_name = ID2SYM(rb_intern("nunchuk_removed"));
@@ -236,8 +248,8 @@ static VALUE rb_cm_poll(VALUE self) {
                 break;
               case WIIUSE_CLASSIC_CTRL_INSERTED:
                 event_name = ID2SYM(rb_intern("classic_inserted"));
-                VALUE cc = Data_Wrap_Struct(cc_class, NULL, NULL, &(wmm->exp.classic));
-                set_expansion(wm, cc);
+                exp = Data_Wrap_Struct(cc_class, NULL, NULL, &(wmm->exp.classic));
+                set_expansion(wm, exp);
                 break;
               case WIIUSE_CLASSIC_CTRL_REMOVED:
                 event_name = ID2SYM(rb_intern("classic_removed"));
@@ -245,8 +257,8 @@ static VALUE rb_cm_poll(VALUE self) {
                 break;
               case WIIUSE_GUITAR_HERO_3_CTRL_INSERTED:
                 event_name = ID2SYM(rb_intern("guitarhero3_inserted"));
-                VALUE gh3 = Data_Wrap_Struct(gh3_class, NULL, NULL, &(wmm->exp.gh3));
-                set_expansion(wm, gh3);
+                exp = Data_Wrap_Struct(gh3_class, NULL, NULL, &(wmm->exp.gh3));
+                set_expansion(wm, exp);
                 break;
               case WIIUSE_GUITAR_HERO_3_CTRL_REMOVED:
                 event_name = ID2SYM(rb_intern("guitarhero3_removed"));
@@ -281,11 +293,12 @@ static VALUE rb_cm_each(VALUE self) {
   if(rb_block_given_p()) {
     VALUE connected = rb_funcall(self, rb_intern("connected"), 0, NULL);
     VALUE wiimotes = rb_iv_get(self, "@wiimotes");
+    VALUE argv[1], wm;
     int i = 0;
+    
     for(; i < NUM2INT(connected); i++) {
-      VALUE argv[1];
       argv[0] = INT2NUM(i);
-      VALUE wm = rb_ary_aref(1, argv, wiimotes);
+      wm = rb_ary_aref(1, argv, wiimotes);
       rb_yield(wm);
     }
   } 
@@ -308,6 +321,7 @@ static VALUE rb_cm_pos(VALUE self) {
   int size = NUM2INT(wsize);
   short i;
   VALUE argv[1], wm, pos;
+  
   for(i = 0; i < size; i++) {
     argv[0] = INT2NUM(i);
     wm = rb_ary_aref(1, argv, wiimotes);

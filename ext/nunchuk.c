@@ -34,6 +34,7 @@
 static VALUE rb_nun_pressed(VALUE self, VALUE arg) {
   nunchuk_t *nun;
   Data_Get_Struct(self, nunchuk_t, nun);
+  if(!nun) return Qnil;
   if(IS_PRESSED(nun, NUM2INT(arg)))
     return Qtrue;
   else
@@ -51,6 +52,7 @@ static VALUE rb_nun_pressed(VALUE self, VALUE arg) {
 static VALUE rb_nun_jpressed(VALUE self, VALUE arg) {
   nunchuk_t *nun;
   Data_Get_Struct(self, nunchuk_t, nun);
+  if(!nun) return Qnil;
   if(IS_JUST_PRESSED(nun, NUM2INT(arg)))
     return Qtrue;
   else
@@ -68,6 +70,7 @@ static VALUE rb_nun_jpressed(VALUE self, VALUE arg) {
 static VALUE rb_nun_held(VALUE self, VALUE arg) {
   nunchuk_t *nun;
   Data_Get_Struct(self, nunchuk_t, nun);
+  if(!nun) return Qnil;
   if(IS_HELD(nun, NUM2INT(arg)))
     return Qtrue;
   else
@@ -85,6 +88,7 @@ static VALUE rb_nun_held(VALUE self, VALUE arg) {
 static VALUE rb_nun_rel(VALUE self, VALUE arg) {
   nunchuk_t *nun;
   Data_Get_Struct(self, nunchuk_t, nun);
+  if(!nun) return Qnil;
   if(IS_RELEASED(nun, NUM2INT(arg)))
     return Qtrue;
   else
@@ -104,6 +108,7 @@ static VALUE rb_nun_rel(VALUE self, VALUE arg) {
 static VALUE rb_nun_pitch(VALUE self) {
   nunchuk_t *nun;
   Data_Get_Struct(self, nunchuk_t, nun);
+  if(!nun) return Qnil;
   return rb_float_new(nun->orient.pitch);
 }
 
@@ -120,6 +125,7 @@ static VALUE rb_nun_pitch(VALUE self) {
 static VALUE rb_nun_apitch(VALUE self) {
   nunchuk_t *nun;
   Data_Get_Struct(self, nunchuk_t, nun);
+  if(!nun) return Qnil;
   return rb_float_new(nun->orient.a_pitch);
 }
 
@@ -136,6 +142,7 @@ static VALUE rb_nun_apitch(VALUE self) {
 static VALUE rb_nun_roll(VALUE self) {
   nunchuk_t *nun;
   Data_Get_Struct(self, nunchuk_t, nun);
+  if(!nun) return Qnil;
   return rb_float_new(nun->orient.roll);
 }
 
@@ -152,6 +159,7 @@ static VALUE rb_nun_roll(VALUE self) {
 static VALUE rb_nun_aroll(VALUE self) {
   nunchuk_t *nun;
   Data_Get_Struct(self, nunchuk_t, nun);
+  if(!nun) return Qnil;
   return rb_float_new(nun->orient.a_roll);
 }
 
@@ -167,9 +175,11 @@ static VALUE rb_nun_accel(VALUE self) {
   nunchuk_t *nun;
   Data_Get_Struct(self, nunchuk_t, nun);
   VALUE ary = rb_ary_new();
-  rb_ary_push(ary, INT2NUM(nun->accel.x));
-  rb_ary_push(ary, INT2NUM(nun->accel.y));
-  rb_ary_push(ary, INT2NUM(nun->accel.z));
+  if(nun) {
+    rb_ary_push(ary, INT2NUM(nun->accel.x));
+    rb_ary_push(ary, INT2NUM(nun->accel.y));
+    rb_ary_push(ary, INT2NUM(nun->accel.z));
+  }
   return ary;
 }
 
@@ -185,9 +195,11 @@ static VALUE rb_nun_gforce(VALUE self) {
   nunchuk_t *nun;
   Data_Get_Struct(self, nunchuk_t, nun);
   VALUE ary = rb_ary_new();
-  rb_ary_push(ary, INT2NUM(nun->gforce.x));
-  rb_ary_push(ary, INT2NUM(nun->gforce.y));
-  rb_ary_push(ary, INT2NUM(nun->gforce.z));
+  if(nun) {
+    rb_ary_push(ary, INT2NUM(nun->gforce.x));
+    rb_ary_push(ary, INT2NUM(nun->gforce.y));
+    rb_ary_push(ary, INT2NUM(nun->gforce.z));
+  }
   return ary;
 }
 
@@ -202,6 +214,7 @@ static VALUE rb_nun_gforce(VALUE self) {
 static VALUE rb_nun_athreshold(VALUE self) {
   nunchuk_t *nun;
   Data_Get_Struct(self, nunchuk_t, nun);
+  if(!nun) return Qnil;
   return INT2NUM(nun->accel_threshold);
 }
 
@@ -216,6 +229,7 @@ static VALUE rb_nun_athreshold(VALUE self) {
 static VALUE rb_nun_othreshold(VALUE self) {
   nunchuk_t *nun;
   Data_Get_Struct(self, nunchuk_t, nun);
+  if(!nun) return Qnil;
   return rb_float_new(nun->orient_threshold);
 } 
 
@@ -238,6 +252,7 @@ static VALUE rb_nun_othreshold(VALUE self) {
 static VALUE rb_nun_jangle(VALUE self) {
   nunchuk_t *nun;
   Data_Get_Struct(self, nunchuk_t, nun);
+  if(!nun) return Qnil;
   return rb_float_new(nun->js.ang);
 }
 
@@ -258,6 +273,7 @@ static VALUE rb_nun_jangle(VALUE self) {
 static VALUE rb_nun_jmag(VALUE self) {
   nunchuk_t *nun;
   Data_Get_Struct(self, nunchuk_t, nun);
+  if(!nun) return Qnil;
   return rb_float_new(nun->js.mag);
 }
 

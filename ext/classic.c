@@ -34,6 +34,7 @@
 static VALUE rb_cc_pressed(VALUE self, VALUE arg) {
   classic_ctrl_t *cc;
   Data_Get_Struct(self, classic_ctrl_t, cc);
+  if(!cc) return Qnil;
   if(IS_PRESSED(cc, NUM2INT(arg)))
     return Qtrue;
   else
@@ -51,6 +52,7 @@ static VALUE rb_cc_pressed(VALUE self, VALUE arg) {
 static VALUE rb_cc_jpressed(VALUE self, VALUE arg) {
   classic_ctrl_t *cc;
   Data_Get_Struct(self, classic_ctrl_t, cc);
+  if(!cc) return Qnil;
   if(IS_JUST_PRESSED(cc, NUM2INT(arg)))
     return Qtrue;
   else
@@ -68,6 +70,7 @@ static VALUE rb_cc_jpressed(VALUE self, VALUE arg) {
 static VALUE rb_cc_held(VALUE self, VALUE arg) {
   classic_ctrl_t *cc;
   Data_Get_Struct(self, classic_ctrl_t, cc);
+  if(!cc) return Qnil;
   if(IS_HELD(cc, NUM2INT(arg)))
     return Qtrue;
   else
@@ -85,6 +88,7 @@ static VALUE rb_cc_held(VALUE self, VALUE arg) {
 static VALUE rb_cc_rel(VALUE self, VALUE arg) {
   classic_ctrl_t *cc;
   Data_Get_Struct(self, classic_ctrl_t, cc);
+  if(!cc) return Qnil;
   if(IS_RELEASED(cc, NUM2INT(arg)))
     return Qtrue;
   else
@@ -106,6 +110,7 @@ static VALUE rb_cc_rel(VALUE self, VALUE arg) {
 static VALUE rb_cc_rjangle(VALUE self) {
   classic_ctrl_t *cc;
   Data_Get_Struct(self, classic_ctrl_t, cc);
+  if(!cc) return Qnil;
   return rb_float_new(cc->rjs.ang);
 }
 
@@ -123,6 +128,7 @@ static VALUE rb_cc_rjangle(VALUE self) {
 static VALUE rb_cc_rjmag(VALUE self) {
   classic_ctrl_t *cc;
   Data_Get_Struct(self, classic_ctrl_t, cc);
+  if(!cc) return Qnil;
   return rb_float_new(cc->rjs.mag);
 }
 
@@ -141,6 +147,7 @@ static VALUE rb_cc_rjmag(VALUE self) {
 static VALUE rb_cc_ljangle(VALUE self) {
   classic_ctrl_t *cc;
   Data_Get_Struct(self, classic_ctrl_t, cc);
+  if(!cc) return Qnil;
   return rb_float_new(cc->ljs.ang);
 }
 
@@ -158,6 +165,7 @@ static VALUE rb_cc_ljangle(VALUE self) {
 static VALUE rb_cc_ljmag(VALUE self) {
   classic_ctrl_t *cc;
   Data_Get_Struct(self, classic_ctrl_t, cc);
+  if(!cc) return Qnil;
   return rb_float_new(cc->ljs.mag);
 }
 
@@ -175,6 +183,7 @@ static VALUE rb_cc_ljmag(VALUE self) {
 static VALUE rb_cc_lshoulder(VALUE self) {
   classic_ctrl_t *cc;
   Data_Get_Struct(self, classic_ctrl_t, cc);
+  if(!cc) return Qnil;
   return rb_float_new(cc->l_shoulder);
 }
 
@@ -192,6 +201,7 @@ static VALUE rb_cc_lshoulder(VALUE self) {
 static VALUE rb_cc_rshoulder(VALUE self) {
   classic_ctrl_t *cc;
   Data_Get_Struct(self, classic_ctrl_t, cc);
+  if(!cc) return Qnil;
   return rb_float_new(cc->r_shoulder);
 }
 
