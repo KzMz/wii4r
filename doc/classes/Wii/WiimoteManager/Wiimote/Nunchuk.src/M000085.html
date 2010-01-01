@@ -5,20 +5,20 @@
 
 <html>
 <head>
-  <title>acceleration (Wii::WiimoteManager::Wiimote::Nunchuk)</title>
+  <title>held? (Wii::WiimoteManager::Wiimote::Nunchuk)</title>
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
   <link rel="stylesheet" href="../../../../.././rdoc-style.css" type="text/css" media="screen" />
 </head>
 <body class="standalone-code">
   <pre>/*
  * call-seq:
- *      nunchuk.acceleration -&gt; array
+ *      nunchuk.held?(button)        -&gt; true of false
  *
- * Returns an array containing the three components of acceleration [x, y, z] of &lt;i&gt;self&lt;/i&gt;.
+ * Returns true if &lt;i&gt;button&lt;/i&gt; is being held on &lt;i&gt;self&lt;/i&gt;.
  *
  */
-
-static VALUE rb_nun_accel(VALUE self) {
+ 
+static VALUE rb_nun_held(VALUE self, VALUE arg) {
 </pre>
 </body>
 </html>

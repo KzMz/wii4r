@@ -5,20 +5,20 @@
 
 <html>
 <head>
-  <title>exp (Wii::WiimoteManager::Wiimote)</title>
+  <title>speaker? (Wii::WiimoteManager::Wiimote)</title>
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
   <link rel="stylesheet" href="../../../.././rdoc-style.css" type="text/css" media="screen" />
 </head>
 <body class="standalone-code">
   <pre>/*
  * call-seq:
- *      wiimote.exp  -&gt; Nunchuk or ClassicController or GH3Controller
+ *      wiimote.speaker?     -&gt; true or false
  *
- * Returns an object representating the expansion attached to &lt;i&gt;self&lt;/i&gt;.
+ * Returns true if speaker is enabled, false otherwise.
  *
  */
-
-static VALUE rb_wm_get_exp(VALUE self) {
+ 
+static VALUE rb_wm_speaker(VALUE self) {
 </pre>
 </body>
 </html>

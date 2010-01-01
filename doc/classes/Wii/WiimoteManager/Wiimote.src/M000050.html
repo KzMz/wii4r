@@ -5,20 +5,20 @@
 
 <html>
 <head>
-  <title>battery_level (Wii::WiimoteManager::Wiimote)</title>
+  <title>virtual_resolution= (Wii::WiimoteManager::Wiimote)</title>
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
   <link rel="stylesheet" href="../../../.././rdoc-style.css" type="text/css" media="screen" />
 </head>
 <body class="standalone-code">
   <pre>/*
  * call-seq:
- *      wiimote.battery_level        -&gt; float
+ *      wiimote.virtual_resolution = resolution_array        -&gt;     array
  *
- * Returns the battery level of &lt;i&gt;self&lt;/i&gt;.
+ * Sets the virtual resolution of the screen to the values in the &lt;i&gt;resolution_array&lt;/i&gt;.
  *
  */
 
-static VALUE rb_wm_bl(VALUE self) {
+static VALUE rb_wm_set_vres(VALUE self, VALUE arg) {
 </pre>
 </body>
 </html>

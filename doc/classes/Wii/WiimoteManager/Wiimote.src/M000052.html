@@ -5,20 +5,20 @@
 
 <html>
 <head>
-  <title>gravity_force (Wii::WiimoteManager::Wiimote)</title>
+  <title>aspect_ratio= (Wii::WiimoteManager::Wiimote)</title>
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
   <link rel="stylesheet" href="../../../.././rdoc-style.css" type="text/css" media="screen" />
 </head>
 <body class="standalone-code">
   <pre>/*
  * call-seq:
- *      wiimote.gravity_force        -&gt; array
+ *      wiimote.aspect_ratio = ratio -&gt; (value of aspect ratio constant)
  *
- * Returns an array containing the three components of gravity force [x, y, z] of &lt;i&gt;self&lt;/i&gt;.
+ * Sets the aspect ratio of the TV/monitor of &lt;i&gt;self&lt;/i&gt; to &lt;i&gt;ratio&lt;/i&gt;.
  *
  */
- 
-static VALUE rb_wm_gforce(VALUE self) {
+
+static VALUE rb_wm_set_aratio(VALUE self, VALUE arg) {
 </pre>
 </body>
 </html>

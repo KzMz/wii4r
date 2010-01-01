@@ -5,20 +5,21 @@
 
 <html>
 <head>
-  <title>virtual_resolution (Wii::WiimoteManager::Wiimote)</title>
+  <title>sensitivity= (Wii::WiimoteManager::Wiimote)</title>
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
   <link rel="stylesheet" href="../../../.././rdoc-style.css" type="text/css" media="screen" />
 </head>
 <body class="standalone-code">
   <pre>/*
  * call-seq:
- *      wiimote.virtual_resolution   -&gt; array
+ *      wiimote.sensitivity = level  -&gt; int
  *
- * Returns an array containing the virtual resolution [n. pixel x, n. pixel y].
+ * Sets the sensitivity level of ir camera to &lt;i&gt;level&lt;/i&gt;.
+ * The value will be truncated to 5 or 1.
  *
  */
 
-static VALUE rb_wm_vres(VALUE self) {
+static VALUE rb_wm_set_sens(VALUE self, VALUE arg) {
 </pre>
 </body>
 </html>

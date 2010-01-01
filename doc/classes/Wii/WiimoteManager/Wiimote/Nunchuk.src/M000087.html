@@ -5,20 +5,22 @@
 
 <html>
 <head>
-  <title>orient_threshold (Wii::WiimoteManager::Wiimote::Nunchuk)</title>
+  <title>roll (Wii::WiimoteManager::Wiimote::Nunchuk)</title>
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
   <link rel="stylesheet" href="../../../../.././rdoc-style.css" type="text/css" media="screen" />
 </head>
 <body class="standalone-code">
   <pre>/*
  * call-seq:
- *      nunchuk.orient_threshold     -&gt; int
+ *      nunchuk.roll -&gt; float
  *
- * Returns the orientation event threshold for &lt;i&gt;self&lt;/i&gt;.
+ * Returns the rotation around Y axis (works with motion sensing activated).
+ *
+ * Range: [-179.9, -0.1] [0.1, 179.9] 
  *
  */
 
-static VALUE rb_nun_othreshold(VALUE self) {
+static VALUE rb_nun_roll(VALUE self) {
 </pre>
 </body>
 </html>

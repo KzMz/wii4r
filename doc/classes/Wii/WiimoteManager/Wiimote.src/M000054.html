@@ -5,20 +5,20 @@
 
 <html>
 <head>
-  <title>orient_threshold= (Wii::WiimoteManager::Wiimote)</title>
+  <title>battery_level (Wii::WiimoteManager::Wiimote)</title>
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
   <link rel="stylesheet" href="../../../.././rdoc-style.css" type="text/css" media="screen" />
 </head>
 <body class="standalone-code">
   <pre>/*
  * call-seq:
- *      wiimote.orient_threshold = t -&gt; float
+ *      wiimote.battery_level        -&gt; float
  *
- * Sets the orientation event threshold for &lt;i&gt;self&lt;/i&gt;.
+ * Returns the battery level of &lt;i&gt;self&lt;/i&gt;.
  *
  */
 
-static VALUE rb_wm_set_orient_threshold(VALUE self, VALUE arg) {
+static VALUE rb_wm_bl(VALUE self) {
 </pre>
 </body>
 </html>

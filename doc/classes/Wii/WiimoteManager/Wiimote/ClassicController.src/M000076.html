@@ -5,23 +5,20 @@
 
 <html>
 <head>
-  <title>left_shoulder (Wii::WiimoteManager::Wiimote::ClassicController)</title>
+  <title>released? (Wii::WiimoteManager::Wiimote::ClassicController)</title>
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
   <link rel="stylesheet" href="../../../../.././rdoc-style.css" type="text/css" media="screen" />
 </head>
 <body class="standalone-code">
   <pre>/*
  * call-seq:
- *      classicctrl.left_shoulder    -&gt; float
+ *      classicctrl.released?(button)        -&gt; true or false
  *
- * Returns the magnitude at which the left shoulder button is being held.
- * Range: [0, 1]
- * 0 =&gt; not pressed
- * 1 =&gt; fully pressed
+ * Returns true if &lt;i&gt;button&lt;/i&gt; is just released on &lt;i&gt;self&lt;/i&gt;.
  *
- */
- 
-static VALUE rb_cc_lshoulder(VALUE self) {
+ */     
+
+static VALUE rb_cc_rel(VALUE self, VALUE arg) {
 </pre>
 </body>
 </html>

@@ -41,6 +41,7 @@ static VALUE rb_wm_new(VALUE self) {
 
 static VALUE rb_wm_init(VALUE self) {
   rb_iv_set(self, "@rumble", Qfalse);
+  rb_iv_set(self, "@smoothed", rb_hash_new());
   wiimote *wm;
   Data_Get_Struct(self, wiimote, wm);
   if(!WIIUSE_USING_ACC(wm))
@@ -981,6 +982,14 @@ static VALUE rb_wm_set_nun_othreshold(VALUE self, VALUE arg) {
   return Qnil;
 }
 
+/*
+ * call-seq:
+ *	wiimote.speaker = true or false	-> true or false
+ *
+ * Activates the speaker of <i>self</i>.
+ *
+ */
+
 static VALUE rb_wm_set_speaker(VALUE self, VALUE arg) {
   wiimote *wm;
   Data_Get_Struct(self, wiimote, wm);
@@ -991,12 +1000,59 @@ static VALUE rb_wm_set_speaker(VALUE self, VALUE arg) {
   return Qnil;
 }
 
-static VALUE rb_wm_play_sound(VALUE self) {
+/*
+ * call-seq:
+ *	wiimote.mute!	-> nil
+ *
+ * Mutes the speaker of <i>self</i>.
+ *
+ */
+
+static VALUE rb_wm_mute_speaker(VALUE self) {
   wiimote *wm;
   Data_Get_Struct(self, wiimote, wm);
   if(!wm) return Qnil;
-  byte song[20] = {0xC3,0xC3,0xC3,0xC3,0xC3,0xC3,0xC3,0xC3,0xC3,0xC3, 0xC3,0xC3,0xC3,0xC3,0xC3,0xC3,0xC3,0xC3,0xC3,0xC3};
-  wiiuse_play_sound(wm, song, 20, SPEAKER_FREQ_3130);
+  wiiuse_mute_speaker(wm, 1);
+  return Qnil;
+}
+
+/*
+ * call-seq:
+ *	wiimote.unmute!	-> nil
+ *
+ * Unmutes the speaker of <i>self</i>.
+ *
+ */
+
+static VALUE rb_wm_unmute_speaker(VALUE self) {
+  wiimote *wm;
+  Data_Get_Struct(self, wiimote, wm);
+  if(!wm) return Qnil;
+  wiiuse_mute_speaker(wm, 0);
+  return Qnil;
+}
+
+/*
+ * call-seq:
+ *	wiimote.play(wav_file_path)	-> nil
+ *
+ * Plays the 16 bit WAV file passed as argument, converting it to the right format for the wiimote speaker.
+ * If speaker is disabled or muted it'll be enabled/unmuted first.
+ *
+ */
+
+static VALUE rb_wm_play(VALUE self, VALUE file) {
+  wiimote *wm;
+  Data_Get_Struct(self, wiimote, wm);
+  if(!wm) return Qnil;
+  byte *w_sample = NULL;
+  char *path = StringValue(file);
+  w_sample = wiiuse_convert_wav(path);
+  if(!WIIUSE_USING_SPEAKER(wm))
+    wiiuse_set_speaker(wm, 1);
+  if(WIIUSE_SPEAKER_MUTE(wm))
+    wiiuse_mute_speaker(wm, 0);
+  wiiuse_play_sound(wm, w_sample, sizeof(w_sample), 0x11);
   return Qnil;
 }
 
@@ -1010,6 +1066,59 @@ static VALUE rb_wm_play_sound(VALUE self) {
 
 static VALUE rb_wm_get_exp(VALUE self) {
   return rb_iv_get(self, "@exp");
+}
+
+/*
+ * call-seq:
+ *	wiimote.get_smoothed	-> hash
+ *
+ * Returns an hash containing the smoothed properties of <i>self</i> as keys and the corresponding threshold as values.
+ *
+ */
+
+static VALUE rb_wm_smoothed(VALUE self) {
+  return rb_iv_get(self, "@smoothed");
+}
+
+/*
+ * call-seq:
+ *	wiimote.smoothed	-> hash
+ *      wiimote.smoothed(hash)  -> hash
+ *
+ * The first form sets all the properties of the wiimote to be smoothed on accessing with the default threshold (via getters).
+ * The second form sets the properties defined in hash to be smoothed on accessing with the threshold specificated as value.
+ *
+ *	Properties which can be smoothed:
+ *		- pitch (:pitch)
+ *		- roll (:roll)
+ *		- gravity force (:gforce)
+ *		- acceleration (:accel)
+ *
+ *	The default threshold are:
+ *		- pitch: 10 degrees
+ *		- roll: 15 degrees
+ *		- gravity force: 5 on all axes
+ *		- acceleration: 5 on all axes
+ *
+ *	wm.smoothed 					#=> {:pitch => 10, :roll => 15, :gforce => 5, :accel => 5}
+ *	wm.smoothed({:pitch => 20, :gforce => 1})	#=> {:pitch => 20, :gforce => 1}
+ *
+ */
+
+static VALUE rb_wm_set_smoothed(int argc, VALUE *argv, VALUE self) {
+  VALUE hash = Qnil;
+
+  if(argc > 0) {
+    hash = argv[1];
+    rb_iv_set(self, "@smoothed", hash);
+  }
+  else {
+    rb_hash_aset(hash, ID2SYM(rb_intern("pitch")), INT2NUM(10));
+    rb_hash_aset(hash, ID2SYM(rb_intern("roll")), INT2NUM(15));
+    rb_hash_aset(hash, ID2SYM(rb_intern("gforce")), INT2NUM(5));
+    rb_hash_aset(hash, ID2SYM(rb_intern("accel")), INT2NUM(5));
+  }
+  return hash;
 }
 
 /*
@@ -1064,7 +1173,11 @@ void init_wiimote(void) {
   rb_define_method(wii_class, "ir=", rb_wm_set_ir, 1);
   rb_define_method(wii_class, "speaker=", rb_wm_set_speaker, 1);
   rb_define_method(wii_class, "speaker?", rb_wm_speaker, 0);
-  rb_define_method(wii_class, "play_sound", rb_wm_play_sound, 0);
+  rb_define_method(wii_class, "play", rb_wm_play, 1);
+  rb_define_method(wii_class, "mute!", rb_wm_mute_speaker, 0);
+  //rb_define_method(wii_class, "muted?", rb_wm_muted, 0);
+  //rb_define_method(wii_class, "playing?", rb_wm_playing, 0);
+  rb_define_method(wii_class, "unmute!", rb_wm_unmute_speaker, 0);
   rb_define_method(wii_class, "exp", rb_wm_get_exp, 0);
   rb_define_method(wii_class, "sensitivity", rb_wm_sensitivity, 0);
   rb_define_method(wii_class, "sensitivity=", rb_wm_set_sens, 1);
@@ -1083,5 +1196,8 @@ void init_wiimote(void) {
   rb_define_method(wii_class, "nunchuk_accel_threshold=", rb_wm_set_nun_athreshold, 1);
   rb_define_method(wii_class, "accel_threshold", rb_wm_accel_threshold, 0);
   rb_define_method(wii_class, "accel_threshold=", rb_wm_set_accel_threshold, 1);
+  rb_define_method(wii_class, "get_smoothed", rb_wm_smoothed, 0);
+  rb_define_method(wii_class, "smoothed", rb_wm_set_smoothed, -1);
+  //smoothed_pitch, smoothed_roll, smoothed_gforce, smoothed_accel
 	
 }

@@ -5,20 +5,20 @@
 
 <html>
 <head>
-  <title>gravity_force (Wii::WiimoteManager::Wiimote::Nunchuk)</title>
+  <title>released? (Wii::WiimoteManager::Wiimote::Nunchuk)</title>
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
   <link rel="stylesheet" href="../../../../.././rdoc-style.css" type="text/css" media="screen" />
 </head>
 <body class="standalone-code">
   <pre>/*
  * call-seq:
- *      nunchuk.gravity_force        -&gt; array
+ *      nunchuk.released?(button)    -&gt; true or false
  *
- * Returns an array containing the three components of gravity force [x, y, z] of &lt;i&gt;self&lt;/i&gt;.
+ * Returns true if &lt;i&gt;button&lt;/i&gt; is just released on &lt;i&gt;self&lt;/i&gt;.
  *
- */
- 
-static VALUE rb_nun_gforce(VALUE self) {
+ */     
+
+static VALUE rb_nun_rel(VALUE self, VALUE arg) {
 </pre>
 </body>
 </html>
