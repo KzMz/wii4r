@@ -1,6 +1,6 @@
 #! /usr/bin/env/ruby
 ############################################################################
-# 								           #
+# 								           								   #
 # Copyright (C) 2009 by KzMz KzMz@modusbibendi.org                         #
 # Copyright (C) 2009 by BuZz Gambino.Giorgio@gmail.com                     #
 #                                                                          #
@@ -20,7 +20,7 @@
 # 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.                 #
 ############################################################################
 
-require 'wii4r'
+require '../wii4r'
 include Wii
 
 def set_rumble(w)

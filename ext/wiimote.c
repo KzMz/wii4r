@@ -175,7 +175,7 @@ static VALUE rb_wm_stop(VALUE self) {
  *
  *  Turns on the led or the leds contained in <i>led</i>.
  *
- *      #turns on led 1
+ *  	#turns on led 1
  *	wmote.leds = LED_1	   #=>(LED_1 value)
  *
  *	#turns on led 2 and 3
@@ -305,6 +305,27 @@ static VALUE rb_wm_status(VALUE self) {
   rb_hash_aset(status_hash,ID2SYM(rb_intern("attachment")),expansion);
   return status_hash;
 }
+
+
+/*
+ *  call-seq:
+ *	wiimote.disconnect!		-> true or false
+ *
+ *  Disconnects <i>self</i> if it is connected and returns true. 
+ *  If <i>self</i> is NULL or is already disconnected returns false. 
+ *
+ */ 
+
+static rb_wm_disconnect(VALUE self) {
+ wiimote *wm;
+ Data_Get_Struct(self, wiimote, wm);
+ if(wm_connected(wm)) {
+	wiiuse_disconnected(wm);
+	return Qtrue;
+ }	 
+ else return Qfalse; 	
+}
+
 
 //checks if "wm" is connected or not
 int wm_connected(wiimote *wm) {
@@ -1140,6 +1161,7 @@ void init_wiimote(void) {
   wii_class = rb_define_class_under(cm_class, "Wiimote", rb_cObject);
   //rb_define_singleton_method(wii_class, "new", rb_wm_new, 0);
   rb_define_method(wii_class, "initialize", rb_wm_init, 0);
+  rb_define_method(wii_class, "disconnect!", rb_wm_disconnect, 0);
   rb_define_method(wii_class, "rumble?", rb_wm_get_rumble, 0);
   rb_define_method(wii_class, "rumble=", rb_wm_set_rumble, 1);
   rb_define_method(wii_class, "rumble!", rb_wm_rumble, -1);

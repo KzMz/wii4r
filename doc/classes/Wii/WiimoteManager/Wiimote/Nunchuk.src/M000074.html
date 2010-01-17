@@ -1,24 +1,20 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
-<!DOCTYPE html 
-     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-  <title>pressed? (Wii::WiimoteManager::Wiimote::Nunchuk)</title>
-  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <title>acceleration (Wii::WiimoteManager::Wiimote::Nunchuk)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <link rel="stylesheet" href="../../../../.././rdoc-style.css" type="text/css" media="screen" />
 </head>
 <body class="standalone-code">
   <pre>/*
- *  call-seq:
- *      nunchuk.pressed?(button)     -&gt; true or false
+ * call-seq:
+ *      nunchuk.acceleration -&gt; array
  *
- *  Returns true if &lt;i&gt;button&lt;/i&gt; is being pressed on &lt;i&gt;self&lt;/i&gt;.
+ * Returns an array containing the three components of acceleration [x, y, z] of &lt;i&gt;self&lt;/i&gt;.
  *
  */
 
-static VALUE rb_nun_pressed(VALUE self, VALUE arg) {
-</pre>
+static VALUE rb_nun_accel(VALUE self) </pre>
 </body>
 </html>
