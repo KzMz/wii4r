@@ -9,7 +9,7 @@ Binding of C wiiuse library (http://www.wiiuse.net)
  $ make install
  $ make clean
 
-This should be all.
+That should be all.
 
 == Dependencies
 
