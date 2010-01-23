@@ -306,17 +306,16 @@ static VALUE rb_wm_status(VALUE self) {
   return status_hash;
 }
 
-
 /*
  *  call-seq:
- *	wiimote.disconnect!		-> true or false
+ *	wiimote.disconnect!	-> true or false
  *
- *  Disconnects <i>self</i> if it is connected and returns true. 
- *  If <i>self</i> is NULL or is already disconnected returns false. 
+ *  Disconnects <i>self</i> if it is connected and returns true, false if <i>self</i> is nil or disconnected.
+ *  
  *
  */ 
 
-static rb_wm_disconnect(VALUE self) {
+static VALUE rb_wm_disconnect(VALUE self) {
  wiimote *wm;
  Data_Get_Struct(self, wiimote, wm);
  if(wm_connected(wm)) {
@@ -1090,59 +1089,6 @@ static VALUE rb_wm_get_exp(VALUE self) {
 }
 
 /*
- * call-seq:
- *	wiimote.get_smoothed	-> hash
- *
- * Returns an hash containing the smoothed properties of <i>self</i> as keys and the corresponding threshold as values.
- *
- */
-
-static VALUE rb_wm_smoothed(VALUE self) {
-  return rb_iv_get(self, "@smoothed");
-}
-
-/*
- * call-seq:
- *	wiimote.smoothed	-> hash
- *      wiimote.smoothed(hash)  -> hash
- *
- * The first form sets all the properties of the wiimote to be smoothed on accessing with the default threshold (via getters).
- * The second form sets the properties defined in hash to be smoothed on accessing with the threshold specificated as value.
- *
- *	Properties which can be smoothed:
- *		- pitch (:pitch)
- *		- roll (:roll)
- *		- gravity force (:gforce)
- *		- acceleration (:accel)
- *
- *	The default threshold are:
- *		- pitch: 10 degrees
- *		- roll: 15 degrees
- *		- gravity force: 5 on all axes
- *		- acceleration: 5 on all axes
- *
- *	wm.smoothed 					#=> {:pitch => 10, :roll => 15, :gforce => 5, :accel => 5}
- *	wm.smoothed({:pitch => 20, :gforce => 1})	#=> {:pitch => 20, :gforce => 1}
- *
- */
-
-static VALUE rb_wm_set_smoothed(int argc, VALUE *argv, VALUE self) {
-  VALUE hash = Qnil;
-
-  if(argc > 0) {
-    hash = argv[1];
-    rb_iv_set(self, "@smoothed", hash);
-  }
-  else {
-    rb_hash_aset(hash, ID2SYM(rb_intern("pitch")), INT2NUM(10));
-    rb_hash_aset(hash, ID2SYM(rb_intern("roll")), INT2NUM(15));
-    rb_hash_aset(hash, ID2SYM(rb_intern("gforce")), INT2NUM(5));
-    rb_hash_aset(hash, ID2SYM(rb_intern("accel")), INT2NUM(5));
-  }
-  return hash;
-}
-
-/*
  * 
  * Provides a set of methods to access Wiimote functionalities.
  * A Wiimote object can:
@@ -1218,8 +1164,5 @@ void init_wiimote(void) {
   rb_define_method(wii_class, "nunchuk_accel_threshold=", rb_wm_set_nun_athreshold, 1);
   rb_define_method(wii_class, "accel_threshold", rb_wm_accel_threshold, 0);
   rb_define_method(wii_class, "accel_threshold=", rb_wm_set_accel_threshold, 1);
-  rb_define_method(wii_class, "get_smoothed", rb_wm_smoothed, 0);
-  rb_define_method(wii_class, "smoothed", rb_wm_set_smoothed, -1);
-  //smoothed_pitch, smoothed_roll, smoothed_gforce, smoothed_accel
 	
 }

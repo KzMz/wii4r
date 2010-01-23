@@ -5,22 +5,20 @@
 
 <html>
 <head>
-  <title>absolute_roll (Wii::WiimoteManager::Wiimote::Nunchuk)</title>
+  <title>pressed? (Wii::WiimoteManager::Wiimote::Nunchuk)</title>
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
   <link rel="stylesheet" href="../../../../.././rdoc-style.css" type="text/css" media="screen" />
 </head>
 <body class="standalone-code">
   <pre>/*
- * call-seq:
- *      nunchuk.absolute_roll        -&gt; float
+ *  call-seq:
+ *      nunchuk.pressed?(button)     -&gt; true or false
  *
- * Returns the absolute rotation around Y axis (works with motion sensing activated).
- *
- * Range: [-179.9, -0.1] [0.1, 179.9] 
+ *  Returns true if &lt;i&gt;button&lt;/i&gt; is being pressed on &lt;i&gt;self&lt;/i&gt;.
  *
  */
 
-static VALUE rb_nun_aroll(VALUE self) {
+static VALUE rb_nun_pressed(VALUE self, VALUE arg) {
 </pre>
 </body>
 </html>

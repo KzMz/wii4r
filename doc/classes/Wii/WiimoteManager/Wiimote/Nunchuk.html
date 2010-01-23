@@ -1,9 +1,12 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-  <title>Class: Wii::WiimoteManager::Wiimote::Nunchuk [RDoc Documentation]</title>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>Class: Wii::WiimoteManager::Wiimote::Nunchuk</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
   <meta http-equiv="Content-Script-Type" content="text/javascript" />
   <link rel="stylesheet" href="../../../.././rdoc-style.css" type="text/css" media="screen" />
   <script type="text/javascript">
@@ -22,7 +25,7 @@
       return false;
 
     elemStyle = elem.style;
-
+    
     if ( elemStyle.display != "block" ) {
       elemStyle.display = "block"
     } else {
@@ -31,15 +34,16 @@
 
     return true;
   }
-
+  
   // Make codeblocks hidden by default
-  document.writeln( "<style type=\"text/css\">div.method-source-code { display: none }<\/style>" )
-
+  document.writeln( "<style type=\"text/css\">div.method-source-code { display: none }</style>" )
+  
   // ]]>
   </script>
 
 </head>
 <body>
+
 
 
     <div id="classHeader">
@@ -51,35 +55,26 @@
         <tr class="top-aligned-row">
             <td><strong>In:</strong></td>
             <td>
-
-
                 <a href="../../../../files/ext/wii4r_c.html">
-
                 ext/wii4r.c
-
                 </a>
-
-
         <br />
-
             </td>
         </tr>
-
 
         <tr class="top-aligned-row">
             <td><strong>Parent:</strong></td>
             <td>
-
                 Object
-
             </td>
         </tr>
-
         </table>
     </div>
   <!-- banner header -->
 
   <div id="bodyContent">
+
+
 
   <div id="contextContent">
 
@@ -97,46 +92,32 @@ properties and members.
 
     </div>
 
-   </div>
 
+   </div>
 
     <div id="method-list">
       <h3 class="section-bar">Methods</h3>
 
       <div class="name-list">
-
-        <a href="#M000073">absolute_pitch</a>&nbsp;&nbsp;
-
-        <a href="#M000071">absolute_roll</a>&nbsp;&nbsp;
-
-        <a href="#M000077">accel_thresold</a>&nbsp;&nbsp;
-
-        <a href="#M000074">acceleration</a>&nbsp;&nbsp;
-
-        <a href="#M000075">gravity_force</a>&nbsp;&nbsp;
-
-        <a href="#M000068">held?</a>&nbsp;&nbsp;
-
-        <a href="#M000078">joystick_angle</a>&nbsp;&nbsp;
-
-        <a href="#M000079">joystick_magnitude</a>&nbsp;&nbsp;
-
-        <a href="#M000067">just_pressed?</a>&nbsp;&nbsp;
-
-        <a href="#M000076">orient_threshold</a>&nbsp;&nbsp;
-
-        <a href="#M000072">pitch</a>&nbsp;&nbsp;
-
-        <a href="#M000066">pressed?</a>&nbsp;&nbsp;
-
-        <a href="#M000069">released?</a>&nbsp;&nbsp;
-
-        <a href="#M000070">roll</a>&nbsp;&nbsp;
-
+      <a href="#M000089">absolute_pitch</a>&nbsp;&nbsp;
+      <a href="#M000087">absolute_roll</a>&nbsp;&nbsp;
+      <a href="#M000093">accel_thresold</a>&nbsp;&nbsp;
+      <a href="#M000090">acceleration</a>&nbsp;&nbsp;
+      <a href="#M000091">gravity_force</a>&nbsp;&nbsp;
+      <a href="#M000084">held?</a>&nbsp;&nbsp;
+      <a href="#M000094">joystick_angle</a>&nbsp;&nbsp;
+      <a href="#M000095">joystick_magnitude</a>&nbsp;&nbsp;
+      <a href="#M000083">just_pressed?</a>&nbsp;&nbsp;
+      <a href="#M000092">orient_threshold</a>&nbsp;&nbsp;
+      <a href="#M000088">pitch</a>&nbsp;&nbsp;
+      <a href="#M000082">pressed?</a>&nbsp;&nbsp;
+      <a href="#M000085">released?</a>&nbsp;&nbsp;
+      <a href="#M000086">roll</a>&nbsp;&nbsp;
       </div>
     </div>
 
   </div>
+
 
     <!-- if includes -->
 
@@ -145,30 +126,26 @@ properties and members.
 
 
 
+
+      
+
+
     <!-- if method_list -->
-
     <div id="methods">
-
       <h3 class="section-bar">Public Instance methods</h3>
 
-
-      <div id="method-M000073" class="method-detail">
-        <a name="M000073"></a>
+      <div id="method-M000089" class="method-detail">
+        <a name="M000089"></a>
 
         <div class="method-heading">
-
-          <a href="Nunchuk.src/M000073.html" target="Code" class="method-signature"
-            onclick="popupCode('Nunchuk.src/M000073.html');return false;">
-
+          <a href="Nunchuk.src/M000089.html" target="Code" class="method-signature"
+            onclick="popupCode('Nunchuk.src/M000089.html');return false;">
           <span class="method-name">nunchuk.absolute_pitch       &rarr; float<br />
 </span>
-
           </a>
-
         </div>
-
+      
         <div class="method-description">
-
           <p>
 Returns the absolute rotation around X axis (works with motion sensing
 activated).
@@ -176,28 +153,21 @@ activated).
 <p>
 Range: [-179.9, -0.1] [0.1, 179.9]
 </p>
-
         </div>
       </div>
 
-
-      <div id="method-M000071" class="method-detail">
-        <a name="M000071"></a>
+      <div id="method-M000087" class="method-detail">
+        <a name="M000087"></a>
 
         <div class="method-heading">
-
-          <a href="Nunchuk.src/M000071.html" target="Code" class="method-signature"
-            onclick="popupCode('Nunchuk.src/M000071.html');return false;">
-
+          <a href="Nunchuk.src/M000087.html" target="Code" class="method-signature"
+            onclick="popupCode('Nunchuk.src/M000087.html');return false;">
           <span class="method-name">nunchuk.absolute_roll        &rarr; float<br />
 </span>
-
           </a>
-
         </div>
-
+      
         <div class="method-description">
-
           <p>
 Returns the absolute rotation around Y axis (works with motion sensing
 activated).
@@ -205,167 +175,125 @@ activated).
 <p>
 Range: [-179.9, -0.1] [0.1, 179.9]
 </p>
-
         </div>
       </div>
 
-
-      <div id="method-M000077" class="method-detail">
-        <a name="M000077"></a>
+      <div id="method-M000093" class="method-detail">
+        <a name="M000093"></a>
 
         <div class="method-heading">
-
-          <a href="Nunchuk.src/M000077.html" target="Code" class="method-signature"
-            onclick="popupCode('Nunchuk.src/M000077.html');return false;">
-
+          <a href="Nunchuk.src/M000093.html" target="Code" class="method-signature"
+            onclick="popupCode('Nunchuk.src/M000093.html');return false;">
           <span class="method-name">wiimote.accel_threshold      &rarr; int<br />
 </span>
-
           </a>
-
         </div>
-
+      
         <div class="method-description">
-
           <p>
 Returns the accelerometer event threshold for <em>self</em>.
 </p>
-
         </div>
       </div>
 
-
-      <div id="method-M000074" class="method-detail">
-        <a name="M000074"></a>
+      <div id="method-M000090" class="method-detail">
+        <a name="M000090"></a>
 
         <div class="method-heading">
-
-          <a href="Nunchuk.src/M000074.html" target="Code" class="method-signature"
-            onclick="popupCode('Nunchuk.src/M000074.html');return false;">
-
+          <a href="Nunchuk.src/M000090.html" target="Code" class="method-signature"
+            onclick="popupCode('Nunchuk.src/M000090.html');return false;">
           <span class="method-name">nunchuk.acceleration &rarr; array<br />
 </span>
-
           </a>
-
         </div>
-
+      
         <div class="method-description">
-
           <p>
-Returns an array containing the three components of acceleration [x, y, z]
-of <em>self</em>.
+Returns an array containing the three components of <a
+href="Nunchuk.html#M000090">acceleration</a> [x, y, z] of <em>self</em>.
 </p>
-
         </div>
       </div>
 
-
-      <div id="method-M000075" class="method-detail">
-        <a name="M000075"></a>
+      <div id="method-M000091" class="method-detail">
+        <a name="M000091"></a>
 
         <div class="method-heading">
-
-          <a href="Nunchuk.src/M000075.html" target="Code" class="method-signature"
-            onclick="popupCode('Nunchuk.src/M000075.html');return false;">
-
+          <a href="Nunchuk.src/M000091.html" target="Code" class="method-signature"
+            onclick="popupCode('Nunchuk.src/M000091.html');return false;">
           <span class="method-name">nunchuk.gravity_force        &rarr; array<br />
 </span>
-
           </a>
-
         </div>
-
+      
         <div class="method-description">
-
           <p>
 Returns an array containing the three components of gravity force [x, y, z]
 of <em>self</em>.
 </p>
-
         </div>
       </div>
 
-
-      <div id="method-M000068" class="method-detail">
-        <a name="M000068"></a>
+      <div id="method-M000084" class="method-detail">
+        <a name="M000084"></a>
 
         <div class="method-heading">
-
-          <a href="Nunchuk.src/M000068.html" target="Code" class="method-signature"
-            onclick="popupCode('Nunchuk.src/M000068.html');return false;">
-
+          <a href="Nunchuk.src/M000084.html" target="Code" class="method-signature"
+            onclick="popupCode('Nunchuk.src/M000084.html');return false;">
           <span class="method-name">nunchuk.held?(button)        &rarr; true of false<br />
 </span>
-
           </a>
-
         </div>
-
+      
         <div class="method-description">
-
           <p>
 Returns true if <em>button</em> is being held on <em>self</em>.
 </p>
-
         </div>
       </div>
 
-
-      <div id="method-M000078" class="method-detail">
-        <a name="M000078"></a>
+      <div id="method-M000094" class="method-detail">
+        <a name="M000094"></a>
 
         <div class="method-heading">
-
-          <a href="Nunchuk.src/M000078.html" target="Code" class="method-signature"
-            onclick="popupCode('Nunchuk.src/M000078.html');return false;">
-
+          <a href="Nunchuk.src/M000094.html" target="Code" class="method-signature"
+            onclick="popupCode('Nunchuk.src/M000094.html');return false;">
           <span class="method-name">nunchuk.joystick_angle       &rarr; float<br />
 </span>
-
           </a>
-
         </div>
-
+      
         <div class="method-description">
-
           <p>
 Returns the angle at which the joystick is being held.
 </p>
 <p>
-0 => Straight up
+0 =&gt; Straight up
 </p>
 <p>
-90 => right
+90 =&gt; right
 </p>
 <p>
-180 => down
+180 =&gt; down
 </p>
 <p>
-270 => left
+270 =&gt; left
 </p>
-
         </div>
       </div>
 
-
-      <div id="method-M000079" class="method-detail">
-        <a name="M000079"></a>
+      <div id="method-M000095" class="method-detail">
+        <a name="M000095"></a>
 
         <div class="method-heading">
-
-          <a href="Nunchuk.src/M000079.html" target="Code" class="method-signature"
-            onclick="popupCode('Nunchuk.src/M000079.html');return false;">
-
+          <a href="Nunchuk.src/M000095.html" target="Code" class="method-signature"
+            onclick="popupCode('Nunchuk.src/M000095.html');return false;">
           <span class="method-name">nunchuk.joystick_magnitude   &rarr; float<br />
 </span>
-
           </a>
-
         </div>
-
+      
         <div class="method-description">
-
           <p>
 Returns the magnitude at which the joystick is being held.
 </p>
@@ -373,179 +301,134 @@ Returns the magnitude at which the joystick is being held.
 Range: [0, 1]
 </p>
 <p>
-0 => center
+0 =&gt; center
 </p>
 <p>
-1 => edges
+1 =&gt; edges
 </p>
-
         </div>
       </div>
 
-
-      <div id="method-M000067" class="method-detail">
-        <a name="M000067"></a>
+      <div id="method-M000083" class="method-detail">
+        <a name="M000083"></a>
 
         <div class="method-heading">
-
-          <a href="Nunchuk.src/M000067.html" target="Code" class="method-signature"
-            onclick="popupCode('Nunchuk.src/M000067.html');return false;">
-
+          <a href="Nunchuk.src/M000083.html" target="Code" class="method-signature"
+            onclick="popupCode('Nunchuk.src/M000083.html');return false;">
           <span class="method-name">nunchuk.just_pressed?(button)                &rarr; true of false<br />
 </span>
-
           </a>
-
         </div>
-
+      
         <div class="method-description">
-
           <p>
 Returns true if <em>button</em> is just pressed on <em>self</em>.
 </p>
-
         </div>
       </div>
 
-
-      <div id="method-M000076" class="method-detail">
-        <a name="M000076"></a>
+      <div id="method-M000092" class="method-detail">
+        <a name="M000092"></a>
 
         <div class="method-heading">
-
-          <a href="Nunchuk.src/M000076.html" target="Code" class="method-signature"
-            onclick="popupCode('Nunchuk.src/M000076.html');return false;">
-
+          <a href="Nunchuk.src/M000092.html" target="Code" class="method-signature"
+            onclick="popupCode('Nunchuk.src/M000092.html');return false;">
           <span class="method-name">nunchuk.orient_threshold     &rarr; int<br />
 </span>
-
           </a>
-
         </div>
-
+      
         <div class="method-description">
-
           <p>
 Returns the orientation event threshold for <em>self</em>.
 </p>
-
         </div>
       </div>
 
-
-      <div id="method-M000072" class="method-detail">
-        <a name="M000072"></a>
+      <div id="method-M000088" class="method-detail">
+        <a name="M000088"></a>
 
         <div class="method-heading">
-
-          <a href="Nunchuk.src/M000072.html" target="Code" class="method-signature"
-            onclick="popupCode('Nunchuk.src/M000072.html');return false;">
-
+          <a href="Nunchuk.src/M000088.html" target="Code" class="method-signature"
+            onclick="popupCode('Nunchuk.src/M000088.html');return false;">
           <span class="method-name">nunchuk.pitch        &rarr; float<br />
 </span>
-
           </a>
-
         </div>
-
+      
         <div class="method-description">
-
           <p>
 Returns the rotation around X axis (works with motion sensing activated).
 </p>
 <p>
 Range: [-179.9, -0.1] [0.1, 179.9]
 </p>
-
         </div>
       </div>
 
-
-      <div id="method-M000066" class="method-detail">
-        <a name="M000066"></a>
+      <div id="method-M000082" class="method-detail">
+        <a name="M000082"></a>
 
         <div class="method-heading">
-
-          <a href="Nunchuk.src/M000066.html" target="Code" class="method-signature"
-            onclick="popupCode('Nunchuk.src/M000066.html');return false;">
-
+          <a href="Nunchuk.src/M000082.html" target="Code" class="method-signature"
+            onclick="popupCode('Nunchuk.src/M000082.html');return false;">
           <span class="method-name">nunchuk.pressed?(button)     &rarr; true or false<br />
 </span>
-
           </a>
-
         </div>
-
+      
         <div class="method-description">
-
           <p>
 Returns true if <em>button</em> is being pressed on <em>self</em>.
 </p>
-
         </div>
       </div>
 
-
-      <div id="method-M000069" class="method-detail">
-        <a name="M000069"></a>
+      <div id="method-M000085" class="method-detail">
+        <a name="M000085"></a>
 
         <div class="method-heading">
-
-          <a href="Nunchuk.src/M000069.html" target="Code" class="method-signature"
-            onclick="popupCode('Nunchuk.src/M000069.html');return false;">
-
+          <a href="Nunchuk.src/M000085.html" target="Code" class="method-signature"
+            onclick="popupCode('Nunchuk.src/M000085.html');return false;">
           <span class="method-name">nunchuk.released?(button)    &rarr; true or false<br />
 </span>
-
           </a>
-
         </div>
-
+      
         <div class="method-description">
-
           <p>
 Returns true if <em>button</em> is just released on <em>self</em>.
 </p>
-
         </div>
       </div>
 
-
-      <div id="method-M000070" class="method-detail">
-        <a name="M000070"></a>
+      <div id="method-M000086" class="method-detail">
+        <a name="M000086"></a>
 
         <div class="method-heading">
-
-          <a href="Nunchuk.src/M000070.html" target="Code" class="method-signature"
-            onclick="popupCode('Nunchuk.src/M000070.html');return false;">
-
+          <a href="Nunchuk.src/M000086.html" target="Code" class="method-signature"
+            onclick="popupCode('Nunchuk.src/M000086.html');return false;">
           <span class="method-name">nunchuk.roll &rarr; float<br />
 </span>
-
           </a>
-
         </div>
-
+      
         <div class="method-description">
-
           <p>
 Returns the rotation around Y axis (works with motion sensing activated).
 </p>
 <p>
 Range: [-179.9, -0.1] [0.1, 179.9]
 </p>
-
         </div>
       </div>
-
 
 
     </div>
 
 
-
-
   </div>
+
 
 <div id="validator-badges">
   <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>

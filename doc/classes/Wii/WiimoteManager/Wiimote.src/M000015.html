@@ -1,20 +1,29 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
 <head>
-  <title>led (Wii::WiimoteManager::Wiimote)</title>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>leds= (Wii::WiimoteManager::Wiimote)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
   <link rel="stylesheet" href="../../../.././rdoc-style.css" type="text/css" media="screen" />
 </head>
 <body class="standalone-code">
   <pre>/*
- * call-seq:
- *      wiimote.led  -&gt; string
+ *  call-seq:
+ *      wiimote.leds = led   -&gt; led
  *
- * Returns a string which represents the led actually on.
+ *  Turns on the led or the leds contained in &lt;i&gt;led&lt;/i&gt;.
  *
- */
+ *      #turns on led 1
+ *      wmote.leds = LED_1      #=&gt;(LED_1 value)
+ *
+ *      #turns on led 2 and 3
+ *      wmote.leds = LED_2 | LED_3 #=&gt;(LED_2 | LED_3 value) 
+ */ 
 
-static VALUE rb_wm_led(VALUE self) </pre>
+static VALUE rb_wm_leds(VALUE self, VALUE arg) {
+</pre>
 </body>
 </html>
