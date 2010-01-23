@@ -55,6 +55,10 @@ extern VALUE cc_class;
 //GH3Controller class
 extern VALUE gh3_class;
 
+//Wii4RGenericException class
+extern VALUE gen_exp_class;
+
+
 //disconnect a wiimote when a Wiimote object is marked by the GC and must be deleted
 extern void free_wiimote(void * wm);
 

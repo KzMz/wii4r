@@ -30,6 +30,7 @@ static VALUE rb_cm_new(VALUE self) {
   VALUE m = rb_const_get(wii_mod, rb_intern("MAX_WIIMOTES"));
   int max = NUM2INT(m);
   VALUE obj = Data_Make_Struct(self, connman, NULL, free, conn);
+  if(!conn) rb_raise(gen_exp_class, "not enough memory");
   conn->wms = wiiuse_init(max);
   conn->n = max; 
   rb_obj_call_init(obj, 0, 0);
@@ -77,7 +78,7 @@ static VALUE rb_cm_connected(VALUE self) {
 static VALUE rb_cm_cleanup(VALUE self) {
   connman * conn;
   Data_Get_Struct(self, connman, conn);
-  if(!conn) return Qnil;
+  if(!conn) rb_raise(gen_exp_class, "WiimoteManager not properly initialized, cannot do cleanup");
   if(!(conn->wms)) return Qnil;
   wiiuse_cleanup(conn->wms, conn->n);
   conn->wms = NULL;
@@ -113,7 +114,7 @@ static VALUE rb_cm_wiimotes(VALUE self) {
 static VALUE rb_cm_found(VALUE self) {
   connman * conn;
   Data_Get_Struct(self, connman, conn);
-  if(!conn) return Qnil;
+  if(!conn) rb_raise(gen_exp_class, "WiimoteManager not properly initialized, cannot do found");
   VALUE timeout = rb_const_get(wii_mod, rb_intern("TIMEOUT"));
   VALUE max = rb_const_get(wii_mod, rb_intern("MAX_WIIMOTES"));
   int found = wiiuse_find(conn->wms, NUM2INT(max), NUM2INT(timeout));
@@ -131,16 +132,13 @@ static VALUE rb_cm_found(VALUE self) {
 static VALUE rb_cm_connect(VALUE self) {
   connman *conn;
   Data_Get_Struct(self, connman, conn);
-  if(!conn) return Qnil;
+  if(!conn) rb_raise(gen_exp_class, "WiimoteManager not properly initialized, cannot do connect");
   
-  int i = 0;
-  int led = 1;
-  int connected;
-  int found;
-  
-  VALUE wm, exp = Qnil;
+  int i = 0, led = 1, connected = 0, found = 0;
+  VALUE wm = Qnil, exp = Qnil;
   VALUE max = rb_const_get(wii_mod, rb_intern("MAX_WIIMOTES"));
   VALUE timeout = rb_const_get(wii_mod, rb_intern("TIMEOUT"));
+  
   found = wiiuse_find(conn->wms, NUM2INT(max), NUM2INT(timeout));
   if(!found) return INT2NUM(0); 
   connected = wiiuse_connect(conn->wms, NUM2INT(max));
@@ -201,14 +199,17 @@ static VALUE rb_cm_connect(VALUE self) {
 static VALUE rb_cm_poll(VALUE self) {
   if(rb_block_given_p()) {
     VALUE connected = rb_funcall(self, rb_intern("connected"), 0, NULL);
+    
     if(NUM2INT(connected) > 0) {
-      VALUE wiimotes = rb_iv_get(self, "@wiimotes");
       connman *conn;
       Data_Get_Struct(self, connman, conn);
-      if(!conn) return Qnil;
+      if(!conn) rb_raise(gen_exp_class, "WiimoteManager not properly initialized, cannot do poll");
+      
+      VALUE wiimotes = rb_iv_get(self, "@wiimotes");
       
       int i = 0;
-      VALUE ary, argv[1], wm, event_name = Qnil, exp = Qnil;
+      VALUE ary = Qnil, wm = Qnil, event_name = Qnil, exp = Qnil;
+      VALUE argv[1];
       wiimote * wmm;
       
       VALUE max = rb_const_get(wii_mod, rb_intern("MAX_WIIMOTES"));
@@ -217,8 +218,8 @@ static VALUE rb_cm_poll(VALUE self) {
           argv[0] = INT2NUM(i);
           wm = rb_ary_aref(1, argv, wiimotes);
           Data_Get_Struct(wm, wiimote, wmm);
-          if(!wmm) return Qnil;
-          if(wmm->event != WIIUSE_NONE) {
+
+          if(wmm && wmm->event != WIIUSE_NONE) {
             ary = rb_ary_new();
             rb_ary_push(ary, wm);
             switch(wmm->event) {
@@ -293,7 +294,9 @@ static VALUE rb_cm_each(VALUE self) {
   if(rb_block_given_p()) {
     VALUE connected = rb_funcall(self, rb_intern("connected"), 0, NULL);
     VALUE wiimotes = rb_iv_get(self, "@wiimotes");
-    VALUE argv[1], wm;
+    VALUE argv[1];
+    VALUE wm;
+    
     int i = 0;
     
     for(; i < NUM2INT(connected); i++) {

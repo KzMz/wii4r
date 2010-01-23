@@ -44,6 +44,7 @@ static VALUE rb_wm_init(VALUE self) {
   rb_iv_set(self, "@smoothed", rb_hash_new());
   wiimote *wm;
   Data_Get_Struct(self, wiimote, wm);
+  if(!wm) return Qnil;
   if(!WIIUSE_USING_ACC(wm))
     rb_iv_set(self, "@motion_sensing", Qfalse);
   else 
@@ -83,6 +84,8 @@ static VALUE rb_wm_get_rumble(VALUE self) {
 static VALUE rb_wm_set_rumble(VALUE self, VALUE arg) {
   wiimote * wm;
   Data_Get_Struct(self, wiimote, wm);
+  if(!wm) return Qnil;
+  
   int rumble;
   switch(arg) {
     case Qfalse:
@@ -92,7 +95,8 @@ static VALUE rb_wm_set_rumble(VALUE self, VALUE arg) {
       rumble = 1;
       break;
     default:
-      return Qnil;
+      rb_raise(rb_eTypeError, "Invalid Argument");
+      break;
   }
   wiiuse_rumble(wm, rumble);
   rb_iv_set(self, "@rumble", arg);
@@ -115,6 +119,8 @@ static VALUE rb_wm_set_rumble(VALUE self, VALUE arg) {
 static VALUE rb_wm_rumble(int argc, VALUE * argv, VALUE self) {
   wiimote * wm;
   Data_Get_Struct(self, wiimote, wm);
+  if(!wm) return Qnil;
+  
   wiiuse_rumble(wm, 1);
   rb_iv_set(self, "@rumble", Qtrue);
   if(argc == 1) {
@@ -126,9 +132,9 @@ static VALUE rb_wm_rumble(int argc, VALUE * argv, VALUE self) {
         rb_iv_set(self, "@rumble", Qfalse);
         break;
       case T_ARRAY:
-        break;
       default:
         rb_raise(rb_eTypeError, "Invalid Argument");
+        break;
     }
   }
   else if(argc == 2) {
@@ -148,7 +154,7 @@ static VALUE rb_wm_rumble(int argc, VALUE * argv, VALUE self) {
     }
   }
   else {
-    //raise
+    rb_raise(rb_eTypeError, "Invalid Argument");
   }
   return Qnil;
 }
@@ -164,6 +170,8 @@ static VALUE rb_wm_rumble(int argc, VALUE * argv, VALUE self) {
 static VALUE rb_wm_stop(VALUE self) {
   wiimote * wm;
   Data_Get_Struct(self, wiimote, wm);
+  if(!wm) return Qnil;
+  
   wiiuse_rumble(wm, 0);
   rb_iv_set(self, "@rumble", Qfalse);
   return Qnil;
@@ -185,6 +193,8 @@ static VALUE rb_wm_stop(VALUE self) {
 static VALUE rb_wm_leds(VALUE self, VALUE arg) {
   wiimote * wm;
   Data_Get_Struct(self, wiimote, wm);
+  if(!wm) return Qnil;
+  
   wiiuse_set_leds(wm, NUM2INT(arg));
   return Qnil;
 }
@@ -200,6 +210,7 @@ static VALUE rb_wm_leds(VALUE self, VALUE arg) {
 static VALUE rb_wm_turnoff(VALUE self) {
   wiimote * wm;
   Data_Get_Struct(self, wiimote, wm);
+  if(!wm) return Qnil;
   wiiuse_set_leds(wm, WIIMOTE_LED_NONE);
   return Qnil;
 }
@@ -213,8 +224,7 @@ static VALUE rb_wm_turnoff(VALUE self) {
  */
 
 static VALUE rb_wm_get_ms(VALUE self) {
-  VALUE ms = rb_iv_get(self, "@motion_sensing");
-  return ms;
+  return rb_iv_get(self, "@motion_sensing");
 }
 
 /*
@@ -226,8 +236,8 @@ static VALUE rb_wm_get_ms(VALUE self) {
  */
 
 static VALUE rb_wm_set_ms(VALUE self, VALUE arg) {
-  rb_iv_set(self, "@motion_sensing", arg);
   int motion_sensing;
+  
   switch(arg) {
     case Qfalse:
       motion_sensing = 0;
@@ -236,10 +246,15 @@ static VALUE rb_wm_set_ms(VALUE self, VALUE arg) {
       motion_sensing = 1;
       break;
     default:
-      return Qnil;
+      rb_raise(rb_eTypeError, "Invalid Argument");
   }
+  
+  rb_iv_set(self, "@motion_sensing", arg);
+  
   wiimote * wm;
   Data_Get_Struct(self, wiimote, wm);
+  if(!wm) return Qnil;
+  
   wiiuse_motion_sensing(wm, motion_sensing);
   return arg;
 }
@@ -262,7 +277,10 @@ static VALUE rb_wm_set_ms(VALUE self, VALUE arg) {
 static VALUE rb_wm_status(VALUE self) {
   wiimote * wm;
   Data_Get_Struct(self, wiimote, wm);
+  if(!wm) return Qnil;
+  
   wiiuse_status(wm);
+  
   VALUE status_hash = rb_hash_new();
   VALUE speaker = Qnil;
   VALUE led = Qnil;
@@ -318,6 +336,8 @@ static VALUE rb_wm_status(VALUE self) {
 static VALUE rb_wm_disconnect(VALUE self) {
  wiimote *wm;
  Data_Get_Struct(self, wiimote, wm);
+ if(!wm) return Qnil;
+ 
  if(wm_connected(wm)) {
 	wiiuse_disconnected(wm);
 	return Qtrue;
@@ -343,6 +363,8 @@ int wm_connected(wiimote *wm) {
 static VALUE rb_wm_connected(VALUE self) {
   wiimote * wm;
   Data_Get_Struct(self, wiimote, wm);
+  if(!wm) return Qnil;
+  
   int connected = wm_connected(wm);
   if(connected == 0) return Qfalse;
   else return Qtrue;
@@ -359,6 +381,9 @@ static VALUE rb_wm_connected(VALUE self) {
 static VALUE rb_wm_pressed(VALUE self, VALUE arg) {
   wiimote *wm;
   Data_Get_Struct(self, wiimote, wm);
+  if(!wm) return Qnil;
+  Check_Type(arg, T_FIXNUM);
+  
   int pressed = IS_PRESSED(wm, NUM2INT(arg));
   if(pressed == 0) return Qfalse;
   else return Qtrue;
@@ -375,6 +400,9 @@ static VALUE rb_wm_pressed(VALUE self, VALUE arg) {
 static VALUE rb_wm_just_pressed(VALUE self, VALUE arg) {
   wiimote *wm;
   Data_Get_Struct(self, wiimote, wm);
+  if(!wm) return Qnil;
+  Check_Type(arg, T_FIXNUM);
+  
   int pressed = IS_JUST_PRESSED(wm, NUM2INT(arg));
   if(pressed == 0) return Qfalse;
   else return Qtrue;
@@ -391,6 +419,9 @@ static VALUE rb_wm_just_pressed(VALUE self, VALUE arg) {
 static VALUE rb_wm_held(VALUE self, VALUE arg) {
   wiimote *wm;
   Data_Get_Struct(self, wiimote, wm);
+  if(!wm) return Qnil;
+  Check_Type(arg, T_FIXNUM);
+  
   int held = IS_HELD(wm, NUM2INT(arg));
   if(held == 0) return Qfalse;
   else return Qtrue;
@@ -407,6 +438,9 @@ static VALUE rb_wm_held(VALUE self, VALUE arg) {
 static VALUE rb_wm_released(VALUE self, VALUE arg) {
   wiimote *wm;
   Data_Get_Struct(self, wiimote, wm);
+  if(!wm) return Qnil;
+  Check_Type(arg, T_FIXNUM);
+  
   int released = IS_RELEASED(wm, NUM2INT(arg));
   if(released == 0) return Qfalse;
   else return Qtrue;
@@ -423,6 +457,7 @@ static VALUE rb_wm_released(VALUE self, VALUE arg) {
 static VALUE rb_wm_yaw(VALUE self) {
   wiimote *wm;
   Data_Get_Struct(self, wiimote, wm);
+  if(!wm) return Qnil;
   if(!WIIUSE_USING_ACC(wm)) return Qnil;
   return rb_float_new(wm->orient.yaw);
 }
@@ -439,6 +474,7 @@ static VALUE rb_wm_yaw(VALUE self) {
 static VALUE rb_wm_pitch(VALUE self) {
   wiimote *wm;
   Data_Get_Struct(self, wiimote, wm);
+  if(!wm) return Qnil;
   if(!WIIUSE_USING_ACC(wm)) return Qnil;
   return rb_float_new(wm->orient.pitch);
 }
@@ -455,6 +491,7 @@ static VALUE rb_wm_pitch(VALUE self) {
 static VALUE rb_wm_apitch(VALUE self) {
   wiimote *wm;
   Data_Get_Struct(self, wiimote, wm);
+  if(!wm) return Qnil;
   if(!WIIUSE_USING_ACC(wm)) return Qnil;
   return rb_float_new(wm->orient.a_pitch);
 }
@@ -471,6 +508,7 @@ static VALUE rb_wm_apitch(VALUE self) {
 static VALUE rb_wm_roll(VALUE self) {
   wiimote *wm;
   Data_Get_Struct(self, wiimote, wm);
+  if(!wm) return Qnil;
   if(!WIIUSE_USING_ACC(wm)) return Qnil;
   return rb_float_new(wm->orient.roll);
 }
@@ -487,6 +525,7 @@ static VALUE rb_wm_roll(VALUE self) {
 static VALUE rb_wm_aroll(VALUE self) {
   wiimote *wm;
   Data_Get_Struct(self, wiimote, wm);
+  if(!wm) return Qnil;
   if(!WIIUSE_USING_ACC(wm)) return Qnil;
   return rb_float_new(wm->orient.a_roll);
 }
@@ -515,10 +554,11 @@ static VALUE rb_wm_ir(VALUE self) {
 static VALUE rb_wm_set_ir(VALUE self, VALUE arg) {
   wiimote *wm;
   Data_Get_Struct(self, wiimote, wm);
+  if(!wm) return Qnil;
   int ir;
   if(arg == Qtrue) ir = 1;
   else if(arg == Qfalse) ir = 0;
-  else return Qnil;
+  else rb_raise(gen_exp_class, "Invalid Argument");
 
   if(WIIUSE_USING_IR(wm) && ir == 0) wiiuse_set_ir(wm, ir);
   else if(ir == 1) wiiuse_set_ir(wm, ir);
@@ -539,6 +579,7 @@ static VALUE rb_wm_set_ir(VALUE self, VALUE arg) {
 static VALUE rb_wm_ir_sources(VALUE self) {
   wiimote *wm;
   Data_Get_Struct(self, wiimote, wm);
+  if(!wm) return Qnil;
   if(!WIIUSE_USING_IR(wm)) return Qnil;
   VALUE ary = rb_ary_new();
   int i = 0;
@@ -565,6 +606,7 @@ static VALUE rb_wm_ir_sources(VALUE self) {
 static VALUE rb_wm_ir_cursor(VALUE self) {
   wiimote *wm;
   Data_Get_Struct(self, wiimote, wm);
+  if(!wm) return Qnil;
   if(!WIIUSE_USING_IR(wm)) return Qnil;
   VALUE ary = rb_ary_new();
   rb_ary_push(ary, INT2NUM(wm->ir.x));
@@ -583,6 +625,7 @@ static VALUE rb_wm_ir_cursor(VALUE self) {
 static VALUE rb_wm_ir_z(VALUE self) {
   wiimote *wm;
   Data_Get_Struct(self, wiimote, wm);
+  if(!wm) return Qnil;
   if(!WIIUSE_USING_IR(wm)) return Qnil;
   return rb_float_new(wm->ir.z);
 }
@@ -600,6 +643,7 @@ static VALUE rb_wm_sensitivity(VALUE self) {
   wiimote *wm;
   int level;
   Data_Get_Struct(self, wiimote, wm);	
+  if(!wm) return Qnil;
   if(!WIIUSE_USING_IR(wm)) return Qnil;
   WIIUSE_GET_IR_SENSITIVITY(wm, &level);	
   return INT2NUM(level);
@@ -617,6 +661,7 @@ static VALUE rb_wm_sensitivity(VALUE self) {
 static VALUE rb_wm_set_sens(VALUE self, VALUE arg) {
   wiimote *wm;
   Data_Get_Struct(self,wiimote,wm);
+  if(!wm) return Qnil;
   wiiuse_set_ir_sensitivity(wm,NUM2INT(arg));
   return Qnil;
 }
@@ -632,6 +677,7 @@ static VALUE rb_wm_set_sens(VALUE self, VALUE arg) {
 static VALUE rb_wm_speaker(VALUE self) {
   wiimote *wm;
   Data_Get_Struct(self, wiimote, wm);
+  if(!wm) return Qnil;
   if (WIIUSE_USING_SPEAKER(wm)) return Qtrue;
   else return Qfalse;	
 }
@@ -647,6 +693,7 @@ static VALUE rb_wm_speaker(VALUE self) {
 static VALUE rb_wm_bl(VALUE self) {
   wiimote *wm;	
   Data_Get_Struct(self,wiimote,wm);
+  if(!wm) return Qnil;
   wiiuse_status(wm);
   return rb_float_new(wm->battery_level); 
 }
@@ -662,6 +709,7 @@ static VALUE rb_wm_bl(VALUE self) {
 static VALUE rb_wm_aratio(VALUE self) {
   wiimote *wm;
   Data_Get_Struct(self,wiimote,wm);
+  if(!wm) return Qnil;
   wiiuse_status(wm);
   if (wm->ir.aspect == WIIUSE_ASPECT_4_3) return rb_str_new2("4:3"); 
   else if (wm->ir.aspect == WIIUSE_ASPECT_16_9) return rb_str_new2("16:9");
@@ -679,6 +727,8 @@ static VALUE rb_wm_aratio(VALUE self) {
 static VALUE rb_wm_set_aratio(VALUE self, VALUE arg) {
   wiimote *wm;
   Data_Get_Struct(self,wiimote,wm);
+  if(!wm) return Qnil;
+  Check_Type(arg, T_FIXNUM);
   wiiuse_set_aspect_ratio(wm,NUM2INT(arg));
   return Qnil;
 }
@@ -693,7 +743,8 @@ static VALUE rb_wm_set_aratio(VALUE self, VALUE arg) {
 
 static VALUE rb_wm_vres(VALUE self) {
   wiimote *wm;
-  Data_Get_Struct(self,wiimote,wm);	
+  Data_Get_Struct(self,wiimote,wm);
+  if(!wm) return Qnil;	
   VALUE v_res = rb_ary_new();
   rb_ary_push(v_res, INT2NUM(wm->ir.vres[0]));
   rb_ary_push(v_res, INT2NUM(wm->ir.vres[1]));
@@ -711,12 +762,16 @@ static VALUE rb_wm_vres(VALUE self) {
 static VALUE rb_wm_set_vres(VALUE self, VALUE arg) {
   wiimote *wm;
   Data_Get_Struct(self,wiimote,wm);
+  if(!wm) return Qnil;
+  Check_Type(arg, T_ARRAY);
+  
   VALUE v_ary[2],argv[1];
   int i = 0;
   for(;i < 2;i++)
   {
 	argv[0] = INT2NUM(i);
 	v_ary[i] = rb_ary_aref(1, argv, arg);
+	Check_Type(v_ary[i], T_FIXNUM);
   }
   wiiuse_set_ir_vres(wm, NUM2INT(v_ary[0]), NUM2INT(v_ary[1]));
   return Qnil;	
@@ -733,6 +788,7 @@ static VALUE rb_wm_set_vres(VALUE self, VALUE arg) {
 static VALUE rb_wm_pos(VALUE self) {
   wiimote *wm;
   Data_Get_Struct(self,wiimote,wm);
+  if(!wm) return Qnil;
   if(wm->ir.pos == WIIUSE_IR_ABOVE) return rb_str_new2("ABOVE"); 		
   else if (wm->ir.pos == WIIUSE_IR_BELOW) return rb_str_new2("BELOW");	
   return Qnil;
@@ -749,6 +805,7 @@ static VALUE rb_wm_pos(VALUE self) {
 static VALUE rb_wm_set_pos(VALUE self, VALUE arg) {
   wiimote *wm;
   Data_Get_Struct(self,wiimote,wm);	
+  if(!wm) return Qnil;
   wiiuse_set_ir_position(wm,NUM2INT(arg));
   return Qnil;
 }
@@ -764,6 +821,7 @@ static VALUE rb_wm_set_pos(VALUE self, VALUE arg) {
 static VALUE rb_wm_led(VALUE self) {
   wiimote *wm;
   Data_Get_Struct(self, wiimote, wm);
+  if(!wm) return Qnil;
   if(WIIUSE_IS_LED_SET(wm, 1)) return rb_str_new2("LED_1");
   if(WIIUSE_IS_LED_SET(wm, 2)) return rb_str_new2("LED_2");
   if(WIIUSE_IS_LED_SET(wm, 3)) return rb_str_new2("LED_3");
@@ -784,6 +842,7 @@ static VALUE rb_wm_led(VALUE self) {
 static VALUE rb_wm_exp(int argc, VALUE * argv, VALUE self) {
   wiimote *wm;
   Data_Get_Struct(self, wiimote, wm);
+  if(!wm) return Qnil;
   if(argc == 0) {
     if(wm->exp.type != EXP_NONE) {
       return Qtrue;
@@ -793,6 +852,7 @@ static VALUE rb_wm_exp(int argc, VALUE * argv, VALUE self) {
     }
   }
   else {
+    Check_Type(arg, T_FIXNUM);
     switch(wm->exp.type) {
       case EXP_NONE:
         return Qfalse;
@@ -821,6 +881,7 @@ return Qfalse;
 static VALUE rb_wm_nunchuk(VALUE self) {
   wiimote *wm;
   Data_Get_Struct(self, wiimote, wm);
+  if(!wm) return Qnil;
   if(wm->exp.type == EXP_NUNCHUK) return Qtrue;
   else return Qfalse;
 }
@@ -836,6 +897,7 @@ static VALUE rb_wm_nunchuk(VALUE self) {
 static VALUE rb_wm_cc(VALUE self) {
   wiimote *wm;
   Data_Get_Struct(self, wiimote, wm);
+  if(!wm) return Qnil;
   if(wm->exp.type == EXP_CLASSIC) return Qtrue;
   else return Qfalse;
 }
@@ -851,6 +913,7 @@ static VALUE rb_wm_cc(VALUE self) {
 static VALUE rb_wm_gh(VALUE self) {
   wiimote *wm;
   Data_Get_Struct(self, wiimote, wm);
+  if(!wm) return Qnil;
   if(wm->exp.type == EXP_GUITAR_HERO_3) return Qtrue;
   else return Qfalse;
 }
@@ -866,6 +929,7 @@ static VALUE rb_wm_gh(VALUE self) {
 static VALUE rb_wm_ir_acursor(VALUE self) {
   wiimote *wm;
   Data_Get_Struct(self, wiimote, wm);
+  if(!wm) return Qnil;
   VALUE ary = rb_ary_new();
   rb_ary_push(ary, INT2NUM(wm->ir.ax));
   rb_ary_push(ary, INT2NUM(wm->ir.ay));
@@ -883,6 +947,7 @@ static VALUE rb_wm_ir_acursor(VALUE self) {
 static VALUE rb_wm_accel(VALUE self) {
   wiimote *wm;
   Data_Get_Struct(self, wiimote, wm);
+  if(!wm) return Qnil;
   VALUE ary = rb_ary_new();
   rb_ary_push(ary, INT2NUM(wm->accel.x));
   rb_ary_push(ary, INT2NUM(wm->accel.y));
@@ -901,6 +966,7 @@ static VALUE rb_wm_accel(VALUE self) {
 static VALUE rb_wm_gforce(VALUE self) {
   wiimote *wm;
   Data_Get_Struct(self, wiimote, wm);
+  if(!wm) return Qnil;
   VALUE ary = rb_ary_new();
   rb_ary_push(ary, rb_float_new(wm->gforce.x));
   rb_ary_push(ary, rb_float_new(wm->gforce.y));
@@ -919,6 +985,7 @@ static VALUE rb_wm_gforce(VALUE self) {
 static VALUE rb_wm_accel_threshold(VALUE self) {
   wiimote *wm;
   Data_Get_Struct(self, wiimote, wm);
+  if(!wm) return Qnil;
   return INT2NUM(wm->accel_threshold);
 }
 
@@ -933,6 +1000,7 @@ static VALUE rb_wm_accel_threshold(VALUE self) {
 static VALUE rb_wm_set_accel_threshold(VALUE self, VALUE arg) {
   wiimote *wm;
   Data_Get_Struct(self, wiimote, wm);
+  if(!wm) return Qnil;
   wiiuse_set_accel_threshold(wm, NUM2INT(arg));
   return Qnil;
 }
@@ -947,7 +1015,8 @@ static VALUE rb_wm_set_accel_threshold(VALUE self, VALUE arg) {
 
 static VALUE rb_wm_orient_threshold(VALUE self) {
   wiimote *wm;
-  Data_Get_Struct(self, wiimote, wm);	
+  Data_Get_Struct(self, wiimote, wm);
+  if(!wm) return Qnil;	
   return INT2NUM(wm->orient_threshold);	
 } 
 
@@ -962,6 +1031,7 @@ static VALUE rb_wm_orient_threshold(VALUE self) {
 static VALUE rb_wm_set_orient_threshold(VALUE self, VALUE arg) {
   wiimote *wm;
   Data_Get_Struct(self, wiimote, wm);
+  if(!wm) return Qnil;
   wiiuse_set_orient_threshold(wm,(float)NUM2DBL(arg));
   return Qnil;
 }
@@ -979,6 +1049,8 @@ static VALUE rb_wm_set_nun_athreshold(VALUE self, VALUE arg) {
   VALUE nun = rb_funcall(self, rb_intern("has_nunchuk?"), 0, NULL);
   if(nun == Qtrue) {
     Data_Get_Struct(self, wiimote, wm);
+    if(!wm) return Qnil;
+    Check_Type(arg, T_FIXNUM);
     wiiuse_set_nunchuk_accel_threshold(wm, NUM2INT(arg));
   }
   return Qnil;
@@ -997,6 +1069,8 @@ static VALUE rb_wm_set_nun_othreshold(VALUE self, VALUE arg) {
   VALUE nun = rb_funcall(self, rb_intern("has_nunchuk?"), 0, NULL);
   if(nun == Qtrue) {
     Data_Get_Struct(self, wiimote, wm);
+    if(!wm) return Qnil;
+    Check_Type(arg, T_FLOAT);
     wiiuse_set_nunchuk_orient_threshold(wm, (float)NUM2DBL(arg));
   }
   return Qnil;
@@ -1016,6 +1090,7 @@ static VALUE rb_wm_set_speaker(VALUE self, VALUE arg) {
   if(!wm) return Qnil;
   int speaker = 0;
   if(arg == Qtrue) speaker = 1;
+  else if(arg != Qfalse) rb_raise(rb_eTypeError, "Invalid Argument");
   wiiuse_set_speaker(wm, speaker);
   return Qnil;
 }
@@ -1065,6 +1140,8 @@ static VALUE rb_wm_play(VALUE self, VALUE file) {
   wiimote *wm;
   Data_Get_Struct(self, wiimote, wm);
   if(!wm) return Qnil;
+  Check_Type(file, T_STRING);
+  
   byte *w_sample = NULL;
   char *path = StringValue(file);
   w_sample = wiiuse_convert_wav(path);

@@ -35,6 +35,7 @@ static VALUE rb_nun_pressed(VALUE self, VALUE arg) {
   nunchuk_t *nun;
   Data_Get_Struct(self, nunchuk_t, nun);
   if(!nun) return Qnil;
+  Check_Type(arg, T_FIXNUM);
   if(IS_PRESSED(nun, NUM2INT(arg)))
     return Qtrue;
   else
@@ -53,6 +54,7 @@ static VALUE rb_nun_jpressed(VALUE self, VALUE arg) {
   nunchuk_t *nun;
   Data_Get_Struct(self, nunchuk_t, nun);
   if(!nun) return Qnil;
+  Check_Type(arg, T_FIXNUM);
   if(IS_JUST_PRESSED(nun, NUM2INT(arg)))
     return Qtrue;
   else
@@ -71,6 +73,7 @@ static VALUE rb_nun_held(VALUE self, VALUE arg) {
   nunchuk_t *nun;
   Data_Get_Struct(self, nunchuk_t, nun);
   if(!nun) return Qnil;
+  Check_Type(arg, T_FIXNUM);
   if(IS_HELD(nun, NUM2INT(arg)))
     return Qtrue;
   else
@@ -89,6 +92,7 @@ static VALUE rb_nun_rel(VALUE self, VALUE arg) {
   nunchuk_t *nun;
   Data_Get_Struct(self, nunchuk_t, nun);
   if(!nun) return Qnil;
+  Check_Type(arg, T_FIXNUM);
   if(IS_RELEASED(nun, NUM2INT(arg)))
     return Qtrue;
   else

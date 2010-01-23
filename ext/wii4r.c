@@ -41,6 +41,9 @@ VALUE gh3_class = Qnil;
 //Nunchuk class
 VALUE nun_class = Qnil;
 
+//Wii4RGenericException class
+VALUE gen_exp_class = Qnil;
+
 //define Wiimote class
 extern void init_wiimote(void);
 
@@ -55,6 +58,10 @@ extern void init_gh3(void);
 
 //define Nunchuk class
 extern void init_nunchuk(void);
+
+void init_exceptions(void) {
+  gen_exp_class = rb_define_class("Wii4RuntimeException", rb_eRuntimeError);
+}
 
 /*
  *  Document-class: Wii
@@ -174,5 +181,6 @@ void Init_wii4r() {
   init_nunchuk();
   init_gh3();
   init_cc();
+  init_exceptions();
 }
 

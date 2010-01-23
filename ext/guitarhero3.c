@@ -35,6 +35,7 @@ static VALUE rb_gh3_pressed(VALUE self, VALUE arg) {
   guitar_hero_3_t *gh3;
   Data_Get_Struct(self, guitar_hero_3_t, gh3);
   if(!gh3) return Qnil;
+  Check_Type(arg, T_FIXNUM);
   if(IS_PRESSED(gh3, NUM2INT(arg)))
     return Qtrue;
   else
@@ -53,6 +54,7 @@ static VALUE rb_gh3_jpressed(VALUE self, VALUE arg) {
   guitar_hero_3_t *gh3;
   Data_Get_Struct(self, guitar_hero_3_t, gh3);
   if(!gh3) return Qnil;
+  Check_Type(arg, T_FIXNUM);
   if(IS_JUST_PRESSED(gh3, NUM2INT(arg)))
     return Qtrue;
   else
@@ -71,6 +73,7 @@ static VALUE rb_gh3_held(VALUE self, VALUE arg) {
   guitar_hero_3_t *gh3;
   Data_Get_Struct(self, guitar_hero_3_t, gh3);
   if(!gh3) return Qnil;
+  Check_Type(arg, T_FIXNUM);
   if(IS_HELD(gh3, NUM2INT(arg)))
     return Qtrue;
   else
@@ -89,6 +92,7 @@ static VALUE rb_gh3_rel(VALUE self, VALUE arg) {
   guitar_hero_3_t *gh3;
   Data_Get_Struct(self, guitar_hero_3_t, gh3);
   if(!gh3) return Qnil;
+  Check_Type(arg, T_FIXNUM);
   if(IS_RELEASED(gh3, NUM2INT(arg)))
     return Qtrue;
   else

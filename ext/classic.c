@@ -35,6 +35,7 @@ static VALUE rb_cc_pressed(VALUE self, VALUE arg) {
   classic_ctrl_t *cc;
   Data_Get_Struct(self, classic_ctrl_t, cc);
   if(!cc) return Qnil;
+  Check_Type(arg, T_FIXNUM);
   if(IS_PRESSED(cc, NUM2INT(arg)))
     return Qtrue;
   else
@@ -53,6 +54,7 @@ static VALUE rb_cc_jpressed(VALUE self, VALUE arg) {
   classic_ctrl_t *cc;
   Data_Get_Struct(self, classic_ctrl_t, cc);
   if(!cc) return Qnil;
+  Check_Type(arg, T_FIXNUM);
   if(IS_JUST_PRESSED(cc, NUM2INT(arg)))
     return Qtrue;
   else
@@ -71,6 +73,7 @@ static VALUE rb_cc_held(VALUE self, VALUE arg) {
   classic_ctrl_t *cc;
   Data_Get_Struct(self, classic_ctrl_t, cc);
   if(!cc) return Qnil;
+  Check_Type(arg, T_FIXNUM);
   if(IS_HELD(cc, NUM2INT(arg)))
     return Qtrue;
   else
@@ -89,6 +92,7 @@ static VALUE rb_cc_rel(VALUE self, VALUE arg) {
   classic_ctrl_t *cc;
   Data_Get_Struct(self, classic_ctrl_t, cc);
   if(!cc) return Qnil;
+  Check_Type(arg, T_FIXNUM);
   if(IS_RELEASED(cc, NUM2INT(arg)))
     return Qtrue;
   else
