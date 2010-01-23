@@ -13,7 +13,8 @@ This should be all.
 
 == Dependencies
 
-* wiiuse lib
+* wiiuse lib (http://www.wiiuse.net) (lacks of speaker support and small fixes)
+* wiiuse_fork (github) (lacks of speaker support as for now)
 
 == Usage
 
