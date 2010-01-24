@@ -852,7 +852,7 @@ static VALUE rb_wm_exp(int argc, VALUE * argv, VALUE self) {
     }
   }
   else {
-    Check_Type(arg, T_FIXNUM);
+    Check_Type(argv[0], T_FIXNUM);
     switch(wm->exp.type) {
       case EXP_NONE:
         return Qfalse;
@@ -1143,15 +1143,27 @@ static VALUE rb_wm_play(VALUE self, VALUE file) {
   Check_Type(file, T_STRING);
   
   byte *w_sample = NULL;
-  char *path = StringValue(file);
-  w_sample = wiiuse_convert_wav(path);
+  w_sample = wiiuse_convert_wav(StringValue(file), 10);
   if(!WIIUSE_USING_SPEAKER(wm))
     wiiuse_set_speaker(wm, 1);
   if(WIIUSE_SPEAKER_MUTE(wm))
     wiiuse_mute_speaker(wm, 0);
-  wiiuse_play_sound(wm, w_sample, sizeof(w_sample), 0x11);
+  wiiuse_play_sound(wm, w_sample, sizeof(w_sample));
   return Qnil;
 }
+
+static VALUE rb_wm_ps(VALUE self) {
+  wiimote *wm;
+  Data_Get_Struct(self, wiimote, wm);
+  if(!WIIUSE_USING_SPEAKER(wm))
+    wiiuse_set_speaker(wm, 1);
+  if(WIIUSE_SPEAKER_MUTE(wm))
+    wiiuse_mute_speaker(wm, 0);
+  byte song[20] = { 0xCC, 0x33, 0xCC, 0x33, 0xCC, 0x33, 0xCC, 0x33, 0xCC, 0x33, 0xCC, 0x33, 0xCC, 0x33, 0xCC, 0x33, 0xCC, 0x33, 0xCC, 0x33 };
+  wiiuse_play_sound(wm, song, 20);
+  return Qnil;
+}
+
 
 /*
  * call-seq:
@@ -1219,6 +1231,7 @@ void init_wiimote(void) {
   rb_define_method(wii_class, "speaker=", rb_wm_set_speaker, 1);
   rb_define_method(wii_class, "speaker?", rb_wm_speaker, 0);
   rb_define_method(wii_class, "play", rb_wm_play, 1);
+  rb_define_method(wii_class, "play_sound", rb_wm_ps, 0);
   rb_define_method(wii_class, "mute!", rb_wm_mute_speaker, 0);
   //rb_define_method(wii_class, "muted?", rb_wm_muted, 0);
   //rb_define_method(wii_class, "playing?", rb_wm_playing, 0);
