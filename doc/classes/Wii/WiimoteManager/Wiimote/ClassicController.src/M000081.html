@@ -1,27 +1,20 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
-<!DOCTYPE html 
-     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-  <title>left_shoulder (Wii::WiimoteManager::Wiimote::ClassicController)</title>
-  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <title>pressed? (Wii::WiimoteManager::Wiimote::ClassicController)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <link rel="stylesheet" href="../../../../.././rdoc-style.css" type="text/css" media="screen" />
 </head>
 <body class="standalone-code">
   <pre>/*
- * call-seq:
- *      classicctrl.left_shoulder    -&gt; float
+ *  call-seq:
+ *      classicctrl.pressed?(button) -&gt; true or false
  *
- * Returns the magnitude at which the left shoulder button is being held.
- * Range: [0, 1]
- * 0 =&gt; not pressed
- * 1 =&gt; fully pressed
+ *  Returns true if &lt;i&gt;button&lt;/i&gt; is being pressed on &lt;i&gt;self&lt;/i&gt;.
  *
  */
- 
-static VALUE rb_cc_lshoulder(VALUE self) {
-</pre>
+
+static VALUE rb_cc_pressed(VALUE self, VALUE arg) </pre>
 </body>
 </html>

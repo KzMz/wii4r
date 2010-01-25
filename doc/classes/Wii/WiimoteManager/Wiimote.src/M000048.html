@@ -1,25 +1,20 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
-<!DOCTYPE html 
-     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-  <title>sensitivity= (Wii::WiimoteManager::Wiimote)</title>
-  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <title>exp (Wii::WiimoteManager::Wiimote)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <link rel="stylesheet" href="../../../.././rdoc-style.css" type="text/css" media="screen" />
 </head>
 <body class="standalone-code">
   <pre>/*
  * call-seq:
- *      wiimote.sensitivity = level  -&gt; int
+ *      wiimote.exp  -&gt; Nunchuk or ClassicController or GH3Controller
  *
- * Sets the sensitivity level of ir camera to &lt;i&gt;level&lt;/i&gt;.
- * The value will be truncated to 5 or 1.
+ * Returns an object representating the expansion attached to &lt;i&gt;self&lt;/i&gt;.
  *
  */
 
-static VALUE rb_wm_set_sens(VALUE self, VALUE arg) {
-</pre>
+static VALUE rb_wm_get_exp(VALUE self) </pre>
 </body>
 </html>

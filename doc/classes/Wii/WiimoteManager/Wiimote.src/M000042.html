@@ -1,24 +1,21 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
-<!DOCTYPE html 
-     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-  <title>speaker? (Wii::WiimoteManager::Wiimote)</title>
-  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <title>ir= (Wii::WiimoteManager::Wiimote)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <link rel="stylesheet" href="../../../.././rdoc-style.css" type="text/css" media="screen" />
 </head>
 <body class="standalone-code">
   <pre>/*
  * call-seq:
- *      wiimote.speaker?     -&gt; true or false
+ *      wiimote.ir = true or false   -&gt; true or false
  *
- * Returns true if speaker is enabled, false otherwise.
+ * Sets ir tracking to enabled/disabled.
+ * [BUG in wiiuse] when activated, ir tracking cannot be disabled.
  *
  */
- 
-static VALUE rb_wm_speaker(VALUE self) {
-</pre>
+
+static VALUE rb_wm_set_ir(VALUE self, VALUE arg) </pre>
 </body>
 </html>

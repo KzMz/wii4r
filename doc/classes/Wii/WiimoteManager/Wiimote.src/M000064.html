@@ -2,36 +2,19 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-  <title>smoothed (Wii::WiimoteManager::Wiimote)</title>
+  <title>accel_threshold (Wii::WiimoteManager::Wiimote)</title>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <link rel="stylesheet" href="../../../.././rdoc-style.css" type="text/css" media="screen" />
 </head>
 <body class="standalone-code">
   <pre>/*
  * call-seq:
- *      wiimote.smoothed     -&gt; hash
- *      wiimote.smoothed(hash)  -&gt; hash
+ *      wiimote.accel_threshold      -&gt; float
  *
- * The first form sets all the properties of the wiimote to be smoothed on accessing with the default threshold (via getters).
- * The second form sets the properties defined in hash to be smoothed on accessing with the threshold specificated as value.
- *
- *      Properties which can be smoothed:
- *              - pitch (:pitch)
- *              - roll (:roll)
- *              - gravity force (:gforce)
- *              - acceleration (:accel)
- *
- *      The default threshold are:
- *              - pitch: 10 degrees
- *              - roll: 15 degrees
- *              - gravity force: 5 on all axes
- *              - acceleration: 5 on all axes
- *
- *      wm.smoothed                                  #=&gt; {:pitch =&gt; 10, :roll =&gt; 15, :gforce =&gt; 5, :accel =&gt; 5}
- *      wm.smoothed({:pitch =&gt; 20, :gforce =&gt; 1})    #=&gt; {:pitch =&gt; 20, :gforce =&gt; 1}
+ * Returns the accelerometer event threshold for &lt;i&gt;self&lt;/i&gt;.
  *
  */
 
-static VALUE rb_wm_set_smoothed(int argc, VALUE *argv, VALUE self) </pre>
+static VALUE rb_wm_accel_threshold(VALUE self) </pre>
 </body>
 </html>

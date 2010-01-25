@@ -1,24 +1,25 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
-<!DOCTYPE html 
-     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-  <title>turn_off_leds! (Wii::WiimoteManager::Wiimote)</title>
-  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <title>leds= (Wii::WiimoteManager::Wiimote)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <link rel="stylesheet" href="../../../.././rdoc-style.css" type="text/css" media="screen" />
 </head>
 <body class="standalone-code">
   <pre>/*
  *  call-seq:
- *      wiimote.turn_off_leds!               -&gt; nil
+ *      wiimote.leds = led   -&gt; led
  *
- *  Turns off all the leds of &lt;i&gt;self&lt;/i&gt;.
+ *  Turns on the led or the leds contained in &lt;i&gt;led&lt;/i&gt;.
  *
- */
+ *      #turns on led 1
+ *      wmote.leds = LED_1      #=&gt;(LED_1 value)
+ *
+ *      #turns on led 2 and 3
+ *      wmote.leds = LED_2 | LED_3 #=&gt;(LED_2 | LED_3 value) 
+ */ 
 
-static VALUE rb_wm_turnoff(VALUE self) {
-</pre>
+static VALUE rb_wm_leds(VALUE self, VALUE arg) </pre>
 </body>
 </html>

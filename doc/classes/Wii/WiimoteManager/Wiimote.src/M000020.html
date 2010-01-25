@@ -1,31 +1,20 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
-<!DOCTYPE html 
-     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-  <title>status (Wii::WiimoteManager::Wiimote)</title>
-  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <title>motion_sensing? (Wii::WiimoteManager::Wiimote)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <link rel="stylesheet" href="../../../.././rdoc-style.css" type="text/css" media="screen" />
 </head>
 <body class="standalone-code">
   <pre>/*
  *  call-seq:
- *      wiimote.status               -&gt; hash
+ *      wiimote.motion_sensing?              -&gt; true or false
  *
- *  Returns a hash containing the status information of &lt;i&gt;self&lt;/i&gt;.
+ *  Returns true if motion sensing is activated in &lt;i&gt;self&lt;/i&gt;, false otherwise.
  *
- *      h = wmote.status
- *      h[:speaker]    #=&gt; true or false
- *      h[:ir]              #=&gt; true or false
- *      h[:attachment] #=&gt; string defining the expansion inserted
- *      h[:id]              #=&gt; int defining the id of &lt;i&gt;self&lt;/i&gt;
- *      h[:battery]    #=&gt; float (battery level)
- *      h[:led]             #=&gt; string (the last led turned on)
  */
 
-static VALUE rb_wm_status(VALUE self) {
-</pre>
+static VALUE rb_wm_get_ms(VALUE self) </pre>
 </body>
 </html>

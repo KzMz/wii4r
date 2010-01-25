@@ -2,19 +2,21 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-  <title>acceleration (Wii::WiimoteManager::Wiimote::Nunchuk)</title>
+  <title>absolute_pitch (Wii::WiimoteManager::Wiimote::Nunchuk)</title>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <link rel="stylesheet" href="../../../../.././rdoc-style.css" type="text/css" media="screen" />
 </head>
 <body class="standalone-code">
   <pre>/*
  * call-seq:
- *      nunchuk.acceleration -&gt; array
+ *      nunchuk.absolute_pitch       -&gt; float
  *
- * Returns an array containing the three components of acceleration [x, y, z] of &lt;i&gt;self&lt;/i&gt;.
+ * Returns the absolute rotation around X axis (works with motion sensing activated).
+ *
+ * Range: [-179.9, -0.1] [0.1, 179.9] 
  *
  */
 
-static VALUE rb_nun_accel(VALUE self) </pre>
+static VALUE rb_nun_apitch(VALUE self) </pre>
 </body>
 </html>

@@ -62,6 +62,26 @@ static VALUE rb_wm_init(VALUE self) {
 
 /*
  *  call-seq:
+ *	wiimote.to_s		-> string
+ *
+ *  Returns a string that represents <i>self</i>.
+ *
+ */
+
+static VALUE rb_wm_to_s(VALUE self) {
+ VALUE hash;
+ VALUE str1,str2,str3;
+ hash = rb_funcall(self,rb_intern("status"),0,NULL);
+ str1 = rb_str_plus(rb_hash_aref(hash,rb_intern("id")),rb_hash_aref(hash,rb_intern("battery")));
+ str2 = rb_str_plus(rb_hash_aref(hash,rb_intern("speaker")),rb_hash_aref(hash,rb_intern("ir")));
+ str3 = rb_str_plus(rb_hash_aref(hash,rb_intern("led")),rb_hash_aref(hash,rb_intern("attachment")));
+ str1 = rb_str_plus(str1,str2);
+ str1 = rb_str_plus(str1,str3);	
+ return str1;
+}
+
+/*
+ *  call-seq:
  *	wiimote.rumble?		-> true or false
  *
  *  Returns true if the <i>self</i> is rumbling.
@@ -1197,6 +1217,7 @@ void init_wiimote(void) {
   //rb_define_singleton_method(wii_class, "new", rb_wm_new, 0);
   rb_define_method(wii_class, "initialize", rb_wm_init, 0);
   rb_define_method(wii_class, "disconnect!", rb_wm_disconnect, 0);
+  rb_define_method(wii_class, "to_s", rb_wm_to_s, 0);
   rb_define_method(wii_class, "rumble?", rb_wm_get_rumble, 0);
   rb_define_method(wii_class, "rumble=", rb_wm_set_rumble, 1);
   rb_define_method(wii_class, "rumble!", rb_wm_rumble, -1);

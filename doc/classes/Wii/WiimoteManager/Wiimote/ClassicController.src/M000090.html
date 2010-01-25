@@ -2,19 +2,22 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-  <title>pressed? (Wii::WiimoteManager::Wiimote::GH3Controller)</title>
+  <title>left_shoulder (Wii::WiimoteManager::Wiimote::ClassicController)</title>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <link rel="stylesheet" href="../../../../.././rdoc-style.css" type="text/css" media="screen" />
 </head>
 <body class="standalone-code">
   <pre>/*
- *  call-seq:
- *      gh3ctrl.pressed?(button)     -&gt; true or false
+ * call-seq:
+ *      classicctrl.left_shoulder    -&gt; float
  *
- *  Returns true if &lt;i&gt;button&lt;/i&gt; is being pressed on &lt;i&gt;self&lt;/i&gt;.
+ * Returns the magnitude at which the left shoulder button is being held.
+ * Range: [0, 1]
+ * 0 =&gt; not pressed
+ * 1 =&gt; fully pressed
  *
  */
-
-static VALUE rb_gh3_pressed(VALUE self, VALUE arg) </pre>
+ 
+static VALUE rb_cc_lshoulder(VALUE self) </pre>
 </body>
 </html>
