@@ -8,7 +8,7 @@ begin
   w.connect
   
   wm = w.wiimotes.first
-  wm.play("test.wav")
+  wm.play_sound
 ensure
   w.cleanup!
 end

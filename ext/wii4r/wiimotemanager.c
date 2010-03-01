@@ -39,21 +39,6 @@ static VALUE rb_cm_new(VALUE self) {
 
 /* 
  *  call-seq:
- *	WiimoteManager.to_s		-> string
- *
- *  Returns a string that represents all the connected wiimotes.
- */
-
-static VALUE rb_cm_to_s(VALUE self) {
-  VALUE str;
-  VALUE ary;
-  ary = rb_iv_get(self,"@wiimotes");
-  str = rb_ary_join(ary,"\n");
-  return str;
-}
-
-/* 
- *  call-seq:
  *	WiimoteManager.new
  *
  *  Returns a new empty WiimoteManager.
@@ -381,5 +366,4 @@ void init_wiimotemanager(void) {
   rb_define_method(cm_class, "poll", rb_cm_poll, 0);
   rb_define_method(cm_class, "each_wiimote", rb_cm_each, 0);
   rb_define_method(cm_class, "positions", rb_cm_pos, 0);
-  rb_define_method(cm_class, "to_s", rb_cm_to_s, 0);	
 }

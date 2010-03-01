@@ -1,7 +1,2 @@
-- read e get data
-- levare segfault dopo cleanup
-- (eventuale riinizializzazione)
-- rb_wm_disconnect rb_to_s
-- controllare tipi
 - creare gem
-
+- (read e get data)
