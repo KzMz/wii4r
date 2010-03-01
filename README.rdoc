@@ -5,9 +5,7 @@ Binding of C wiiuse library (http://www.wiiuse.net)
 
 == Install
 
- $ make
- $ make install
- $ make clean
+ $ gem install wii4r
 
 That should be all.
 
@@ -15,6 +13,8 @@ That should be all.
 
 * wiiuse lib (http://www.wiiuse.net) (lacks of speaker support and small fixes)
 * wiiuse_fork (github) (lacks of speaker support as for now)
+* rake (>= 0.8.3 and < 0.9)
+* rake-compiler (>= 0.7.0)
 
 == Usage
 
@@ -31,7 +31,7 @@ That should be all.
  	end
   end
 
-See rdoc documentation at doc/ for more details
+See rdoc documentation for more details
 
 == Copyright
 Copyright (c) 2009 KzMz & BuZz.
