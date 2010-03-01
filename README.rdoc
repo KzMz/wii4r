@@ -5,9 +5,16 @@ Binding of C wiiuse library (http://www.wiiuse.net)
 
 == Install
 
+On a supported platform (x86 linux):
+
  $ gem install wii4r
 
-That should be all.
+On other platforms:
+
+ $ extract the source
+ $ rake native gem
+ $ cd pkg
+ $ gem install wii4r-0.5.0-<platform>.gem
 
 == Dependencies
 

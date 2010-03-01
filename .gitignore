@@ -1,10 +1,11 @@
 #ignore .so files
 *.so
-#ext/Makefile
-ext/Makefile
+doc/*.*
+pkg/*.*
+tmp/*.*
 #ignore ext/.o files
-ext/*.o
+*.o
 #ignore ext/.log files
-ext/*.log
+*.log
 
 
